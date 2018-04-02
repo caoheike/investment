@@ -90,5 +90,13 @@ public  class ProjectInfoServiceImpl implements ProjectInfoService {
 		return projectinfodao.juuser(map);
 	}
 	
+	/**
+	 * 查询部门代码
+	 */
+	public Map getbmdm(int deptid) {
+
+	     
+		return projectinfodao.getbmdm(deptid);
+	}
  
 }

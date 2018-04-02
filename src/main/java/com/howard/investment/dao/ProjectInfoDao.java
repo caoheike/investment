@@ -35,6 +35,8 @@ public interface ProjectInfoDao {
     int sendMessage(Map map);
     
     List<Map>  juuser(Map map);
+    
+    Map getbmdm(int deptid);
 
 
 

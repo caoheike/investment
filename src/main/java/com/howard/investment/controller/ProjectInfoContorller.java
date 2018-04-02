@@ -49,9 +49,19 @@ public class ProjectInfoContorller {
 		@ResponseBody
 	    @RequestMapping(value = "queryProjectInfo",method = RequestMethod.POST)
 	    public List<Map> queryProjectInfo(HttpServletRequest request,@RequestParam("projectStatus") String projectStatus,@RequestParam("deptid") String deptid,Model model) throws Exception {
-	    	Map<String,Object> map= new HashMap<String,Object>();
+	    	HttpSession sessionr=request.getSession();
+	    	Map maps=(Map) sessionr.getAttribute("sessionUser");
+			Map<String,Object> map= new HashMap<String,Object>();
+	    	if(maps.get("typeid").toString().equals("2")){
+	    	 	map.put("ifadmin", "yes");
+	    	}else{
+	    	 	map.put("ifadmin", "no");
+	    	}
+	    	
+	
 	    	map.put("projectStatus", projectStatus);
-	    	map.put("deptid", deptid);
+	    	map.put("deptid", Integer.parseInt(deptid));
+	   
 			List<Map> queryProjectInfo = projectinfoserviceimpl.queryProjectInfo(map);
 	    	return queryProjectInfo;
 	    }
@@ -158,17 +168,20 @@ public class ProjectInfoContorller {
 	     */
 	    @ResponseBody
 	    @RequestMapping(value = "sendMassage",method = RequestMethod.POST)
-	    public Map<String,Object> sendMassage(HttpServletRequest request,@RequestParam("bmdm") String bmdm,@RequestParam("xmmc") String xmmc,@RequestParam("xmdwmc") String xmdwmc,@RequestParam("title") String title,@RequestParam("xmid")String  xmid,@RequestParam("msgtype") String msgtype) throws Exception {
-			String fsz="统计局";
+	    public Map<String,Object> sendMassage(HttpServletRequest request,@RequestParam("bmdm") String bmdm,@RequestParam("xmmc") String xmmc,@RequestParam("xmdwmc") String xmdwmc,@RequestParam("title") String title,@RequestParam("xmid")String  xmid) throws Exception {
+			HttpSession session=request.getSession();
+			Map maps=(Map) session.getAttribute("sessionUser");
+			
+	    	String fsz="统计局";
 		
 			Date day=new Date();    
 			SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd"); 
 	    	Map<String,Object> map=new HashMap<String,Object>();
 	    	map.put("fsz", "统计局");
-	    	if(msgtype.equals("10")){
+	    	if(maps.get("typeid").toString().equals("2")){
+	    	  	map.put("xminfotype",2);
+	    	}else if(maps.get("typeid").toString().equals("10")){
 	    	  	map.put("xminfotype",10);
-	    	}else{
-	    	  	map.put("xminfotype",0);
 	    	}
 	  
 	    	map.put("bmdm",Integer.parseInt(bmdm));
@@ -198,10 +211,10 @@ public class ProjectInfoContorller {
 		HttpSession session=request.getSession();
 		Map<String,Object> map=(Map<String, Object>) session.getAttribute("sessionUser");
 		if(map.get("typeid").toString().equals("10")){//据用户
-			  model.addAttribute("msgtype",model.addAttribute("msgtype",map.get("typeid").toString()));
-			
+			  model.addAttribute("msgtype",2);
+			  
 		}else if(map.get("typeid").toString().equals("2")){//部门用户
-			  model.addAttribute("msgtype",model.addAttribute("msgtype", map.get("typeid").toString()));
+			  model.addAttribute("msgtype",10);
 		}
 		
 		
@@ -224,15 +237,30 @@ public class ProjectInfoContorller {
 		   */
 		  @ResponseBody
 		  @RequestMapping(value = "juuserinfo",method = RequestMethod.POST)
-		    public List<Map> juuserinfo(HttpServletRequest request,@RequestParam("msgtype") String msgtype) throws Exception {
+		    public List<Map> juuserinfo(HttpServletRequest request) throws Exception {
+			  	 
 			  	//查询统计局发送给部门的消息//部门用户只能看到属于自己本门的
 				  //查询客户给局用户发送的消息//这个不需要划分，只要是局用户可以查询所有消息
-				  Map<String,Object> map=new HashMap<String,Object>();
-				  map.put("msgtype",Integer.parseInt(msgtype));
-				  //获取deptid  
-				    String deptid=request.getParameter("bmdm");
-				   map.put("bmdm", Integer.parseInt(deptid));
-				  List<Map> list=projectinfoserviceimpl.juuser(map);
+			  	HttpSession session=request.getSession();
+			  	 List<Map> list=null;
+			  	Map<String,Object> map=(Map<String, Object>) session.getAttribute("sessionUser");
+			  		if(map.get("typeid").toString().equals("10")){
+			  			//据用户
+			  		  map.put("msgtype",2);
+			  		 list=projectinfoserviceimpl.juuser(map);
+			  		}else if(map.get("typeid").toString().equals("2")){
+			  		  //获取deptid   部门用户
+			  			//部门用户需要查询xmdm,根据用户的 deptid
+			  			Map mapxmdm=projectinfoserviceimpl.getbmdm(Integer.parseInt(map.get("deptid").toString()));
+			  		  map.put("msgtype",10);
+			  		   map.put("bmdm", mapxmdm.get("code"));
+			  		   list=projectinfoserviceimpl.juuser(map);
+			  		}
+			  	
+			
+				
+				
+				
 		
 		    	return list;
 		    }

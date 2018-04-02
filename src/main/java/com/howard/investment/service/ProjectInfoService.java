@@ -76,6 +76,8 @@ public interface ProjectInfoService {
 	 int sendMessage(Map map);
 	 List<Map>  juuser(Map map);
 	 int updatexiaoxi(Map map);
+	 Map getbmdm(int deptid);
+	 
 	
     
 }
