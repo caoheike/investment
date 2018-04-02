@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -56,8 +57,10 @@ public class ProjectInfoContorller {
 	    }
 	    
 		  @RequestMapping(value = "info",method = RequestMethod.GET)
-		    public String info(HttpServletRequest request,@RequestParam("deptid")String deptid,@RequestParam("status") String status,Model mode) throws Exception {
-			  mode.addAttribute("deptid", deptid);
+		    public String info(HttpServletRequest request,@RequestParam("status") String status,Model mode) throws Exception {
+				HttpSession session=request.getSession();
+		    	Map<String,Object> maps= (Map<String, Object>) session.getAttribute("sessionUser");
+			  mode.addAttribute("deptid", maps.get("deptid"));
 			  mode.addAttribute("status", status);
 		    	return "main_list";
 		    }
@@ -190,9 +193,21 @@ public class ProjectInfoContorller {
 	     */
 	    
 		  @RequestMapping(value = "juuser",method = RequestMethod.GET)
-		    public String juuser(HttpServletRequest request,@RequestParam("mfgtype") String msgtype,@RequestParam("bmdm") String bmdm,Model model) throws Exception {
-			  model.addAttribute("msgtype", msgtype);
-			  model.addAttribute("bmdm", bmdm);
+		    public String juuser(HttpServletRequest request,Model model) throws Exception {
+		
+		HttpSession session=request.getSession();
+		Map<String,Object> map=(Map<String, Object>) session.getAttribute("sessionUser");
+		if(map.get("typeid").toString().equals("10")){//据用户
+			  model.addAttribute("msgtype",model.addAttribute("msgtype",map.get("typeid").toString()));
+			
+		}else if(map.get("typeid").toString().equals("2")){//部门用户
+			  model.addAttribute("msgtype",model.addAttribute("msgtype", map.get("typeid").toString()));
+		}
+		
+		
+		
+	
+//			  
 			  
 		    	return "juuser";
 		    }	

@@ -27,9 +27,12 @@ body{overflow-x:hidden; background:url(images/main/leftbg.jpg) left top repeat-y
     <div style="float: left" id="my_menu" class="sdmenu">
       <div>
         <span>项目信息</span>
-        <a href="main.html" target="mainFrame" onFocus="this.blur()">待入库项目</a>
-        <a href="../templates/main_list.html" target="mainFrame" onFocus="this.blur()">已入库项目</a>
-        <a href="../templates/main_info.html" target="mainFrame" onFocus="this.blur()">未入库项目</a>
+        <a href="info?status=4" target="mainFrame" onFocus="this.blur()">待入库项目</a>
+        <a href="info?status=2" target="mainFrame" onFocus="this.blur()">已入库项目</a>
+        <a href="info?status=1" target="mainFrame" onFocus="this.blur()">未入库项目</a>
+        <a href="info?status=3" target="mainFrame" onFocus="this.blur()">已完成项目</a>
+         <a href="juuser" target="mainFrame" onFocus="this.blur()">部门消息</a>
+        
       </div>
       <div>
         <span>系统设置</span>

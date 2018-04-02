@@ -1,4 +1,4 @@
-package com.howard.investment;
+	package com.howard.investment;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
