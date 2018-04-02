@@ -1,0 +1,348 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>主要内容区main</title>
+<link href="css/css.css" type="text/css" rel="stylesheet" />
+<link href="css/main.css" type="text/css" rel="stylesheet" />
+<link rel="shortcut icon" href="images/main/favicon.ico" />
+<style>
+body{overflow-x:hidden; background:#f2f0f5; padding:15px 0px 10px 5px;}
+#searchmain{ font-size:12px;}
+#search{ font-size:12px; background:#548fc9; margin:10px 10px 0 0; display:inline; width:100%; color:#FFF}
+#search form span{height:40px; line-height:40px; padding:0 0px 0 10px; float:left;}
+#search form input.text-word{height:24px; line-height:24px; width:180px; margin:8px 0 6px 0; padding:0 0px 0 10px; float:left; border:1px solid #FFF;}
+#search form input.text-but{height:24px; line-height:24px; width:55px; background:url(images/main/list_input.jpg) no-repeat left top; border:none; cursor:pointer; font-family:"Microsoft YaHei","Tahoma","Arial",'宋体'; color:#666; float:left; margin:8px 0 0 6px; display:inline;}
+#search a.add{ background:url(images/main/add.jpg) no-repeat 0px 6px; padding:0 10px 0 26px; height:40px; line-height:40px; font-size:14px; font-weight:bold; color:#FFF}
+#search a:hover.add{ text-decoration:underline; color:#d2e9ff;}
+#main-tab{ border:1px solid #eaeaea; background:#FFF; font-size:12px;}
+#main-tab th{ font-size:12px; background:url(images/main/list_bg.jpg) repeat-x; height:32px; line-height:32px;}
+#main-tab td{ font-size:12px; line-height:40px;}
+#main-tab td a{ font-size:12px; color:#548fc9;}
+#main-tab td a:hover{color:#565656; text-decoration:underline;}
+.bordertop{ border-top:1px solid #ebebeb}
+.borderright{ border-right:1px solid #ebebeb}
+.borderbottom{ border-bottom:1px solid #ebebeb}
+.borderleft{ border-left:1px solid #ebebeb}
+.gray{ color:#dbdbdb;}
+td.fenye{ padding:10px 0 0 0; text-align:right;}
+.bggray{ background:#f9f9f9; font-size:14px; font-weight:bold; padding:10px 10px 10px 0; width:120px;}
+.main-for{ padding:10px;}
+.main-for input.text-word{ width:310px; height:36px; line-height:36px; border:#ebebeb 1px solid; background:#FFF; font-family:"Microsoft YaHei","Tahoma","Arial",'宋体'; padding:0 10px;}
+.main-for select{ width:310px; height:36px; line-height:36px; border:#ebebeb 1px solid; background:#FFF; font-family:"Microsoft YaHei","Tahoma","Arial",'宋体'; color:#666;}
+.main-for input.text-but{ width:100px; height:40px; line-height:30px; border: 1px solid #cdcdcd; background:#e6e6e6; font-family:"Microsoft YaHei","Tahoma","Arial",'宋体'; color:#969696; float:left; margin:0 10px 0 0; display:inline; cursor:pointer; font-size:14px; font-weight:bold;}
+#addinfo a{ font-size:14px; font-weight:bold; background:url(images/main/addinfoblack.jpg) no-repeat 0 1px; padding:0px 0 0px 20px; line-height:45px;}
+#addinfo a:hover{ background:url(images/main/addinfoblue.jpg) no-repeat 0 1px;}
+</style>
+	<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css"/>
+	<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+	
+	<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+var flg='0';
+$(function (){
+$("#xiaoxi").click(function (){
+	if(flg=='1'){
+		$("#sub").submit();
+	}else{
+		$("#tanchuang").click();
+	}
+
+	
+})	
+	
+	
+})
+
+$(function (){
+$("#send").click(function (){
+	
+	
+})	
+	
+})
+
+<!--提交消息-->
+$(function (){
+
+
+$("#send").click(function (){
+	var bmdm=$("#bmdm").val();
+	var xmmc=$("#xmmc").val();
+	var xmdwmc= $("#xmdwmc").val();
+	var title=$("#title").val();
+	var ids=$("#ids").val();
+
+// 	$("#title").title();
+	$("#title").val();<!--+xmmc-->
+
+		
+		$.ajax({
+		    type: "POST",
+		    url: "sendMassage",
+		    data: {"bmdm":bmdm,"xmmc":xmmc,"xmdwmc":xmdwmc,"title":title,"xmid":ids,"msgtype":$("#msgtype").val()},
+		    success: function(data){
+		 		if(data.restInfo=="success"){
+		 			alert("发送成功");
+		 			$("#sub").submit();
+//	 	 			location.reload();
+		 			
+		 		}else{
+		 			alert("发送失败");
+		 		}
+		       }
+		 });	
+	
+	
+	
+	
+})	
+	
+	
+})
+$(function (){
+$("#bfs").click(function (){
+
+flg='1';	
+	
+	
+})	
+	
+})
+
+</script>
+</head>
+<body>
+<!--main_top-->
+<table width="99%" border="0" cellspacing="0" cellpadding="0" id="searchmain">
+  <tr>
+    <td width="99%" align="left" valign="top">您的位置：项目信息&nbsp;&nbsp;>&nbsp;&nbsp;</td>
+  </tr>
+  <tr>
+    <td align="left" valign="top" id="addinfo">
+<!--     <a href="add.html" target="mainFrame" onFocus="this.blur()" class="add"></a> -->
+    </td>
+  </tr>
+  <tr>
+    <td align="left" valign="top">
+      <form method="POST" id="sub" enctype="multipart/form-data"
+        th:action="@{/upload/batch}">
+ <input type="hidden" name="xxid" th:value="${info.xxid}" />
+        <input type="hidden" name="id" th:value="${info.id}" />
+        			<input type="hidden" name="msgtype" id="msgtype" th:value="${info.type}"/>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" id="main-tab">
+      <tr onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
+        <td align="right" valign="middle" class="borderright borderbottom bggray">项目法人码：</td>
+        <td align="left" valign="middle" class="borderright borderbottom main-for">
+        <input type="text" name="" th:value="${info.xmfrm}" value="" class="text-word"/>
+        </td>
+          <td align="right" valign="middle" class="borderright borderbottom bggray">部门代码：</td>
+        <td align="left" valign="middle" class="borderright borderbottom main-for">
+        <input type="text" name="" id="bmdm" th:value="${info.bmdm}" class="text-word"/>
+        </td>
+        </tr>
+      <tr onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
+        <td align="right" valign="middle" class="borderright borderbottom bggray">单位名称：</td>
+        <td align="left" valign="middle" class="borderright borderbottom main-for">
+        <input type="text" name="" th:value="${info.xmdwmc}" class="text-word"/>
+        </td>
+         <td align="right" valign="middle" class="borderright borderbottom bggray">项目分类：</td>
+        <td align="left" valign="middle" class="borderright borderbottom main-for">
+<!--         <input type="text" name="" th:value="${info.xmfl}" class="text-word"/> -->
+				<select>
+				     <option th:if="${info.xmfl eq 1}" th:selected="selected">在库项目</option>
+					<option th:if="${info.xmfl eq 2}" th:selected="selected">待入库项目</option>			     
+				<option th:if="${info.xmfl eq 3}" th:selected="selected">未入库项目</option>	
+				<option th:if="${info.xmfl eq 4}" th:selected="selected">已完成项目</option>	
+				
+				</select>
+        </td>
+        </tr>
+      <tr onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
+        <td align="right" valign="middle" class="borderright borderbottom bggray">项目名称：</td>
+        <td align="left" valign="middle" class="borderright borderbottom main-for">
+        <input type="text" name=""  id="xmmc" th:value="${info.xmmc}" class="text-word"/>
+        </td>
+           <td align="right" valign="middle" class="borderright borderbottom bggray">计划总投资：</td>
+        <td align="left" valign="middle" class="borderright borderbottom main-for">
+        <input type="text" name="" th:value="${info.jhztz}" class="text-word"/>
+        </td>
+      </tr>
+      <tr onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
+        <td align="right" valign="middle" class="borderright borderbottom bggray">法人单位代码：</td>
+     <td align="left" valign="middle" class="borderright borderbottom main-for">
+        <input type="text" name="" id="xmdwmc" th:value="${info.xmdwmc}" class="text-word"/>
+        </td>
+    <td align="left" valign="middle" class="borderright borderbottom main-for">
+<!--    	saddddddddddddd -->
+        </td>
+           <td align="left" valign="middle" class="borderright borderbottom main-for">
+<!--    	saddddddddddddd -->
+        </td>
+      </tr>
+      
+      
+            <tr th:if="${info.type=='0'}" onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
+        <td align="right" valign="middle" class="borderright borderbottom bggray">项目批文：</td>
+        <td align="left" valign="middle" class="borderright borderbottom main-for">
+        <input type="text" name="" value="" class="text-word"/>
+        </td>
+           <td align="right" valign="middle" class="borderright borderbottom bggray">file格式：</td>
+        <td align="left" valign="middle" class="borderright borderbottom main-for">
+        <input type="file" name="file" value="" class="text-word"/>
+        </td>
+      </tr>
+             <tr th:if="${info.type=='0'}"  onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
+        <td align="right" valign="middle" class="borderright borderbottom bggray">项目合同：</td>
+        <td align="left" valign="middle" class="borderright borderbottom main-for">
+        <input type="text" name="" value="" class="text-word"/>
+        </td>
+           <td align="right" valign="middle" class="borderright borderbottom bggray">file格式：</td>
+        <td align="left" valign="middle" class="borderright borderbottom main-for">
+        <input type="file" name="file" value="" class="text-word"/>
+        </td>
+      </tr>
+                <tr th:if="${info.type=='0'}"  onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
+        <td align="right" valign="middle" class="borderright borderbottom bggray">营业执照：</td>
+        <td align="left" valign="middle" class="borderright borderbottom main-for">
+        <input type="text" name="" value="" class="text-word"/>
+        </td>
+           <td align="right" valign="middle" class="borderright borderbottom bggray">file格式：</td>
+        <td align="left" valign="middle" class="borderright borderbottom main-for">
+        <input type="file" name="file" value="" class="text-word"/>
+        </td>
+      </tr>
+      
+                     <tr th:if="${info.type=='0'}"  onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
+        <td align="right" valign="middle" class="borderright borderbottom bggray">现场照片：</td>
+        <td align="left" valign="middle" class="borderright borderbottom main-for">
+        <input type="text" name="" value="" class="text-word"/>
+        </td>
+           <td align="right" valign="middle" class="borderright borderbottom bggray">file格式：</td>
+        <td align="left" valign="middle" class="borderright borderbottom main-for">
+        <input type="file" name="file" value="" class="text-word"/>
+        </td>
+      </tr>
+                          <tr th:if="${info.type=='0'}"  onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
+        <td align="right" valign="middle" class="borderright borderbottom bggray">入库申请表：</td>
+        <td align="left" valign="middle" class="borderright borderbottom main-for">
+        <input type="text" name="" value="" class="text-word"/>
+        </td>
+           <td align="right" valign="middle" class="borderright borderbottom bggray">file格式：</td>
+        <td align="left" valign="middle" class="borderright borderbottom main-for">
+        <input type="file" name="file" value="" class="text-word"/>
+        </td>
+      </tr>
+      
+      <!-- 10用户显示开始 -->
+                  <tr th:if="${info.type=='10'}" onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
+        <td align="right" valign="middle" class="borderright borderbottom bggray">项目批文：</td>
+        <td align="left" valign="middle" class="borderright borderbottom main-for">
+       <img alt="" th:src="${info.file1}"/>
+        </td>
+      
+      </tr>
+             <tr th:if="${info.type=='10'}"  onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
+        <td align="right" valign="middle" class="borderright borderbottom bggray">项目合同：</td>
+        <td align="left" valign="middle" class="borderright borderbottom main-for">
+         <img alt="" th:src="${info.file1}"/>
+        </td>
+      
+      </tr>
+                <tr th:if="${info.type=='10'}"  onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
+        <td align="right" valign="middle" class="borderright borderbottom bggray">营业执照：</td>
+        <td align="left" valign="middle" class="borderright borderbottom main-for">
+       <img alt="" th:src="${info.file1}"/>
+        </td>
+         
+      </tr>
+      
+                     <tr th:if="${info.type=='10'}"  onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
+        <td align="right" valign="middle" class="borderright borderbottom bggray">现场照片：</td>
+        <td align="left" valign="middle" class="borderright borderbottom main-for">
+           <img alt="" th:src="${info.file1}"/>
+        </td>
+      
+
+      </tr>
+                          <tr th:if="${info.type=='10'}"  onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
+        <td align="right" valign="middle" class="borderright borderbottom bggray">入库申请表：</td>
+        <td align="left" valign="middle" class="borderright borderbottom main-for">
+           <img alt="" th:src="${info.file1}"/>
+        </td>
+  
+      </tr>
+      <!-- 显示结束 -->
+      <tr onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
+        <td th:if="${info.type=='10'}" align="right" valign="middle" class="borderright borderbottom bggray">审核意见</td>
+        <td th:if="${info.type=='10'}" align="left" valign="middle" class="borderright borderbottom main-for">
+  	  	<input type="radio" name="selectRadio" value="1" checked="checked"/> 同意    	<input name="selectRadio" value="2" type="radio"/> 不同意 
+       </td>
+          <td align="right" valign="middle" class="borderright borderbottom bggray">&nbsp;</td>
+        <td align="left" valign="middle" class="borderright borderbottom main-for">
+  	   <input id="tj" type="submit" style="display:none" value="提交" class="text-but"/>
+            <input name="xiaoxi" id="xiaoxi" type="button" value="提交" class="text-but"/>
+        <input name="" type="reset" value="重置" class="text-but"/></td>
+        </tr>
+    </table>
+    </form>
+    </td>
+    </tr>
+</table>
+
+<input style="display:none" type="text" id="ids"  th:value="${info.id}"/>
+<!-- 按钮触发模态框 -->
+<button style="display:none" class="btn btn-primary btn-lg" id="tanchuang" data-toggle="modal" data-target="#myModal">
+	开始演示模态框
+</button>
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="myModalLabel">
+					消息发送
+				</h4>
+			</div>
+			<div class="modal-body">
+				<table>
+						<tr>
+								<td>发送部门:</td>
+								<td id="fsz">统计局</td>
+						</tr>
+						<tr>
+							<td>接受部门</td>
+								<td th:text="${info.bmdm}"></td>
+						</tr>
+						<tr>
+						<td>项目名称:</td>
+								<td id="xmmc" th:text="${info.xmmc}"></td>
+						</tr>
+							<tr>
+						<td>单位名称</td>
+								<td id="xmdwmc" th:text="${info.xmdwmc}"></td>
+						</tr>
+							<tr>
+						<td>具体事项</td>
+								
+								<td ><textarea id="title"  style="width: 400px;height:300px" rows="" cols=""></textarea></td>
+						</tr>
+						
+				</table>
+			</div>
+
+			<div class="modal-footer">
+				<button type="button"  id="bfs" class="btn btn-default" data-dismiss="modal">不发送
+				</button>
+				<button type="button" id="send" class="btn btn-primary">
+					发送消息
+				</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>
+</body>
+</html>
