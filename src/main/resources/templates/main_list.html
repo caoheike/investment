@@ -66,7 +66,9 @@ url: "queryDeptInfo",
 success: function(data){
 	 // <![CDATA[
 	for(var i=0;i<data.length;i++){
-		$("#sele").append("<option>"+data[i].title+"</option>");
+		$("#sele").append("<option value="+data[i].code+" >"+data[i].title+"</option>");
+		
+		
 	
 		
 	}
@@ -81,7 +83,84 @@ success: function(data){
 	
 })
 
+//检索查询
 
+$(function (){
+	$("#xx").click(function (){
+	var bmdm=$('#sele option:selected').val();
+	var status=$("#status").val();
+	var deptid=$("#deptid").val();
+	var xmmcs=$("#xmmcs").val();
+	var frdws=$("#frdws").val();
+	alert(bmdm+"--"+xmmcs+"--"+frdws);
+	
+		$.ajax({
+		    type: "POST",
+		    url: "queryProjectInfo",
+			    data: {"projectStatus":$("#status").val(),"deptid":$("#deptid").val(),"xmmcs":xmmcs,"frdws":frdws,"bmdm":bmdm},
+		    success: function(data){
+		    	console.log(data);
+		    	
+		    	var data;
+		    	var j=0;
+				   options={
+				    		"id":"page",//显示页码的元素
+				    		"data":data,//显示数据
+				    	    "maxshowpageitem":3,//最多显示的页码个数
+				    	    "pagelistcount":10,//每页显示数据个数
+				    	    "callBack":function(result){
+				    	    	data=result;
+				    	    	     var cHtml='  <tr>'+
+					    	    	       '  <th align='center' valign='middle' class='borderright'>序号</th>'+
+					    	    	        ' <th align='center' valign='middle' class='borderright'>项目法人码</th>'+
+					    	    	        ' <th align='center' valign='middle' class='borderright'>部门代码</th>'+
+					    	    	        ' <th align='center' valign='middle' class='borderright'>项目单位名称</th>'+
+					    	    	        ' <th align='center' valign='middle' class='borderright'>项目名称</th>'+
+					    	    	         '<th align='center' valign='middle' class='borderright'>法人单位代码</th>'+
+					    	    	        ' <th align='center' valign='middle' class='borderright'>计划总投资</th>'+
+					    	    	       ' <th align='center' valign='middle' class='borderright'>审批文件</th>'+
+					    	    	      ' <th align='center' valign='middle' class='borderright'>审批状态</th> '+
+					    	    	      '   <th align='center' valign='middle'>操作</th>'+
+					    	    	      ' </tr>';
+				    	    	     // <![CDATA[
+				    	    	                var flg;
+				    	    	                var statu;
+				    	        for(var i=0;i<result.length;i++){
+				    	        		j++;
+				    	        	if(result[i].file1!=null||result[i].file2!=null||result[i].file3!=null||result[i].file4!=null||result[i].file5!=null){
+				    	        		flg="已上传"
+				    	        	}else{
+				    	        		flg="未上传"
+				    	        	}
+				    	       
+				    	    	if(result[i].status=='1'){
+				    	    		statu="审核通过"
+				    	    	}else if(status=='2'){
+				    	    		statu="审核拒绝"
+				    	    	}else{
+				    	    		statu="未审核";
+				    	    	}
+				    	         //处理数据
+				    	           cHtml+="<tr> <td align='center' valign='middle' class='borderright borderbottom' >"+j+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmfrm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].bmdm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmdwmc+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmmc+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmfrm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].jhztz+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+flg+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+statu+"</td> <td align='center' valign='middle' class='borderright borderbottom' ><a href='deptInfo?id="+result[i].id+"&type=0'>编辑</a> &nbsp;&nbsp;<a onclick='dele("+result[i].id+")'>删除</a> </td></tr>";
+				    	
+				    	           
+				    	           
+				    	        }
+				    	        //   ]]>
+				    	        $("#main-tab").html(cHtml);//将数据增加到页面中
+				    	    }
+				    	};
+				    	   page.init(data.length,1,options);
+
+		    
+			
+		       }
+		 });	
+		
+		
+	})
+	
+})
 
 $(function (){
 	$.ajax({
@@ -131,7 +210,7 @@ $(function (){
 			    	    		statu="未审核";
 			    	    	}
 			    	         //处理数据
-			    	           cHtml+="<tr> <td align='center' valign='middle' class='borderright borderbottom' >"+j+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmfrm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].bmdm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmdwmc+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmmc+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmfl+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].jhztz+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+flg+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+statu+"</td> <td align='center' valign='middle' class='borderright borderbottom' ><a href='deptInfo?id="+result[i].id+"&type=0'>编辑</a> &nbsp;&nbsp;<a onclick='dele("+result[i].id+")'>删除</a> </td></tr>";
+			    	           cHtml+="<tr> <td align='center' valign='middle' class='borderright borderbottom' >"+j+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmfrm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].bmdm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmdwmc+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmmc+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmfrm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].jhztz+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+flg+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+statu+"</td> <td align='center' valign='middle' class='borderright borderbottom' ><a href='deptInfo?id="+result[i].id+"&type=0'>编辑</a> &nbsp;&nbsp;<a onclick='dele("+result[i].id+")'>删除</a> </td></tr>";
 			    	
 			    	           
 			    	           
@@ -165,23 +244,27 @@ $(function (){
 <input type="hidden"  id="deptid" th:value="${deptid}"/>
 <input type="hidden" id="status" th:value="${status}"/>
 <!--main_top-->
-<table width="99%" border="0" cellspacing="0" cellpadding="0" id="searchmain">
+<table  width="100%"  border="0" cellspacing="0" cellpadding="0" id="searchmain">
   <tr>
-    <td width="99%" align="left" valign="top">您的位置：项目信息</td>
+    <td  align="left" valign="top">您的位置：项目信息</td>
   </tr>
   <tr>
     <td align="left" valign="top">
-    <table width="100%" border="0" cellspacing="0" cellpadding="0" id="search">
+    <table border="0" cellspacing="0" cellpadding="0" id="search">
   		<tr>
-   		 <td width="90%" align="left" valign="middle">
+   		 <td align="left" valign="middle">
 	         <form method="post" action="">
-<!-- 	         <span>所属部门：</span> -->
-<!-- 	         <input type="text" name="" value="" class="text-word"/> -->
-           
-<!--            <select id="sele"> -->
+ 	         <span>所属部门：    <select id="sele" style="margin-top:10px"> 
            			
-<!--            </select> -->
-<!-- 	         <input name="" type="button" value="查询" class="text-but"/> -->
+          </select> </span> 
+    
+           
+       
+            <span>项目名称：   <input id="xmmcs" type="text" /></span>    
+     
+                <span>法人单位：         <input id="frdws" type="text" /></span>
+   			
+         <input id="xx" type="button" value="查询" class="text-but"/>
 	         </form>
 	                <form method="post" action="">
 <!-- 	         <span>日期：</span> -->
@@ -208,9 +291,9 @@ $(function (){
    
     </table></td>
     </tr>
-  <tr>
-    <td align="left" valign="top" class="fenye">11 条数据 1/1 页&nbsp;&nbsp;<a href="#" target="mainFrame" onFocus="this.blur()">首页</a>&nbsp;&nbsp;<a href="#" target="mainFrame" onFocus="this.blur()">上一页</a>&nbsp;&nbsp;<a href="#" target="mainFrame" onFocus="this.blur()">下一页</a>&nbsp;&nbsp;<a href="#" target="mainFrame" onFocus="this.blur()">尾页</a></td>
-  </tr>
+<!--   <tr> -->
+<!--     <td align="left" valign="top" class="fenye">11 条数据 1/1 页&nbsp;&nbsp;<a href="#" target="mainFrame" onFocus="this.blur()">首页</a>&nbsp;&nbsp;<a href="#" target="mainFrame" onFocus="this.blur()">上一页</a>&nbsp;&nbsp;<a href="#" target="mainFrame" onFocus="this.blur()">下一页</a>&nbsp;&nbsp;<a href="#" target="mainFrame" onFocus="this.blur()">尾页</a></td> -->
+<!--   </tr> -->
 </table>
  <ul id="demoContent"></ul>
  <ul class="page" id="page"></ul>

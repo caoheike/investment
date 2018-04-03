@@ -114,7 +114,7 @@ flg='1';
 </head>
 <body>
 <!--main_top-->
-<table width="99%" border="0" cellspacing="0" cellpadding="0" id="searchmain">
+<table width="70%" border="0" cellspacing="0" cellpadding="0" id="searchmain">
   <tr>
     <td width="99%" align="left" valign="top">您的位置：项目信息&nbsp;&nbsp;>&nbsp;&nbsp;</td>
   </tr>
@@ -240,50 +240,45 @@ flg='1';
         <td align="left" valign="middle" class="borderright borderbottom main-for">
         <a th:href="${info.file1}">点我查看</a>
         </td>
-      
-      </tr>
-             <tr th:if="${info.type=='10'}"  onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
-        <td align="right" valign="middle" class="borderright borderbottom bggray">项目合同：</td>
+         <td align="right" valign="middle" class="borderright borderbottom bggray">项目合同：</td>
         <td align="left" valign="middle" class="borderright borderbottom main-for">
             <a th:href="${info.file2}">点我查看</a>
         </td>
-      
       </tr>
+      
                 <tr th:if="${info.type=='10'}"  onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
         <td align="right" valign="middle" class="borderright borderbottom bggray">营业执照：</td>
         <td align="left" valign="middle" class="borderright borderbottom main-for">
         <a th:href="${info.file3}">点我查看</a>
         </td>
-         
-      </tr>
-      
-                     <tr th:if="${info.type=='10'}"  onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
-        <td align="right" valign="middle" class="borderright borderbottom bggray">现场照片：</td>
+   <td align="right" valign="middle" class="borderright borderbottom bggray">现场照片：</td>
         <td align="left" valign="middle" class="borderright borderbottom main-for">
          <a th:href="${info.file4}">点我查看</a>
-        </td>
-      
-
+        </td>         
       </tr>
+
                           <tr th:if="${info.type=='10'}"  onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
         <td align="right" valign="middle" class="borderright borderbottom bggray">入库申请表：</td>
         <td align="left" valign="middle" class="borderright borderbottom main-for">
          <a th:href="${info.file5}">点我查看</a>
         </td>
-  
-      </tr>
-      <!-- 显示结束 -->
-      <tr onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
         <td th:if="${info.type=='10'}" align="right" valign="middle" class="borderright borderbottom bggray">审核意见</td>
         <td th:if="${info.type=='10'}" align="left" valign="middle" class="borderright borderbottom main-for">
   	  	<input type="radio" name="selectRadio" value="1" checked="checked"/> 同意    	<input name="selectRadio" value="2" type="radio"/> 不同意 
        </td>
-          <td align="right" valign="middle" class="borderright borderbottom bggray">&nbsp;</td>
+
+      </tr>
+      	<tr>
+      	
+          <td align="right" valign="middle" class="borderright borderbottom bggray"></td>
         <td align="left" valign="middle" class="borderright borderbottom main-for">
   	   <input id="tj" type="submit" style="display:none" value="提交" class="text-but"/>
             <input name="xiaoxi" id="xiaoxi" type="button" value="提交" class="text-but"/>
-        <input name="" type="reset" value="重置" class="text-but"/></td>
-        </tr>
+        
+        <input style="margin-left:30px" name="" type="reset" value="重置" class="text-but"/></td>
+      	</tr>
+      
+   
     </table>
     </form>
     </td>
@@ -308,6 +303,8 @@ flg='1';
 				</h4>
 			</div>
 			<div class="modal-body">
+			
+			
 				<table>
 						<tr>
 								<td>发送部门:</td>

@@ -95,7 +95,7 @@ public class FileUploadController {
     @RequestMapping(value = "/upload/batch", method = RequestMethod.POST)
     public @ResponseBody String batchUpload(HttpServletRequest request,@RequestParam("id") String id,@RequestParam("msgtype") String msgtype) {
     	 String basePath=request.getServletContext().getRealPath("/upload");
-
+    	 
          //拼接成完整的指定的文件路径名，创建新文件
          String filePath = basePath+File.separator;
          File filess = new File(filePath);

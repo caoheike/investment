@@ -52,12 +52,27 @@ public class ProjectInfoContorller {
 	    	HttpSession sessionr=request.getSession();
 	    	Map maps=(Map) sessionr.getAttribute("sessionUser");
 			Map<String,Object> map= new HashMap<String,Object>();
+			String xmmcs=request.getParameter("xmmcs");
+			String frdws=request.getParameter("frdws");
+			String bmdm=request.getParameter("bmdm");
 	    	if(maps.get("typeid").toString().equals("2")){
 	    	 	map.put("ifadmin", "yes");
 	    	}else{
 	    	 	map.put("ifadmin", "no");
 	    	}
 	    	
+	    	if(xmmcs!=null&&!"".equals(xmmcs)){
+	        	map.put("xmmcs","'%%"+xmmcs+"%%'");
+	    	}
+	    	if(frdws!=null&&!"".equals(frdws)){
+	        	map.put("frdws", "'%%"+frdws+"%%'");
+	    	}
+	
+	
+	    	if(bmdm!=null&&!"".equals(bmdm)){
+	        	map.put("bmdm", "'%%"+bmdm+"%%'");
+	    		
+	    	}
 	
 	    	map.put("projectStatus", projectStatus);
 	    	map.put("deptid", Integer.parseInt(deptid));

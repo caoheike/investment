@@ -7,6 +7,19 @@
   	 <if test='ifadmin == "yes"'>
   	 and  deptid=#{deptid}
   	 </if>
+  	
+  	  <if test='bmdm!=null and bmdm!=""'>
+  	 	 and bmdm like ${bmdm}
+  	 
+  	 </if>
+  	 <if test='xmmcs!=null and xmmcs!=""'>
+  	 	 and xmmc like  ${xmmcs}
+  	 </if>
+  	  <if test='frdws!=null and frdws!=""'>
+	 and xmfrm like ${frdws}
+	
+  	 </if>
+<!--   	 "%"#{name}"%" -->
     </select>
     <!-- 项目删除 -->
    <delete id="deleteProjectInfo" parameterType="String">
