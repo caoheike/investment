@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>左侧导航menu</title>
@@ -14,6 +14,26 @@
 	};
 	// ]]>
 </script>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript">
+$(function(){
+		$.ajax({
+			url:"userinfo",
+			type:"get",
+			dataType:"json",
+			data:{},
+			success:function(data){
+				if(data.flag){
+					$("#userName").text(data.userName);
+					$("#userLevel").text(data.userLevel);
+				}
+			},
+			error:function(data){
+				console.log(data);
+			}
+		});
+});
+</script>
 <style type=text/css>
 html{ SCROLLBAR-FACE-COLOR: #538ec6; SCROLLBAR-HIGHLIGHT-COLOR: #dce5f0; SCROLLBAR-SHADOW-COLOR: #2c6daa; SCROLLBAR-3DLIGHT-COLOR: #dce5f0; SCROLLBAR-ARROW-COLOR: #2c6daa;  SCROLLBAR-TRACK-COLOR: #dce5f0;  SCROLLBAR-DARKSHADOW-COLOR: #dce5f0; overflow-x:hidden;}
 body{overflow-x:hidden; background:url(images/main/leftbg.jpg) left top repeat-y #f2f0f5; width:194px;}
@@ -22,7 +42,7 @@ body{overflow-x:hidden; background:url(images/main/leftbg.jpg) left top repeat-y
 <body onselectstart="return false;" ondragstart="return false;" oncontextmenu="return false;">
 <div id="left-top">
 	<div><img src="images/main/member.gif" width="44" height="44" /></div>
-    <span>用户：admin<br>角色：超级管理员</span>
+    <span>用户：<label id="userName"></label><br />角色：<label id="userLevel"></label></span>
 </div>
     <div style="float: left" id="my_menu" class="sdmenu">
       <div>
@@ -31,30 +51,9 @@ body{overflow-x:hidden; background:url(images/main/leftbg.jpg) left top repeat-y
         <a href="info?status=2" target="mainFrame" onFocus="this.blur()">待入库项目</a>
         <a href="info?status=3" target="mainFrame" onFocus="this.blur()">未未入库项目</a>
         <a href="info?status=4" target="mainFrame" onFocus="this.blur()">已完成项目</a>
-         <a href="juuser" target="mainFrame" onFocus="this.blur()">部门消息</a>
-        
-      </div>
-      <div>
-        <span>系统设置</span>
-        <a href="main.html" target="mainFrame" onFocus="this.blur()">分组权限</a>
-        <a href="../templates/main_list.html" target="mainFrame" onFocus="this.blur()">级别权限</a>
-        <a href="../templates/main_info.html" target="mainFrame" onFocus="this.blur()">角色管理</a>
-        <a href="main.html" target="mainFrame" onFocus="this.blur()">自定义权限</a>
-      </div>
-      <div>
-        <span>系统设置</span>
-        <a href="main.html" target="mainFrame" onFocus="this.blur()">分组权限</a>
-        <a href="../templates/main_list.html" target="mainFrame" onFocus="this.blur()">级别权限</a>
-        <a href="../templates/main_info.html" target="mainFrame" onFocus="this.blur()">角色管理</a>
-        <a href="main.html" target="mainFrame" onFocus="this.blur()">自定义权限</a>
-      </div>
-      <div>
-        <span>系统设置</span>
-        <a href="main.html" target="mainFrame" onFocus="this.blur()">分组权限</a>
-        <a href="../templates/main_list.html" target="mainFrame" onFocus="this.blur()">级别权限</a>
-        <a href="../templates/main_info.html" target="mainFrame" onFocus="this.blur()">角色管理</a>
-        <a href="main.html" target="mainFrame" onFocus="this.blur()">自定义权限</a>
+        <a href="juuser" target="mainFrame" onFocus="this.blur()">部门消息</a>
       </div>
     </div>
 </body>
+
 </html>
