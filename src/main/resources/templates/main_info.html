@@ -238,21 +238,21 @@ flg='1';
                   <tr th:if="${info.type=='10'}" onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
         <td align="right" valign="middle" class="borderright borderbottom bggray">项目批文：</td>
         <td align="left" valign="middle" class="borderright borderbottom main-for">
-       <img alt="" th:src="${info.file1}"/>
+        <a th:href="${info.file1}">点我查看</a>
         </td>
       
       </tr>
              <tr th:if="${info.type=='10'}"  onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
         <td align="right" valign="middle" class="borderright borderbottom bggray">项目合同：</td>
         <td align="left" valign="middle" class="borderright borderbottom main-for">
-         <img alt="" th:src="${info.file1}"/>
+            <a th:href="${info.file2}">点我查看</a>
         </td>
       
       </tr>
                 <tr th:if="${info.type=='10'}"  onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
         <td align="right" valign="middle" class="borderright borderbottom bggray">营业执照：</td>
         <td align="left" valign="middle" class="borderright borderbottom main-for">
-       <img alt="" th:src="${info.file1}"/>
+        <a th:href="${info.file3}">点我查看</a>
         </td>
          
       </tr>
@@ -260,7 +260,7 @@ flg='1';
                      <tr th:if="${info.type=='10'}"  onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
         <td align="right" valign="middle" class="borderright borderbottom bggray">现场照片：</td>
         <td align="left" valign="middle" class="borderright borderbottom main-for">
-           <img alt="" th:src="${info.file1}"/>
+         <a th:href="${info.file4}">点我查看</a>
         </td>
       
 
@@ -268,7 +268,7 @@ flg='1';
                           <tr th:if="${info.type=='10'}"  onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
         <td align="right" valign="middle" class="borderright borderbottom bggray">入库申请表：</td>
         <td align="left" valign="middle" class="borderright borderbottom main-for">
-           <img alt="" th:src="${info.file1}"/>
+         <a th:href="${info.file5}">点我查看</a>
         </td>
   
       </tr>

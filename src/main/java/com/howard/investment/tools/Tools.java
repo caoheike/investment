@@ -41,9 +41,9 @@ public class Tools {
         return encrypt32(encryptStr).substring(8, 24);  
     }  
   
-    public static void main(String[] args) {  
-        String encryptStr = "22222222222,./.,./.,./!@#$%^&*()";  
-        System.out.println(Tools.encrypt32(encryptStr));  
-        System.out.println(Tools.encrypt16(encryptStr));  
-    }  
+//    public static void main(String[] args) {  
+//        String encryptStr = "22222222222,./.,./.,./!@#$%^&*()";  
+//        System.out.println(Tools.encrypt32(encryptStr));  
+//        System.out.println(Tools.encrypt16(encryptStr));  
+//    }  
 } 

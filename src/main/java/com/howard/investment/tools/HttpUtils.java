@@ -301,17 +301,17 @@ public class HttpUtils {
                 .build();
     }
 
-    public static void main(String[] args) {
-        try {
-            StringBuilder accessTokenUrl = new StringBuilder("https://api.weixin.qq.com/sns/oauth2/access_token");
-            accessTokenUrl.append("?appid=").append("wx616de22f6ce97d9e");
-            accessTokenUrl.append("&secret=").append("4fe74b4b9e4db9112d98fdcbc421c5cb");
-            accessTokenUrl.append("&code=").append("12345648915321");
-            accessTokenUrl.append("&grant_type=authorization_code");
-            String result = getJson(accessTokenUrl.toString());
-            System.out.println(result);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//    public static void main(String[] args) {
+//        try {
+//            StringBuilder accessTokenUrl = new StringBuilder("https://api.weixin.qq.com/sns/oauth2/access_token");
+//            accessTokenUrl.append("?appid=").append("wx616de22f6ce97d9e");
+//            accessTokenUrl.append("&secret=").append("4fe74b4b9e4db9112d98fdcbc421c5cb");
+//            accessTokenUrl.append("&code=").append("12345648915321");
+//            accessTokenUrl.append("&grant_type=authorization_code");
+//            String result = getJson(accessTokenUrl.toString());
+//            System.out.println(result);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 }

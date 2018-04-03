@@ -4,7 +4,7 @@ import com.howard.investment.dao.ProjectInfoDao;
 import com.howard.investment.dao.UserDao;
 import com.howard.investment.service.ProjectInfoService;
 import com.howard.investment.service.UserService;
-import com.howard.investment.tools.DBConnection;
+
 import com.mysql.jdbc.Connection;
 
 import org.springframework.beans.factory.annotation.Autowired;

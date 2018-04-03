@@ -93,7 +93,7 @@ $(function (){
 	    	console.log(data);
 	    	
 	    	var data;
-	    	
+	    	var j=0;
 			   options={
 			    		"id":"page",//显示页码的元素
 			    		"data":data,//显示数据
@@ -114,6 +114,7 @@ $(function (){
 			    	    	                var ttype=$("#msgtype").val();
 			    	    	         
 			    	        for(var i=0;i<result.length;i++){
+			    	        	j++;
 			    	    
 			    	    if(result[i].infostate==0){//1同意 2不同意 
 			    	    	if(ttype==2){//编辑2用户的信息 通知他 
@@ -127,7 +128,7 @@ $(function (){
 			    	    	flg='已处理';
 			    	    }
 			    	         //处理数据
-			    	           cHtml+="<tr> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xminfo_id+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmmc+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+flg+"</td>  </tr>";
+			    	           cHtml+="<tr> <td align='center' valign='middle' class='borderright borderbottom' >"+j+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmmc+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+flg+"</td>  </tr>";
 			    	
 			    	           
 			    	           

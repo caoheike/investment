@@ -17,6 +17,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @ComponentScan
 @SpringBootApplication
 @ServletComponentScan("com.howard.investment.interceptor")
+
 public class Application extends WebMvcConfigurerAdapter {
     static {
         System.out.print("Spider启动");
