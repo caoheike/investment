@@ -17,5 +17,5 @@ public interface RecordService {
 	
 	int getRecordByKeyCount(String type);
 	
-	Map getXminfoByKey(String userId,String typeId);
+	Map getXminfoByKey(String deptId,String typeId);
 }

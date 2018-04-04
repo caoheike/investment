@@ -26,12 +26,18 @@
     </select>
     
     <select id="getXminfoByKey" resultType="map">
+        select * from dept where 
+    </select>
+    
+    <select id="getXminfoByKey" resultType="map">
         select a.* from xminfo a 
         left join dept b on(a.bmdm=b.code) 
-        left join admin c on(b.id=c.deptid) 
-        where a.infostate=0 and c.id=#{userId} 
+        where a.infostate=1 
+        <if test="typeId=='10'">
+        and a.infotype=2 
+        </if>
         <if test="typeId=='2'">
-        and c.typeid=2
+        and a.infotype=10 b.id=#{deptId} 
         </if>
     </select>
     

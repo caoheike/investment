@@ -20,7 +20,7 @@ public interface RecordDao {
 	
 	int matchDept();
 	
-	Map getXminfoByKey(@Param("userId") String userId,@Param("typeId") String typeId);
+	Map getXminfoByKey(@Param("deptId") String deptId,@Param("typeId") String typeId);
     
 
 
