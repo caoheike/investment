@@ -28,13 +28,13 @@
     
     <select id="getXminfoByKey" resultType="map">
         select a.* from xminfo a 
+        <if test="typeId==10">
+        where a.infostate=0 and a.infotype=2 
+        </if>
+        <if test="typeId==2">
         left join dept b on(a.bmdm=b.code) 
         where a.infostate=0 
-        <if test="typeId=='10'">
-        and a.infotype=2 
-        </if>
-        <if test="typeId=='2'">
-        and a.infotype=10 b.id=#{deptId} 
+        and a.infotype=10 and b.id=#{deptId} 
         </if>
     </select>
     
