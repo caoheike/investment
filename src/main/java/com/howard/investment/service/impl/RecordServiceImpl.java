@@ -29,7 +29,7 @@ public class RecordServiceImpl implements RecordService {
 	}
 
 	@Override
-	public List<Map> getXminfoByKey(String deptId,String typeId) {
+	public List<Map> getXminfoByKey(String deptId,int typeId) {
 		return recordDao.getXminfoByKey(deptId,typeId);
 	}
 
