@@ -148,7 +148,7 @@ public class HomeController {
     		return data;
     	}
     	Map map=(Map)sessionUser;
-    	Map row=recordService.getXminfoByKey(map.get("deptid").toString(),map.get("typeid").toString());
+    	List<Map> row=recordService.getXminfoByKey(map.get("deptid").toString(),map.get("typeid").toString());
     	if(row==null){
     		data.put("flag", false);
     	}else{
