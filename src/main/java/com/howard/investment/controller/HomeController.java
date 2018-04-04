@@ -138,6 +138,24 @@ public class HomeController {
     	data.put("flag", true);
         return data;
     }
+    @ResponseBody
+    @RequestMapping("getxminfo")
+    public Map<String,Object> getxminfo(HttpSession session){
+    	Map<String,Object> data=new HashMap<>();
+    	Object sessionUser=session.getAttribute("sessionUser");
+    	if(sessionUser==null){
+    		data.put("flag", false);
+    		return data;
+    	}
+    	Map map=(Map)sessionUser;
+    	Map row=recordService.getXminfoByKey(map.get("id").toString(),map.get("typeid").toString());
+    	if(row==null){
+    		data.put("flag", false);
+    	}else{
+    		data.put("flag", true);
+    	}
+        return data;
+    }
     
     
 }

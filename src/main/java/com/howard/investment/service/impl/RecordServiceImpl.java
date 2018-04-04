@@ -28,4 +28,9 @@ public class RecordServiceImpl implements RecordService {
 		return recordDao.getRecordByKeyCount(type);
 	}
 
+	@Override
+	public Map getXminfoByKey(String userId,String typeId) {
+		return recordDao.getXminfoByKey(userId,typeId);
+	}
+
 }
