@@ -25,6 +25,16 @@
         </if>
     </select>
     
+    <select id="getXminfoByKey" resultType="map">
+        select a.* from xminfo a 
+        left join dept b on(a.bmdm=b.code) 
+        left join admin c on(b.id=c.deptid) 
+        where a.infostate=0 and c.id=#{userId} 
+        <if test="typeId=='2'">
+        and c.typeid=2
+        </if>
+    </select>
+    
  
 
 </mapper>

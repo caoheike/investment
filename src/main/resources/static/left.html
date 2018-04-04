@@ -17,21 +17,35 @@
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript">
 $(function(){
-		$.ajax({
-			url:"userinfo",
-			type:"get",
-			dataType:"json",
-			data:{},
-			success:function(data){
-				if(data.flag){
-					$("#userName").text(data.userName);
-					$("#userLevel").text(data.userLevel);
-				}
-			},
-			error:function(data){
-				console.log(data);
+	$.ajax({
+		url:"userinfo",
+		type:"get",
+		dataType:"json",
+		data:{},
+		success:function(data){
+			if(data.flag){
+				$("#userName").text(data.userName);
+				$("#userLevel").text(data.userLevel);
 			}
-		});
+		},
+		error:function(data){
+			console.log(data);
+		}
+	});
+	$.ajax({
+		url:"getxminfo",
+		type:"get",
+		dataType:"json",
+		data:{},
+		success:function(data){
+			if(data.flag){
+				$("#xin").css("display","block");
+			}
+		},
+		error:function(data){
+			console.log(data);
+		}
+	});
 });
 </script>
 <style type=text/css>
@@ -51,7 +65,7 @@ body{overflow-x:hidden; background:url(images/main/leftbg.jpg) left top repeat-y
         <a href="info?status=2" target="mainFrame" onFocus="this.blur()">待入库项目</a>
         <a href="info?status=3" target="mainFrame" onFocus="this.blur()">未未入库项目</a>
         <a href="info?status=4" target="mainFrame" onFocus="this.blur()">已完成项目</a>
-        <a href="juuser" target="mainFrame" onFocus="this.blur()">部门消息</a>
+        <a href="juuser" target="mainFrame" onFocus="this.blur()">部门消息<label style="color:red;display:none" id="xin">[新]</label></a>
       </div>
       <div>
         <span>备案情况</span>

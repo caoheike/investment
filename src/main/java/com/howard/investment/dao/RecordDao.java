@@ -19,6 +19,8 @@ public interface RecordDao {
 	int getRecordByKeyCount(@Param("type") String type);
 	
 	int matchDept();
+	
+	Map getXminfoByKey(@Param("userId") String userId,@Param("typeId") String typeId);
     
 
 
