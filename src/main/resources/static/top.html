@@ -17,7 +17,7 @@
       <tr>
         <td align="left" valign="bottom" id="header-name">黄岩区投资</td>
         <td align="right" valign="top" id="header-right">
-        	<a href="index.html" target="topFrame" onFocus="this.blur()" class="admin-out">注销</a>
+        	<a href="javascript:;" id="cancel" onFocus="this.blur()" class="admin-out">注销</a>
             <a href="index.html" target="top" onFocus="this.blur()" class="admin-home">管理首页</a>
         	<a href="index.html" target="_blank" onFocus="this.blur()" class="admin-index">网站首页</a>       	
             <span>
@@ -42,4 +42,27 @@
   </tr>
 </table>
 </body>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript">
+$(function(){
+	$("#cancel").on("click",function(){
+		$.ajax({
+			url:"cancel",
+			type:"get",
+			dataType:"json",
+			data:{},
+			success:function(data){
+				if(!data.flag){
+					alert(data.msg);
+				}
+				top.location.href="login.html";
+			},
+			error:function(data){
+				console.log(data);
+			}
+		});
+		return false;
+	});
+});
+</script>
 </html>

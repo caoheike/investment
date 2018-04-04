@@ -1,7 +1,10 @@
 package com.howard.investment.controller;
 
-import com.howard.investment.service.impl.UserServiceImpl;
-import com.howard.investment.tools.Tools;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,11 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpSession;
+import com.howard.investment.service.impl.RecordServiceImpl;
+import com.howard.investment.service.impl.UserServiceImpl;
+import com.howard.investment.tools.Tools;
 
 /**
  * Created by WangHua on 18/3/28.
@@ -23,8 +24,10 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/")
 public class HomeController {
 
-    @Autowired
+	@Autowired
     private UserServiceImpl userService;
+	@Autowired
+    private RecordServiceImpl recordService;
 
     @ResponseBody
     @RequestMapping("login")
@@ -42,9 +45,58 @@ public class HomeController {
         return data;
     }
     
+    @ResponseBody
+    @RequestMapping("cancel")
+    public Map<String,Object> cancel(HttpSession session){
+    	Map<String,Object> data=new HashMap<>();
+    	Object sessionUser=session.getAttribute("sessionUser");
+    	if(sessionUser!=null){
+    		session.setAttribute("sessionUser", null);
+    		data.put("flag", true);
+    	}else{
+    		data.put("msg", "登录超时！");
+    		data.put("flag", false);
+    	}
+        return data;
+    }
+    
+    @ResponseBody
+    @RequestMapping("matchDept")
+    public Map<String,Object> matchDept(){
+    	Map<String,Object> data=new HashMap<>();
+    	/*recordService
+    	if(sessionUser!=null){
+    		
+    		data.put("flag", true);
+    	}else{
+    		data.put("msg", "登录超时！");
+    		data.put("flag", false);
+    	}*/
+        return data;
+    }
+    
     @RequestMapping("login.html")
     public String loginView(HttpSession session){
         return "login";
+    }
+    
+    @RequestMapping("record.html")
+    public String recordView(@RequestParam(required=false) Integer pageNum,@RequestParam(required=false) String type,Model model){
+    	if(pageNum==null || pageNum<1){
+    		model.addAttribute("pageNum", 1);
+    		pageNum=15;
+    	}else{
+    		model.addAttribute("pageNum", pageNum);
+    		pageNum*=15;
+    	}
+    	List<Map> list=recordService.getRecordByKey(pageNum, type);
+    	int totalCount=recordService.getRecordByKeyCount(type);
+    	model.addAttribute("list", list);
+    	model.addAttribute("totalCount", totalCount);
+    	model.addAttribute("pageCount", totalCount % 15 == 0 ? totalCount / 15: totalCount / 15 + 1);
+    	model.addAttribute("pageSize", "15");
+    	model.addAttribute("key", "?type="+type+"&pageNum=");
+        return "record";
     }
     
     @RequestMapping("index.html")

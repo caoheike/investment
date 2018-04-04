@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.howard.investment.dao.RecordDao">
+
+    <select id="getRecordByKey" resultType="map">
+        select top 15 * from (select top ${pageNum} * from xmbaxx order by id desc) 
+        <if test="type == 'bmdm0'">
+         where bmdm='' order by id desc,bmdm desc
+        </if>
+        <if test="type == 'bmdm1'">
+         where bmdm!='' order by id desc
+        </if>
+        <if test="type == null or type == ''">
+         order by id asc
+        </if>
+    </select>
+    
+    <select id="getRecordByKeyCount" resultType="int">
+        select count(*) from xmbaxx 
+        <if test="type == 'bmdm0'">
+         where bmdm='' 
+        </if>
+        <if test="type == 'bmdm1'">
+         where bmdm!=''
+        </if>
+    </select>
+    
+ 
+
+</mapper>
