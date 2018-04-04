@@ -26,6 +26,15 @@ $(function(){
 			if(data.flag){
 				$("#userName").text(data.userName);
 				$("#userLevel").text(data.userLevel);
+				if(data.typeId=='2' || data.typeId==2){
+					$("#spxx").css("display","block");
+					$("#xbaxx").css("display","block");
+				}else{
+					$("#xm_bmxx").css("display","block");
+					$("#ba_bmxx").css("display","block");
+					$("#bmyh").css("display","block");
+					$("#dataExport").css("display","block");
+				}
 			}
 		},
 		error:function(data){
@@ -39,7 +48,8 @@ $(function(){
 		data:{},
 		success:function(data){
 			if(data.flag){
-				$("#xin").css("display","inline-block");
+				$("#xin1").css("display","inline-block");
+				$("#xin2").css("display","inline-block");
 			}
 		},
 		error:function(data){
@@ -65,17 +75,19 @@ body{overflow-x:hidden; background:url(images/main/leftbg.jpg) left top repeat-y
         <a href="info?status=2" target="mainFrame" onFocus="this.blur()">待入库项目</a>
         <a href="info?status=3" target="mainFrame" onFocus="this.blur()">未未入库项目</a>
         <a href="info?status=4" target="mainFrame" onFocus="this.blur()">已完成项目</a>
-        <a href="juuser" target="mainFrame" onFocus="this.blur()">部门消息<label style="color:red;display:none" id="xin">[新]</label></a>
+        <a id="xm_bmxx" style="display:none" href="juuser" target="mainFrame" onFocus="this.blur()">部门消息<label style="color:red;display:none" id="xin1">[新]</label></a>
+        <a id="spxx" style="display:none" href="juuser" target="mainFrame" onFocus="this.blur()">审批消息<label style="color:red;display:none" id="xin2">[新]</label></a>
       </div>
       <div>
         <span>备案情况</span>
         <a href="record.html" target="mainFrame" onFocus="this.blur()">备案信息</a>
-        <a href="errorPage" target="mainFrame" onFocus="this.blur()">部门消息</a>
+        <a id="ba_bmxx" style="display:none" href="errorPage" target="mainFrame" onFocus="this.blur()">部门消息</a>
+        <a id="xbaxx" style="display:none" href="errorPage" target="mainFrame" onFocus="this.blur()">新备案消息</a>
       </div>
       <div>
         <span>用户管理</span>
         <a href="errorPage" target="mainFrame" onFocus="this.blur()">密码修改</a>
-        <a href="errorPage" target="mainFrame" onFocus="this.blur()">部门用户</a>
+        <a id="bmyh" style="display:none" href="errorPage" target="mainFrame" onFocus="this.blur()">部门用户</a>
       </div>
       <div>
         <span>统计汇总</span>
@@ -85,6 +97,10 @@ body{overflow-x:hidden; background:url(images/main/leftbg.jpg) left top repeat-y
       <div>
         <span>单位信息</span>
         <a href="errorPage" target="mainFrame" onFocus="this.blur()">单位信息</a>
+      </div>
+      <div id="dataExport" style="display:none">
+        <span>数据导入</span>
+        <a href="errorPage" target="mainFrame" onFocus="this.blur()">数据导入</a>
       </div>
     </div>
 </body>
