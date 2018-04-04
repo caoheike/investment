@@ -25,9 +25,6 @@
         </if>
     </select>
     
-    <select id="getXminfoByKey" resultType="map">
-        select * from dept where 
-    </select>
     
     <select id="getXminfoByKey" resultType="map">
         select a.* from xminfo a 
