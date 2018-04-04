@@ -135,6 +135,7 @@ public class HomeController {
     	}else if("0".equals(map.get("typeid").toString())){
     		data.put("userLevel", "超级管理员");
     	}
+    	data.put("typeId", map.get("typeid").toString());
     	data.put("flag", true);
         return data;
     }
@@ -148,8 +149,8 @@ public class HomeController {
     		return data;
     	}
     	Map map=(Map)sessionUser;
-    	List<Map> row=recordService.getXminfoByKey(map.get("deptid").toString(),map.get("typeid").toString());
-    	if(row==null){
+    	List<Map> row=recordService.getXminfoByKey(map.get("deptid").toString(),Integer.parseInt(map.get("typeid").toString()));
+    	if(row==null || row.isEmpty()){
     		data.put("flag", false);
     	}else{
     		data.put("flag", true);
