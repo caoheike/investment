@@ -86,7 +86,9 @@ public class ProjectInfoContorller {
 				HttpSession session=request.getSession();
 		    	Map<String,Object> maps= (Map<String, Object>) session.getAttribute("sessionUser");
 			  mode.addAttribute("deptid", maps.get("deptid"));
+			  mode.addAttribute("typeid", maps.get("typeid"));
 			  mode.addAttribute("status", status);
+	
 		    	return "main_list";
 		    }
 	    
@@ -143,7 +145,7 @@ public class ProjectInfoContorller {
 	       	queryProjectInfo.put("type",type);
 	       	String xxid=request.getParameter("xxid");
 	       	queryProjectInfo.put("xxid",xxid);
-       	model.addAttribute("info", queryProjectInfo);
+	       	model.addAttribute("info", queryProjectInfo);
        	
        	//根据taype走不同页面
        

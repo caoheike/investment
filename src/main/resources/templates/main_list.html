@@ -64,13 +64,24 @@ type: "POST",
 url: "queryDeptInfo",
 //data: {"projectId":id},
 success: function(data){
+
 	 // <![CDATA[
 	for(var i=0;i<data.length;i++){
-		$("#sele").append("<option value="+data[i].code+" >"+data[i].title+"</option>");
-		
-		
 	
-		
+		if($("#typeid").val()=='2'){
+				if($("#deptid").val()==data[i].code){
+					$("#sele").append("<option value="+data[i].code+" >"+data[i].title+"</option>");
+	
+				}else{
+					$("#sele").append("<option value="+data[i].code+" >"+data[i].title+"</option>");
+					break;
+				}
+	
+	
+		}else{
+			$("#sele").append("<option value="+data[i].code+" >"+data[i].title+"</option>");
+		}
+
 	}
  //   ]]>
 
@@ -241,6 +252,7 @@ $(function (){
 </script>
 </head>
 <body>
+<input type="hidden"  id="typeid" th:value="${typeid}"/>
 <input type="hidden"  id="deptid" th:value="${deptid}"/>
 <input type="hidden" id="status" th:value="${status}"/>
 <!--main_top-->
