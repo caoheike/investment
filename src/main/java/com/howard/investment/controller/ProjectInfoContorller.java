@@ -280,7 +280,13 @@ public class ProjectInfoContorller {
 		    	return list;
 		    }
 		  
-		  
+		
+		  @RequestMapping(value = "errorPage",method = RequestMethod.GET)
+		    public String erroePage(HttpServletRequest request) throws Exception {
+			  
+			  
+			  return "error";
+		  }
 		  
 	  
 }
