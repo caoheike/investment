@@ -135,6 +135,7 @@ public class HomeController {
     	}else if("0".equals(map.get("typeid").toString())){
     		data.put("userLevel", "超级管理员");
     	}
+    	data.put("typeId", map.get("typeid").toString());
     	data.put("flag", true);
         return data;
     }
