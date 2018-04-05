@@ -34,6 +34,7 @@ $(function(){
 					$("#ba_bmxx").css("display","block");
 					$("#bmyh").css("display","block");
 					$("#dataExport").css("display","block");
+					$("#dwxx").css("display","block");
 				}
 			}
 		},
@@ -48,8 +49,18 @@ $(function(){
 		data:{},
 		success:function(data){
 			if(data.flag){
-				$("#xin1").css("display","inline-block");
-				$("#xin2").css("display","inline-block");
+				if(data.row2){
+					$("#xin10").css("display","inline-block");
+				}
+				if(data.row10){
+					$("#xin2").css("display","inline-block");
+				}
+				if(data.row3){
+					$("#xin11").css("display","inline-block");
+				}
+				if(data.row11){
+					$("#xin3").css("display","inline-block");
+				}
 			}
 		},
 		error:function(data){
@@ -75,14 +86,14 @@ body{overflow-x:hidden; background:url(images/main/leftbg.jpg) left top repeat-y
         <a href="info?status=2" target="mainFrame" onFocus="this.blur()">待入库项目</a>
         <a href="info?status=3" target="mainFrame" onFocus="this.blur()">未未入库项目</a>
         <a href="info?status=4" target="mainFrame" onFocus="this.blur()">已完成项目</a>
-        <a id="xm_bmxx" style="display:none" href="juuser" target="mainFrame" onFocus="this.blur()">部门消息<label style="color:red;display:none" id="xin1">[新]</label></a>
-        <a id="spxx" style="display:none" href="juuser" target="mainFrame" onFocus="this.blur()">审批消息<label style="color:red;display:none" id="xin2">[新]</label></a>
+        <a id="xm_bmxx" style="display:none" href="juuser" target="mainFrame" onFocus="this.blur()">部门消息<label style="color:red;display:none" id="xin2">[新]</label></a>
+        <a id="spxx" style="display:none" href="juuser" target="mainFrame" onFocus="this.blur()">审批消息<label style="color:red;display:none" id="xin10">[新]</label></a>
       </div>
       <div>
         <span>备案情况</span>
         <a href="record.html" target="mainFrame" onFocus="this.blur()">备案信息</a>
-        <a id="ba_bmxx" style="display:none" href="errorPage" target="mainFrame" onFocus="this.blur()">部门消息</a>
-        <a id="xbaxx" style="display:none" href="errorPage" target="mainFrame" onFocus="this.blur()">新备案消息</a>
+        <a id="ba_bmxx" style="display:none" href="infoView" target="mainFrame" onFocus="this.blur()">部门消息<label style="color:red;display:none" id="xin3">[新]</label></a>
+        <a id="xbaxx" style="display:none" href="infoView" target="mainFrame" onFocus="this.blur()">新备案消息<label style="color:red;display:none" id="xin11">[新]</label></a>
       </div>
       <div>
         <span>用户管理</span>
@@ -96,7 +107,7 @@ body{overflow-x:hidden; background:url(images/main/leftbg.jpg) left top repeat-y
       </div>
       <div>
         <span>单位信息</span>
-        <a href="errorPage" target="mainFrame" onFocus="this.blur()">单位信息</a>
+        <a style="display:none" id="dwxx" href="errorPage" target="mainFrame" onFocus="this.blur()">单位信息</a>
       </div>
       <div id="dataExport" style="display:none">
         <span>数据导入</span>

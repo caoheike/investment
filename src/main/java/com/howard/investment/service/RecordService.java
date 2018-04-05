@@ -17,5 +17,25 @@ public interface RecordService {
 	
 	int getRecordByKeyCount(String type);
 	
+	int deleteXmById(String id);
+	
+	List<Map> getDept();
+	
+	List<Map> getXmbaxxByJhztz();
+	
+	List<Map> getXmByIds(String ids);
+	
+	List<Map> getXmbaxxByDeptBmdm(String  bmdm);
+	
+	int insertXmxx(Map map);
+	
+	int deleteXmByJhztz();
+	
+	int updateXmByKey(Map map);
+	
+	List<Map> getXmfrdwAll();
+	
+	int updateByKey(String bmdm,String xmfrdw);
+	
 	List<Map> getXminfoByKey(String deptId,int typeId);
 }
