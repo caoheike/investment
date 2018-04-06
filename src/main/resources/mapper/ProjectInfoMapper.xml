@@ -68,7 +68,35 @@
     	 	<select id="getbmdm" parameterType="int" resultType="map" >
     	 		select * from dept where  id=#{deptid}
     	</select>
- 
+ 	<!-- 查询出来 项目信息是否存在 -->
+    	<select id="queryCount" parameterType="String" resultType="Map">
+    	
+    	 select * from xmxx where xmfrm=#{xmfrm}
+    	
+    	
+    	</select>
+    	
+    		<insert id="inportInfo" parameterType="com.howard.bean.ProjectInfo">
+		insert into xmsj ([pid],[deptid],[bmdm],[y],[m],[djzclxdm],[hydm],[lsgx],[kgqk],[jsxz],[ljtz],
+		[bntz],[bytz],[jzgc],[azgz],[sbgz],[jtfy],[tdgzf],[jstz]
+		) values(#{pid},#{deptid},#{bmdm},#{y},#{m},#{djzclxdm},#{hydm},#{lsgx},#{kgqk},#{jsxz},#{ljtz},
+		#{bntz},#{bytz},#{jzgc},#{azgz},#{sbgz},#{jtfy},#{jtfy},#{jstz}
+		);
+		
+		</insert>
 
-    
+    <select id="quertdept" parameterType="int" resultType="Map">
+    	
+    	 select * from dept where code=#{bmdm}
+    	
+    	
+    	</select>
+    	  	<!-- 查询dept 对应 -->
+    	<select id="xmfrCount" parameterType="String" resultType="int">
+    	
+     	
+    	 select count(*) from xmxx where xmfrm=#{xmfrm}
+    	
+    	
+    	</select>
 </mapper>

@@ -7,6 +7,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +17,10 @@ import java.util.Properties;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,7 +28,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.howard.bean.ProjectInfo;
+import com.howard.bean.xmxx;
 import com.howard.investment.service.ProjectInfoService;
 import com.howard.investment.service.impl.ProjectInfoServiceImpl;
 
@@ -290,5 +298,187 @@ public class ProjectInfoContorller {
 			  return "error";
 		  }
 		  
+		  
+		  /**
+		   * 数据导入
+		   */
+		  
+		
+		  @RequestMapping(value = "infoimport",method = RequestMethod.POST)
+		    public String infoimport(HttpServletRequest request,@RequestParam("file") MultipartFile file,Model model) throws Exception {
+			  
+			  
+				List<ProjectInfo> list = new ArrayList<ProjectInfo>();
+				List<ProjectInfo> lists = new ArrayList<ProjectInfo>();
+				HSSFWorkbook book = new HSSFWorkbook(file.getInputStream());
+			    HSSFSheet sheet = book.getSheetAt(0);
+			    int count =0;
+			    int successCount =0;
+			    for(int i=2; i<sheet.getLastRowNum()+1; i++) {
+			        HSSFRow row = sheet.getRow(i);
+			        String bbyf = row.getCell(0).getStringCellValue(); 
+			        if(row.getCell(0)!=null){
+			        	  row.getCell(0).setCellType(Cell.CELL_TYPE_STRING);
+			        }
+			        String xmfrm = row.getCell(1).getStringCellValue(); //url
+			        Integer bmdm = (int) row.getCell(2).getNumericCellValue();
+			        String xmdwmc = row.getCell(3).getStringCellValue();
+			        String xmmc = row.getCell(4).getStringCellValue();
+			        String frdm = row.getCell(5).getStringCellValue();
+			        String jhztz = row.getCell(6).getStringCellValue();
+			        String djzclxdm= row.getCell(7).getStringCellValue();
+			        String hydm = row.getCell(8).getStringCellValue();
+			        String lsgx = row.getCell(9).getStringCellValue();
+			        String kgqk = row.getCell(10).getStringCellValue();
+			        String jsxz = row.getCell(11).getStringCellValue();
+			        String ljtz = row.getCell(12).getStringCellValue();
+			        String bntz = row.getCell(13).getStringCellValue();
+			        String bytz = row.getCell(14).getStringCellValue();
+			        String jzgc = row.getCell(15).getStringCellValue();	
+			        String azgz = row.getCell(16).getStringCellValue();
+			        String sbgz = row.getCell(17).getStringCellValue();
+			        String jtfy = row.getCell(18).getStringCellValue();
+			        String tdgzf = row.getCell(19).getStringCellValue();
+			        String jstz = row.getCell(20).getStringCellValue();
+			        
+			        String year=bbyf.substring(0, 4);
+			        String mouth=bbyf.substring(4,bbyf.length());
+
+			        if(mouth.contains("0")){
+			        mouth= bbyf.substring(5,bbyf.length());
+			        }else{
+			        mouth=bbyf.substring(4,bbyf.length());
+			        }
+			        if(mouth.contains("0")){
+			        mouth= bbyf.substring(5,bbyf.length());
+			        }else{
+			        mouth=bbyf.substring(4,bbyf.length());
+			        }
+			        Map map=projectinfoserviceimpl.queryCount(xmfrm);
+			    
+			        if(map!=null){
+			        	list.add(new ProjectInfo(map.get("id").toString(),map.get("deptid").toString(),bmdm,year,mouth,djzclxdm,hydm,lsgx,kgqk,jsxz,ljtz,bntz,bytz,jzgc,azgz,sbgz,jtfy,tdgzf,jstz,xmdwmc,xmmc,frdm,jhztz));
+			        	successCount++;
+			        	}else{
+			        	
+			        		
+			        		lists.add(new ProjectInfo("","",bmdm,year,mouth,djzclxdm,hydm,lsgx,kgqk,jsxz,ljtz,bntz,bytz,jzgc,azgz,sbgz,jtfy,tdgzf,jstz,xmdwmc,xmmc,frdm,jhztz));
+			            	count++;
+			        	}
+			    
+			    	
+			   
+			    }
+			    	
+			    	for (int i = 0; i < list.size(); i++) {
+			    	int ct=projectinfoserviceimpl.inportInfo(list.get(i));
+			    	if(ct!=0){
+			    	System.out.println("插入成功"+i);	
+			    	}
+					}
+			    	System.out.println(count+"条无法插入，原因库中不存在");
+			    	if(count!=0){
+			    		model.addAttribute("status","yes");
+			    		model.addAttribute("list",lists);
+			    		model.addAttribute("count",count);
+			   
+			    	}else{
+			    		model.addAttribute("status","no");
+			    	}
+			    	model.addAttribute("successCount",successCount);
+			    	model.addAttribute("type","0");
+			 
+			    	 return "import";
+			    	
+			    	 
+			  
+		  }
+		  
+		  	@RequestMapping(value = "imports",method = RequestMethod.GET)
+		    public String imports(HttpServletRequest request,Model model) throws Exception {
+			  model.addAttribute("status","no");
+			  
+			  
+			  return "import";
+			  
+		  }
 	  
+		    @RequestMapping(value = "infoimports",method = RequestMethod.POST)
+		    public String infoimports(HttpServletRequest request,@RequestParam("file") MultipartFile file,Model model) throws Exception {
+			  
+			  	int successCount=0;
+				List<xmxx> list = new ArrayList<xmxx>();
+				List<xmxx> lists = new ArrayList<xmxx>();
+				HSSFWorkbook book = new HSSFWorkbook(file.getInputStream());
+			    HSSFSheet sheet = book.getSheetAt(0);
+			    int count =0;
+			    for(int i=2; i<sheet.getLastRowNum()+1; i++) {
+			        HSSFRow row = sheet.getRow(i);
+			 
+			       if(row.getCell(0)!=null){
+			    	   row.getCell(0).setCellType(Cell.CELL_TYPE_STRING);
+			       }
+			       String xmfrm=  row.getCell(0).getStringCellValue();
+			       int bmdm=  (int)row.getCell(1).getNumericCellValue();
+			       if(row.getCell(1)!=null){
+			    	   row.getCell(1).setCellType(Cell.CELL_TYPE_NUMERIC);
+			       }
+			       //根据部门代码去查询 deptid啦
+			       Map mapinfo=projectinfoserviceimpl.querydept(bmdm);
+			       
+			       String xmdwmc=  row.getCell(2).getStringCellValue();
+			       String xmmc=  row.getCell(3).getStringCellValue();
+			       String frdm=  row.getCell(4).getStringCellValue();
+			       if(row.getCell(5)!=null){
+			    	   row.getCell(5).setCellType(Cell.CELL_TYPE_STRING);
+			       }
+			       String  jhztz1= row.getCell(5).getStringCellValue();
+			       int  jhztz=0;
+			       int xmfl=  (int)row.getCell(6).getNumericCellValue();
+			     
+//			        Map map=projectinfoserviceimpl.queryCount(xmfrm.toString());
+//			    
+			     
+//					if(map!=null){
+			       	if(mapinfo!=null&&mapinfo.get("deptid")!=""){
+			       		//查询项目再库中是否存在
+			       		int frmcount=projectinfoserviceimpl.xmfrCount(xmfrm);
+			       		if(frmcount<=0){
+			       	  		list.add(new xmxx(Integer.parseInt(mapinfo.get("id").toString()),xmfrm, bmdm, xmdwmc, xmmc, frdm,jhztz, xmfl));
+			       		}else{
+			       			
+			       		}
+			     
+			       	}
+
+			    
+			    	
+			   
+			    }
+			    	
+			    	for (int i = 0; i < list.size(); i++) {
+			    	int ct=projectinfoserviceimpl.inportInfos(list.get(i));
+			    	if(ct!=0){
+			    		successCount++;
+			    	System.out.println("插入成功"+i);	
+			    	}
+					}
+			    	System.out.println(count+"条无法插入，原因库中不存在");
+			    	if(count!=0){
+			    		model.addAttribute("status","yes");
+			    		model.addAttribute("list",lists);
+			    		model.addAttribute("count",count);
+			    	
+			    	}else{
+			    		model.addAttribute("status","no");
+			    	}
+			    	model.addAttribute("successCount",successCount);
+			    	model.addAttribute("type","1");
+			    	 return "import";
+			    	
+			  
+		  }	  
+	  
+	  
+  
 }

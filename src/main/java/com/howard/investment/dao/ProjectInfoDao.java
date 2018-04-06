@@ -5,6 +5,9 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
+import com.howard.bean.ProjectInfo;
+import com.howard.bean.xmxx;
+
 import java.util.List;
 import java.util.Map;
 
@@ -37,7 +40,12 @@ public interface ProjectInfoDao {
     List<Map>  juuser(Map map);
     
     Map getbmdm(int deptid);
+    int inportInfo(ProjectInfo info);
+    int inportInfos(xmxx info);
+    Map queryCount(String xmfrm);
 
+    Map quertdept(int deptid); 
+    int xmfrCount(String xmfr);
 
 
 }
