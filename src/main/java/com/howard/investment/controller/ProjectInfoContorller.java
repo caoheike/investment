@@ -63,10 +63,22 @@ public class ProjectInfoContorller {
 			String xmmcs=request.getParameter("xmmcs");
 			String frdws=request.getParameter("frdws");
 			String bmdm=request.getParameter("bmdm");
+			
+			
 	    	if(maps.get("typeid").toString().equals("2")){
-	    	 	map.put("ifadmin", "yes");
+	    		if(projectStatus.equals("3")){
+	    			map.put("ifadmin", "no");
+	    		}else{
+	    			map.put("ifadmin", "yes");
+	    		}
+	  
 	    	}else{
-	    	 	map.put("ifadmin", "no");
+    		if(bmdm!=null&&!"".equals(bmdm)&&bmdm.equals("0")){
+    	 	 	map.put("ifadmin", "no");
+    		}else{
+    	 	 	map.put("ifadmin", "no");
+    		}
+	    
 	    	}
 	    	
 	    	if(xmmcs!=null&&!"".equals(xmmcs)){

@@ -100,7 +100,9 @@ type: "POST",
 url: "queryDeptInfo",
 //data: {"projectId":id},
 success: function(data){
-
+	if($("#typeid").val()=='10'){
+		$("#sele").append('<option name='ttest' selected = 'selected' value='0' >全部</option>');
+	}
   
 	 // <![CDATA[
 	for(var i=0;i<data.length;i++){
@@ -115,12 +117,14 @@ success: function(data){
 	
 		}else{
 			if($("#deptid").val()==data[i].id){
+
 				$("#sele").append("<option selected = 'selected' value="+data[i].code+" >"+data[i].title+"</option>");
 
 			}else{
 				$("#sele").append("<option value="+data[i].code+" >"+data[i].title+"</option>");
 			
 			}
+
 // 			$("#sele").append("<option value="+data[i].code+" >"+data[i].title+"</option>");
 		}
 
@@ -140,6 +144,7 @@ success: function(data){
 
 $(function (){
 	$("#xx").click(function (){
+
 	var bmdm=$('#sele option:selected').val();
 	var status=$("#status").val();
 	var deptid=$("#deptid").val();
@@ -939,7 +944,7 @@ $(function (){
   		<tr>
    		 <td align="left" valign="middle">
 	         <form method="post" action="">
- 	         <span>所属部门：    <select id="sele" style="margin-top:10px"> 
+ 	         <span>所属部门：    <select name="seless" id="sele" style="margin-top:10px"> 
            			
           </select> </span> 
     
