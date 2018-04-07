@@ -122,7 +122,7 @@ flg='1';
                           <tr   onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
         <td align="right" valign="middle" class="borderright borderbottom bggray">项目数据导入：</td>
         <td align="left" valign="middle" class="borderright borderbottom main-for">
-         <input name="file" type="file"/>    <span th:if="${status=='no'}" ></span>
+         <input name="file" type="file"/> <br/> <span th:if="${status=='no'}" > &nbsp;&nbsp;&nbsp;<a th:href="项目数据导入格式.xls">点我下载数据模版</a></span>
        
         </td>
   
@@ -192,7 +192,7 @@ flg='1';
                           <tr   onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
         <td align="right" valign="middle" class="borderright borderbottom bggray">项目信息导入：</td>
         <td align="left" valign="middle" class="borderright borderbottom main-for">
-         <input name="file" type="file"/>    <span th:if="${status=='no'}" ></span>
+         <input name="file" type="file"/>    <span th:if="${status=='no'}" ></span> <br/> <span th:if="${status=='no'}" > &nbsp;&nbsp;&nbsp;<a th:href="项目信息导入格式.xls">点我下载信息模版</a></span>
        
         </td>
   
