@@ -101,7 +101,6 @@ url: "queryDeptInfo",
 //data: {"projectId":id},
 success: function(data){
 
-	alert($("#deptid").val());
   
 	 // <![CDATA[
 	for(var i=0;i<data.length;i++){
@@ -120,7 +119,7 @@ success: function(data){
 
 			}else{
 				$("#sele").append("<option value="+data[i].code+" >"+data[i].title+"</option>");
-				break;
+			
 			}
 // 			$("#sele").append("<option value="+data[i].code+" >"+data[i].title+"</option>");
 		}
@@ -601,7 +600,7 @@ $(function (){
 			    	   		if( $("#typeid").val()=='10'){
 			    	   		
 			    	   			
-			    	   			alert("带入库项目");
+// 			    	   			alert("带入库项目");
 			    	    	     var cHtml='  <tr>'+
 			    	    	       '  <th align='center' valign='middle' class='borderright'>序号</th>'+
 			    	    	        ' <th align='center' valign='middle' class='borderright'>项目法人码</th>'+
@@ -647,7 +646,7 @@ $(function (){
 			    	   		if( $("#typeid").val()=='10'){
 			    	   			
 			    	   			
-			    	   			alert("未入库项目");
+// 			    	   			alert("未入库项目");
 			    	    	     var cHtml='  <tr>'+
 			    	    	       '  <th align='center' valign='middle' class='borderright'>序号</th>'+
 			    	    	        ' <th align='center' valign='middle' class='borderright'>项目法人码</th>'+
@@ -690,7 +689,7 @@ $(function (){
 			    		}
 			    		if($("#status").val()=='4'){
 			    	   		if( $("#typeid").val()=='10'){
-			    	   			alert("已完成项目");
+// 			    	   			alert("已完成项目");
 			    	    	     var cHtml='  <tr>'+
 			    	    	       '  <th align='center' valign='middle' class='borderright'>序号</th>'+
 			    	    	        ' <th align='center' valign='middle' class='borderright'>项目法人码</th>'+

@@ -220,6 +220,6 @@ public class FileUploadController {
         
 
         
-        return msg;
+    	 return "<script>alert('成功');javascript:history.back(-1);</script>";  
     }
 }
