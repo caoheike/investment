@@ -149,10 +149,32 @@ public class ProjectInfoContorller {
 	
 	    @RequestMapping(value = "deptInfo",method = RequestMethod.GET)
 	    public String deptInfo(HttpServletRequest request,@RequestParam("id") String id,Model model,@RequestParam("type") String type) throws Exception {
-	       	Map queryProjectInfo = projectinfoserviceimpl.deptInfo(id);
+	       	Map <String,Object>queryProjectInfo = projectinfoserviceimpl.deptInfo(id);
 	       	queryProjectInfo.put("type",type);
 	       	String xxid=request.getParameter("xxid");
 	       	queryProjectInfo.put("xxid",xxid);
+	       	if(!queryProjectInfo.containsKey("file1")){
+	       		queryProjectInfo.put("file1","");
+	       	}
+	       	if(!queryProjectInfo.containsKey("file2")){
+	       		queryProjectInfo.put("file2","");
+	       		
+	       	}
+	       	if(!queryProjectInfo.containsKey("file3")){
+	       		queryProjectInfo.put("file3","");
+	       		
+	       	}
+	       	if(!queryProjectInfo.containsKey("file4")){
+	       		queryProjectInfo.put("file4","");
+	       		
+	       	}
+	       	if(!queryProjectInfo.containsKey("file5")){
+	       		queryProjectInfo.put("file5","");
+	       		
+	       	}
+	       	if(!queryProjectInfo.containsKey("status")){
+	       		queryProjectInfo.put("status","1");
+	       	}
 	       	model.addAttribute("info", queryProjectInfo);
        	
        	//根据taype走不同页面
@@ -478,6 +500,72 @@ public class ProjectInfoContorller {
 			    	
 			  
 		  }	  
+		    
+		    /**
+		     * 项目认领
+		     */
+		    @ResponseBody
+		    @RequestMapping(value = "xmrls",method = RequestMethod.POST)
+		    public Map xmrl(HttpServletRequest request,@RequestParam("id") String id) throws Exception {
+		    	//首先拿到拿钱部门代码 根据deptid
+		    	HttpSession session=request.getSession();
+		    	Map map=(Map) session.getAttribute("sessionUser");
+		    	String deptid =map.get("deptid").toString();
+		    	
+		    	//得到部门信息
+		    	
+		    	Map mapdept=projectinfoserviceimpl.getbmdm(Integer.parseInt(deptid));
+		    	String bmdm=mapdept.get("code").toString();
+		    	//拿到本人呢对部门代码去修改项目的
+		    	map.put("bmdm",bmdm);
+		    	map.put("id",id);
+		    	map.put("xmfl","2");
+		    	int row=projectinfoserviceimpl.updateBmdm(map);
+		    	if(row!=0){
+		    		map.put("restInfo","success");
+		    	}else{
+		    		map.put("restInfo","error");
+		    	}
+		    	
+		    	
+				return map;
+		    
+		    
+		    
+		    }
+		    /**
+		     * 项目转出
+		     */
+		    
+		    @ResponseBody
+		    @RequestMapping(value = "xmzc",method = RequestMethod.POST)
+		    public Map xmzc(HttpServletRequest request,@RequestParam("id") String id) throws Exception {
+		    	//首先拿到拿钱部门代码 根据deptid
+		    	HttpSession session=request.getSession();
+		    	Map map=(Map) session.getAttribute("sessionUser");
+		    	String deptid =map.get("deptid").toString();
+		    	
+		    	//得到部门信息
+		    	
+		    	Map mapdept=projectinfoserviceimpl.getbmdm(Integer.parseInt(deptid));
+		    	String bmdm=mapdept.get("code").toString();
+		    	//拿到本人呢对部门代码去修改项目的
+		    	map.put("bmdm","");
+		    	map.put("id",id);
+		    	map.put("xmfl","3");
+		    	int row=projectinfoserviceimpl.updateBmdm(map);
+		    	if(row!=0){
+		    		map.put("restInfo","success");
+		    	}else{
+		    		map.put("restInfo","error");
+		    	}
+		    	
+		    	
+				return map;
+		    
+		    
+		    
+		    }
 	  
 	  
   

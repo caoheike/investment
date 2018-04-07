@@ -39,6 +39,34 @@ td.fenye{ padding:10px 0 0 0; text-align:right;}
 	
 	<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script type="text/javascript">
+$(function (){
+
+	$.ajax({
+	    type: "POST",
+	    url: "queryDeptInfo",
+// 	    data: {"bmdm":bmdm,"xmmc":xmmc,"xmdwmc":xmdwmc,"title":title,"xmid":ids,"msgtype":$("#msgtype").val()},
+	    success: function(data){
+				console.log(data);
+				
+				 // <![CDATA[
+				for(var i=0;i<data.length;i++){
+			
+			
+				if($("#bmdms").val()==data[i].code){
+				$("#sele").append("<option selected = 'selected' value="+data[i].code+" >"+data[i].title+"</option>")
+						
+				}else{
+					$("#sele").append("<option value="+data[i].code+" >"+data[i].title+"</option>")
+				}
+					
+				
+					
+				}
+				 //   ]]>
+	       }
+	 });	
+	
+})
 var flg='0';
 $(function (){
 $("#xiaoxi").click(function (){
@@ -67,7 +95,7 @@ $(function (){
 
 
 $("#send").click(function (){
-	var bmdm=$("#bmdm").val();
+	var bmdm=$("#bmdms").val();
 	var xmmc=$("#xmmc").val();
 	var xmdwmc= $("#xmdwmc").val();
 	var title=$("#title").val();
@@ -114,6 +142,7 @@ flg='1';
 </head>
 <body>
 <!--main_top-->
+<div>
 <table width="70%" border="0" cellspacing="0" cellpadding="0" id="searchmain">
   <tr>
     <td width="99%" align="left" valign="top">您的位置：项目信息&nbsp;&nbsp;>&nbsp;&nbsp;</td>
@@ -131,47 +160,180 @@ flg='1';
         <input type="hidden" name="id" th:value="${info.id}" />
         			<input type="hidden" name="msgtype" id="msgtype" th:value="${info.type}"/>
     <table width="100%" border="0" cellspacing="0" cellpadding="0" id="main-tab">
-      <tr onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
+      <tr th:if="${info.type=='2'}"  onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
         <td align="right" valign="middle" class="borderright borderbottom bggray">项目法人码：</td>
         <td align="left" valign="middle" class="borderright borderbottom main-for">
-        <input type="text" name="" th:value="${info.xmfrm}" value="" class="text-word"/>
+        <input type="text" disabled="disabled" name="xmfrm" th:value="${info.xmfrm}" value="" class="text-word"/>
         </td>
           <td align="right" valign="middle" class="borderright borderbottom bggray">部门代码：</td>
         <td align="left" valign="middle" class="borderright borderbottom main-for">
-        <input type="text" name="" id="bmdm" th:value="${info.bmdm}" class="text-word"/>
+      <input type="text" disabled="disabled" name="bmdms" id="bmdms" th:value="${info.bmdm}" class="text-word"/> 
+        <select name="bmdm"  id="sele" disabled="disabled">
+        
+        
+        </select>
         </td>
         </tr>
-      <tr onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
+          <tr th:if="${info.type=='10'}" onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
+        <td align="right" valign="middle" class="borderright borderbottom bggray">项目法人码：</td>
+        <td align="left" valign="middle" class="borderright borderbottom main-for">
+        <input type="text" name="xmfrm" th:value="${info.xmfrm}" value="" class="text-word"/>
+        </td>
+          <td align="right" valign="middle" class="borderright borderbottom bggray">部门代码：</td>
+        <td align="left" valign="middle" class="borderright borderbottom main-for">
+      <input type="text" name="bmdms" id="bmdms" th:value="${info.bmdm}" class="text-word"/> 
+        <select name="bmdm"  id="sele">
+        
+        
+        </select>
+        </td>
+        </tr>
+      <tr th:if="${info.type=='2'}"  onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
         <td align="right" valign="middle" class="borderright borderbottom bggray">单位名称：</td>
         <td align="left" valign="middle" class="borderright borderbottom main-for">
-        <input type="text" name="" th:value="${info.xmdwmc}" class="text-word"/>
+        <input disabled="disabled" type="text" name="dwmc" th:value="${info.xmdwmc}" class="text-word"/>
         </td>
          <td align="right" valign="middle" class="borderright borderbottom bggray">项目分类：</td>
         <td align="left" valign="middle" class="borderright borderbottom main-for">
-<!--         <input type="text" name="" th:value="${info.xmfl}" class="text-word"/> -->
-				<select>
-				     <option th:if="${info.xmfl eq 1}" th:selected="selected">在库项目</option>
-					<option th:if="${info.xmfl eq 2}" th:selected="selected">待入库项目</option>			     
+<!--          <input type="text" name="xmfl" th:value="${info.xmfl}" class="text-word"/> -->
+
+				<span th:if="${info.xmfl eq 1}">
+			
+				<select disabled="disabled" name="xmfl" >
+				<option th:if="${info.xmfl eq 1}" th:selected="selected">在库项目</option>
+				<option >待入库项目</option>			     
+				<option >未入库项目</option>	
+				<option >已完成项目</option>	
+				
+				</select>
+				</span>
+				<span th:if="${info.xmfl eq 2}">
+			
+				<select disabled="disabled" name="xmfl" >
+				<option >在库项目</option>
+				<option th:if="${info.xmfl eq 2}" th:selected="selected">待入库项目</option>			     
+				<option >未入库项目</option>	
+				<option >已完成项目</option>	
+				
+				</select>
+				</span>
+				
+				
+					<span th:if="${info.xmfl eq 3}">
+			
+				<select disabled="disabled" name="xmfl">
+				<option >在库项目</option>
+				<option >待入库项目</option>			     
 				<option th:if="${info.xmfl eq 3}" th:selected="selected">未入库项目</option>	
+				<option >已完成项目</option>	
+				
+				</select>
+				</span>
+						<span th:if="${info.xmfl eq 4}">
+			
+				<select disabled="disabled" name="xmfl" >
+				<option >在库项目</option>
+				<option >待入库项目</option>			     
+				<option >未入库项目</option>	
 				<option th:if="${info.xmfl eq 4}" th:selected="selected">已完成项目</option>	
 				
 				</select>
+				</span>
+				
         </td>
         </tr>
-      <tr onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
+        <tr th:if="${info.type=='10'}"  onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
+        <td align="right" valign="middle" class="borderright borderbottom bggray">单位名称：</td>
+        <td align="left" valign="middle" class="borderright borderbottom main-for">
+        <input  type="text" name="dwmc" th:value="${info.xmdwmc}" class="text-word"/>
+        </td>
+         <td align="right" valign="middle" class="borderright borderbottom bggray">项目分类：</td>
+        <td align="left" valign="middle" class="borderright borderbottom main-for">
+<!--          <input type="text" name="xmfl" th:value="${info.xmfl}" class="text-word"/> -->
+
+				<span th:if="${info.xmfl eq 1}">
+			
+				<select name="xmfl" >
+				<option th:if="${info.xmfl eq 1}" th:selected="selected">在库项目</option>
+				<option >待入库项目</option>			     
+				<option >未入库项目</option>	
+				<option >已完成项目</option>	
+				
+				</select>
+				</span>
+				<span th:if="${info.xmfl eq 2}">
+			
+				<select name="xmfl" >
+				<option >在库项目</option>
+				<option th:if="${info.xmfl eq 2}" th:selected="selected">待入库项目</option>			     
+				<option >未入库项目</option>	
+				<option >已完成项目</option>	
+				
+				</select>
+				</span>
+				
+				
+					<span th:if="${info.xmfl eq 3}">
+			
+				<select  name="xmfl">
+				<option >在库项目</option>
+				<option >待入库项目</option>			     
+				<option th:if="${info.xmfl eq 3}" th:selected="selected">未入库项目</option>	
+				<option >已完成项目</option>	
+				
+				</select>
+				</span>
+						<span th:if="${info.xmfl eq 4}">
+			
+				<select  name="xmfl" >
+				<option >在库项目</option>
+				<option >待入库项目</option>			     
+				<option >未入库项目</option>	
+				<option th:if="${info.xmfl eq 4}" th:selected="selected">已完成项目</option>	
+				
+				</select>
+				</span>
+				
+        </td>
+        </tr>
+      <tr  th:if="${info.type=='2'}" onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
         <td align="right" valign="middle" class="borderright borderbottom bggray">项目名称：</td>
         <td align="left" valign="middle" class="borderright borderbottom main-for">
-        <input type="text" name=""  id="xmmc" th:value="${info.xmmc}" class="text-word"/>
+        <input type="text" disabled="disabled" name="xmmc"  id="xmmc" th:value="${info.xmmc}" class="text-word"/>
         </td>
            <td align="right" valign="middle" class="borderright borderbottom bggray">计划总投资：</td>
         <td align="left" valign="middle" class="borderright borderbottom main-for">
-        <input type="text" name="" th:value="${info.jhztz}" class="text-word"/>
+        <input type="text" disabled="disabled" name="jhztz" th:value="${info.jhztz}" class="text-word"/>
         </td>
       </tr>
-      <tr onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
+          <tr  th:if="${info.type=='10'}" onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
+        <td align="right" valign="middle" class="borderright borderbottom bggray">项目名称：</td>
+        <td align="left" valign="middle" class="borderright borderbottom main-for">
+        <input type="text"  name="xmmc"  id="xmmc" th:value="${info.xmmc}" class="text-word"/>
+        </td>
+           <td align="right" valign="middle" class="borderright borderbottom bggray">计划总投资：</td>
+        <td align="left" valign="middle" class="borderright borderbottom main-for">
+        <input type="text"  name="jhztz" th:value="${info.jhztz}" class="text-word"/>
+        </td>
+      </tr>
+      
+  
+      <tr  th:if="${info.type=='2'}"  onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
         <td align="right" valign="middle" class="borderright borderbottom bggray">法人单位代码：</td>
      <td align="left" valign="middle" class="borderright borderbottom main-for">
-        <input type="text" name="" id="xmdwmc" th:value="${info.xmdwmc}" class="text-word"/>
+        <input type="text"  disabled="disabled"  name="frdwm" id="xmdwmc" th:value="${info.xmdwmc}" class="text-word"/>
+        </td>
+    <td align="left" valign="middle" class="borderright borderbottom main-for">
+<!--    	saddddddddddddd -->
+        </td>
+           <td align="left" valign="middle" class="borderright borderbottom main-for">
+<!--    	saddddddddddddd -->
+        </td>
+      </tr>
+        <tr  th:if="${info.type=='10'}"  onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
+        <td align="right" valign="middle" class="borderright borderbottom bggray">法人单位代码：</td>
+     <td align="left" valign="middle" class="borderright borderbottom main-for">
+        <input type="text"  name="frdwm" id="xmdwmc" th:value="${info.xmdwmc}" class="text-word"/>
         </td>
     <td align="left" valign="middle" class="borderright borderbottom main-for">
 <!--    	saddddddddddddd -->
@@ -182,7 +344,7 @@ flg='1';
       </tr>
       
       
-            <tr th:if="${info.type=='0'}" onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
+            <tr  onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
         <td align="right" valign="middle" class="borderright borderbottom bggray">项目批文：</td>
         <td align="left" valign="middle" class="borderright borderbottom main-for">
         <input type="text" name="" value="" class="text-word"/>
@@ -192,7 +354,7 @@ flg='1';
         <input type="file" name="file" value="" class="text-word"/>
         </td>
       </tr>
-             <tr th:if="${info.type=='0'}"  onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
+             <tr  onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
         <td align="right" valign="middle" class="borderright borderbottom bggray">项目合同：</td>
         <td align="left" valign="middle" class="borderright borderbottom main-for">
         <input type="text" name="" value="" class="text-word"/>
@@ -202,7 +364,7 @@ flg='1';
         <input type="file" name="file" value="" class="text-word"/>
         </td>
       </tr>
-                <tr th:if="${info.type=='0'}"  onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
+                <tr  onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
         <td align="right" valign="middle" class="borderright borderbottom bggray">营业执照：</td>
         <td align="left" valign="middle" class="borderright borderbottom main-for">
         <input type="text" name="" value="" class="text-word"/>
@@ -213,7 +375,7 @@ flg='1';
         </td>
       </tr>
       
-                     <tr th:if="${info.type=='0'}"  onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
+                     <tr   onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
         <td align="right" valign="middle" class="borderright borderbottom bggray">现场照片：</td>
         <td align="left" valign="middle" class="borderright borderbottom main-for">
         <input type="text" name="" value="" class="text-word"/>
@@ -223,7 +385,7 @@ flg='1';
         <input type="file" name="file" value="" class="text-word"/>
         </td>
       </tr>
-                          <tr th:if="${info.type=='0'}"  onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
+                          <tr  onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
         <td align="right" valign="middle" class="borderright borderbottom bggray">入库申请表：</td>
         <td align="left" valign="middle" class="borderright borderbottom main-for">
         <input type="text" name="" value="" class="text-word"/>
@@ -235,7 +397,7 @@ flg='1';
       </tr>
       
       <!-- 10用户显示开始 -->
-                  <tr th:if="${info.type=='10'}" onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
+                  <tr onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
         <td align="right" valign="middle" class="borderright borderbottom bggray">项目批文：</td>
         <td align="left" valign="middle" class="borderright borderbottom main-for">
         <a th:href="${info.file1}">点我查看</a>
@@ -246,7 +408,7 @@ flg='1';
         </td>
       </tr>
       
-                <tr th:if="${info.type=='10'}"  onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
+                <tr  onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
         <td align="right" valign="middle" class="borderright borderbottom bggray">营业执照：</td>
         <td align="left" valign="middle" class="borderright borderbottom main-for">
         <a th:href="${info.file3}">点我查看</a>
@@ -257,14 +419,23 @@ flg='1';
         </td>         
       </tr>
 
-                          <tr th:if="${info.type=='10'}"  onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
+                          <tr  onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
         <td align="right" valign="middle" class="borderright borderbottom bggray">入库申请表：</td>
         <td align="left" valign="middle" class="borderright borderbottom main-for">
          <a th:href="${info.file5}">点我查看</a>
         </td>
         <td th:if="${info.type=='10'}" align="right" valign="middle" class="borderright borderbottom bggray">审核意见</td>
         <td th:if="${info.type=='10'}" align="left" valign="middle" class="borderright borderbottom main-for">
-  	  	<input type="radio" name="selectRadio" value="1" checked="checked"/> 同意    	<input name="selectRadio" value="2" type="radio"/> 不同意 
+        
+        <span th:if="${info.status==1}" >
+          	<input type="radio" name="selectRadio" value="1" checked="checked"/> 同意    	<input name="selectRadio" value="0" type="radio"/> 不同意 
+        </span>
+  	 <span th:if="${info.status==0}" >
+          	<input type="radio" name="selectRadio" value="1" /> 同意    	<input name="selectRadio" value="0" type="radio" checked="checked"/> 不同意 
+        </span>
+         <span th:if="${info.status==2}" >
+          	<input type="radio" name="selectRadio" value="1" /> 同意    	<input name="selectRadio" value="0" type="radio" checked="checked"/> 不同意 
+        </span>
        </td>
 
       </tr>
@@ -341,5 +512,8 @@ flg='1';
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal -->
 </div>
+
+</div>
+
 </body>
 </html>

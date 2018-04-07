@@ -32,7 +32,43 @@ td.fenye{ padding:10px 0 0 0; text-align:right;}
 <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
     <script type="text/javascript" src="./js/page.js"></script>
 <script type="text/javascript">
+function xmrl(id){
 
+	$.ajax({
+	    type: "POST",
+	    url: "xmrls",
+	    data: {"id":id},
+	    success: function(data){
+	 		if(data.restInfo=="success"){
+	 			alert("认领成功");
+	 			location.reload();
+	 			
+	 		}else{
+	 			alert("失败");
+	 		}
+	       }
+	 });	
+	
+}
+
+function xmzc(id){
+
+	$.ajax({
+	    type: "POST",
+	    url: "xmzc",
+	    data: {"id":id},
+	    success: function(data){
+	 		if(data.restInfo=="success"){
+	 			alert("转出成功");
+	 			location.reload();
+	 			
+	 		}else{
+	 			alert("失败");
+	 		}
+	       }
+	 });	
+	
+}
 
 
 	
@@ -65,21 +101,28 @@ url: "queryDeptInfo",
 //data: {"projectId":id},
 success: function(data){
 
+	alert($("#deptid").val());
+  
 	 // <![CDATA[
 	for(var i=0;i<data.length;i++){
 	
 		if($("#typeid").val()=='2'){
-				if($("#deptid").val()==data[i].code){
-					$("#sele").append("<option value="+data[i].code+" >"+data[i].title+"</option>");
-	
-				}else{
-					$("#sele").append("<option value="+data[i].code+" >"+data[i].title+"</option>");
+				if($("#deptid").val()==data[i].id){
+			
+					$("#sele").append("<option selected = 'selected' value="+data[i].code+" >"+data[i].title+"</option>");
 					break;
 				}
 	
 	
 		}else{
-			$("#sele").append("<option value="+data[i].code+" >"+data[i].title+"</option>");
+			if($("#deptid").val()==data[i].id){
+				$("#sele").append("<option selected = 'selected' value="+data[i].code+" >"+data[i].title+"</option>");
+
+			}else{
+				$("#sele").append("<option value="+data[i].code+" >"+data[i].title+"</option>");
+				break;
+			}
+// 			$("#sele").append("<option value="+data[i].code+" >"+data[i].title+"</option>");
 		}
 
 	}
@@ -103,7 +146,7 @@ $(function (){
 	var deptid=$("#deptid").val();
 	var xmmcs=$("#xmmcs").val();
 	var frdws=$("#frdws").val();
-	alert(bmdm+"--"+xmmcs+"--"+frdws);
+
 	
 		$.ajax({
 		    type: "POST",
@@ -121,76 +164,11 @@ $(function (){
 				    	    "pagelistcount":10,//每页显示数据个数
 				    	    "callBack":function(result){
 				    	    	data=result;
+				    	debugger;
+				    		if($("#status").val()=='1'){
+				    	   		if( $("#typeid").val()=='10'){
+// 				    	   			alert("修改项目");
 				    	    	     var cHtml='  <tr>'+
-					    	    	       '  <th align='center' valign='middle' class='borderright'>序号</th>'+
-					    	    	        ' <th align='center' valign='middle' class='borderright'>项目法人码</th>'+
-					    	    	        ' <th align='center' valign='middle' class='borderright'>部门代码</th>'+
-					    	    	        ' <th align='center' valign='middle' class='borderright'>项目单位名称</th>'+
-					    	    	        ' <th align='center' valign='middle' class='borderright'>项目名称</th>'+
-					    	    	         '<th align='center' valign='middle' class='borderright'>法人单位代码</th>'+
-					    	    	        ' <th align='center' valign='middle' class='borderright'>计划总投资</th>'+
-					    	    	       ' <th align='center' valign='middle' class='borderright'>审批文件</th>'+
-					    	    	      ' <th align='center' valign='middle' class='borderright'>审批状态</th> '+
-					    	    	      '   <th align='center' valign='middle'>操作</th>'+
-					    	    	      ' </tr>';
-				    	    	     // <![CDATA[
-				    	    	                var flg;
-				    	    	                var statu;
-				    	        for(var i=0;i<result.length;i++){
-				    	        		j++;
-				    	        	if(result[i].file1!=null||result[i].file2!=null||result[i].file3!=null||result[i].file4!=null||result[i].file5!=null){
-				    	        		flg="已上传"
-				    	        	}else{
-				    	        		flg="未上传"
-				    	        	}
-				    	       
-				    	    	if(result[i].status=='1'){
-				    	    		statu="审核通过"
-				    	    	}else if(status=='2'){
-				    	    		statu="审核拒绝"
-				    	    	}else{
-				    	    		statu="未审核";
-				    	    	}
-				    	         //处理数据
-				    	           cHtml+="<tr> <td align='center' valign='middle' class='borderright borderbottom' >"+j+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmfrm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].bmdm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmdwmc+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmmc+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmfrm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].jhztz+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+flg+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+statu+"</td> <td align='center' valign='middle' class='borderright borderbottom' ><a href='deptInfo?id="+result[i].id+"&type=0'>编辑</a> &nbsp;&nbsp;<a onclick='dele("+result[i].id+")'>删除</a> </td></tr>";
-				    	
-				    	           
-				    	           
-				    	        }
-				    	        //   ]]>
-				    	        $("#main-tab").html(cHtml);//将数据增加到页面中
-				    	    }
-				    	};
-				    	   page.init(data.length,1,options);
-
-		    
-			
-		       }
-		 });	
-		
-		
-	})
-	
-})
-
-$(function (){
-	$.ajax({
-	    type: "POST",
-	    url: "queryProjectInfo",
-		    data: {"projectStatus":$("#status").val(),"deptid":$("#deptid").val()},
-	    success: function(data){
-	    	console.log(data);
-	    	
-	    	var data;
-	    	var j=0;
-			   options={
-			    		"id":"page",//显示页码的元素
-			    		"data":data,//显示数据
-			    	    "maxshowpageitem":3,//最多显示的页码个数
-			    	    "pagelistcount":10,//每页显示数据个数
-			    	    "callBack":function(result){
-			    	    	data=result;
-			    	    	     var cHtml='  <tr>'+
 				    	    	       '  <th align='center' valign='middle' class='borderright'>序号</th>'+
 				    	    	        ' <th align='center' valign='middle' class='borderright'>项目法人码</th>'+
 				    	    	        ' <th align='center' valign='middle' class='borderright'>部门代码</th>'+
@@ -198,11 +176,188 @@ $(function (){
 				    	    	        ' <th align='center' valign='middle' class='borderright'>项目名称</th>'+
 				    	    	         '<th align='center' valign='middle' class='borderright'>法人单位代码</th>'+
 				    	    	        ' <th align='center' valign='middle' class='borderright'>计划总投资</th>'+
-				    	    	       ' <th align='center' valign='middle' class='borderright'>审批文件</th>'+
-				    	    	      ' <th align='center' valign='middle' class='borderright'>审批状态</th> '+
 				    	    	      '   <th align='center' valign='middle'>操作</th>'+
 				    	    	      ' </tr>';
+				    	    	      
 			    	    	     // <![CDATA[
+	  	    	                var flg;
+	  	    	                var statu;
+	  	        for(var i=0;i<result.length;i++){
+	  	        		j++;
+	  	        	if(result[i].file1!=null||result[i].file2!=null||result[i].file3!=null||result[i].file4!=null||result[i].file5!=null){
+	  	        		flg="已上传"
+	  	        	}else{
+	  	        		flg="未上传"
+	  	        	}
+	  	       
+	  	    	if(result[i].status=='1'){
+	  	    		statu="审核通过"
+	  	    	}else if(status=='2'){
+	  	    		statu="审核拒绝"
+	  	    	}else{
+	  	    		statu="未审核";
+	  	    	}
+	  	         //处理数据
+	  	     
+	  	           cHtml+="<tr> <td align='center' valign='middle' class='borderright borderbottom' >"+j+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmfrm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].bmdm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmdwmc+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmmc+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmfrm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].jhztz+"</td> <td align='center' valign='middle' class='borderright borderbottom' ><a href='deptInfo?id="+result[i].id+"&type=10' >修改项目信息</a> &nbsp;&nbsp; </td></tr>";
+	  	
+	  	           
+	  	           
+	  	        }
+	  	        //   ]]>
+				    	   			
+				    	   		}
+				    		}
+				    		if($("#status").val()=='2'){
+				    	   		if( $("#typeid").val()=='10'){
+				    	   		
+				    	   			
+// 				    	   			alert("带入库项目");
+				    	    	     var cHtml='  <tr>'+
+				    	    	       '  <th align='center' valign='middle' class='borderright'>序号</th>'+
+				    	    	        ' <th align='center' valign='middle' class='borderright'>项目法人码</th>'+
+				    	    	        ' <th align='center' valign='middle' class='borderright'>部门代码</th>'+
+				    	    	        ' <th align='center' valign='middle' class='borderright'>项目单位名称</th>'+
+				    	    	        ' <th align='center' valign='middle' class='borderright'>项目名称</th>'+
+				    	    	         '<th align='center' valign='middle' class='borderright'>法人单位代码</th>'+
+				    	    	        ' <th align='center' valign='middle' class='borderright'>计划总投资</th>'+
+				    	    	        ' <th align='center' valign='middle' class='borderright'>是否上传</th>'+
+				    	    	        ' <th align='center' valign='middle' class='borderright'>审核状态</th>'+
+				    	    	      '   <th align='center' valign='middle'>操作</th>'+
+				    	    	      ' </tr>';
+				    	    	      
+			    	    	     // <![CDATA[
+	 	    	                var flg;
+	 	    	                var statu;
+	 	        for(var i=0;i<result.length;i++){
+	 	        		j++;
+	 	        	if(result[i].file1!=null||result[i].file2!=null||result[i].file3!=null||result[i].file4!=null||result[i].file5!=null){
+	 	        		flg="已上传"
+	 	        	}else{
+	 	        		flg="未上传"
+	 	        	}
+	 	       
+	 	    	if(result[i].status=='1'){
+	 	    		statu="审核通过"
+	 	    	}else if(status=='2'){
+	 	    		statu="审核拒绝"
+	 	    	}else{
+	 	    		statu="未审核";
+	 	    	}
+	 	         //处理数据
+	 	     
+	 	           cHtml+="<tr> <td align='center' valign='middle' class='borderright borderbottom' >"+j+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmfrm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].bmdm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmdwmc+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmmc+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmfrm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].jhztz+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+flg+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+statu+"</td> <td align='center' valign='middle' class='borderright borderbottom' ><a href='deptInfo?id="+result[i].id+"&type=10'>修改项目信息</a> &nbsp;&nbsp; </td></tr>";
+	 	
+	 	           
+	 	           
+	 	        }
+	 	        //   ]]>
+				    	   		}
+				    		}
+				    		if($("#status").val()=='3'){
+				    	   		if( $("#typeid").val()=='10'){
+				    	   			
+				    	   			
+// 				    	   			alert("未入库项目");
+				    	    	     var cHtml='  <tr>'+
+				    	    	       '  <th align='center' valign='middle' class='borderright'>序号</th>'+
+				    	    	        ' <th align='center' valign='middle' class='borderright'>项目法人码</th>'+
+				    	    	        ' <th align='center' valign='middle' class='borderright'>部门代码</th>'+
+				    	    	        ' <th align='center' valign='middle' class='borderright'>项目单位名称</th>'+
+				    	    	        ' <th align='center' valign='middle' class='borderright'>项目名称</th>'+
+				    	    	         '<th align='center' valign='middle' class='borderright'>法人单位代码</th>'+
+				    	    	        ' <th align='center' valign='middle' class='borderright'>计划总投资</th>'+
+				    	    	      '   <th align='center' valign='middle'>操作</th>'+
+				    	    	      ' </tr>';
+				    	    	      
+			    	    	     // <![CDATA[
+	 	    	                var flg;
+	 	    	                var statu;
+	 	        for(var i=0;i<result.length;i++){
+	 	        		j++;
+	 	        	if(result[i].file1!=null||result[i].file2!=null||result[i].file3!=null||result[i].file4!=null||result[i].file5!=null){
+	 	        		flg="已上传"
+	 	        	}else{
+	 	        		flg="未上传"
+	 	        	}
+	 	       
+	 	    	if(result[i].status=='1'){
+	 	    		statu="审核通过"
+	 	    	}else if(status=='2'){
+	 	    		statu="审核拒绝"
+	 	    	}else{
+	 	    		statu="未审核";
+	 	    	}
+	 	         //处理数据
+	 	     
+	 	           cHtml+="<tr> <td align='center' valign='middle' class='borderright borderbottom' >"+j+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmfrm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].bmdm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmdwmc+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmmc+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmfrm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].jhztz+"</td> <td align='center' valign='middle' class='borderright borderbottom' ><a href='deptInfo?id="+result[i].id+"&type=10'>修改项目信息</a> &nbsp;&nbsp; </td></tr>";
+	 	
+	 	           
+	 	           
+	 	        }
+	 	        //   ]]>
+				    	   			
+				    	   		}
+				    		}
+				    		if($("#status").val()=='4'){
+				    	   		if( $("#typeid").val()=='10'){
+// 				    	   			alert("已完成项目");
+				    	    	     var cHtml='  <tr>'+
+				    	    	       '  <th align='center' valign='middle' class='borderright'>序号</th>'+
+				    	    	        ' <th align='center' valign='middle' class='borderright'>项目法人码</th>'+
+				    	    	        ' <th align='center' valign='middle' class='borderright'>部门代码</th>'+
+				    	    	        ' <th align='center' valign='middle' class='borderright'>项目单位名称</th>'+
+				    	    	        ' <th align='center' valign='middle' class='borderright'>项目名称</th>'+
+				    	    	         '<th align='center' valign='middle' class='borderright'>法人单位代码</th>'+
+				    	    	        ' <th align='center' valign='middle' class='borderright'>计划总投资</th>'+
+				    	    	      '   <th align='center' valign='middle'>操作</th>'+
+				    	    	      ' </tr>';
+				    	    	      
+			    	    	     // <![CDATA[
+	 	    	                var flg;
+	 	    	                var statu;
+	 	        for(var i=0;i<result.length;i++){
+	 	        		j++;
+	 	        	if(result[i].file1!=null||result[i].file2!=null||result[i].file3!=null||result[i].file4!=null||result[i].file5!=null){
+	 	        		flg="已上传"
+	 	        	}else{
+	 	        		flg="未上传"
+	 	        	}
+	 	       
+	 	    	if(result[i].status=='1'){
+	 	    		statu="审核通过"
+	 	    	}else if(status=='2'){
+	 	    		statu="审核拒绝"
+	 	    	}else{
+	 	    		statu="未审核";
+	 	    	}
+	 	         //处理数据
+	 	     
+	 	           cHtml+="<tr> <td align='center' valign='middle' class='borderright borderbottom' >"+j+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmfrm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].bmdm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmdwmc+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmmc+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmfrm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].jhztz+"</td> <td align='center' valign='middle' class='borderright borderbottom' ><a href='deptInfo?id="+result[i].id+"&type=10'>修改项目信息</a> &nbsp;&nbsp; </td></tr>";
+	 	
+	 	           
+	 	           
+	 	        }
+	 	        //   ]]>
+				    	   			
+				    	   		}
+				    		}
+				    		
+				    	     	if($("#status").val()=='3' ){
+				    	     		if( $("#typeid").val()=='2'){
+
+					    	    	     var cHtml='  <tr>'+
+						    	    	       '  <th align='center' valign='middle' class='borderright'>序号</th>'+
+						    	    	        ' <th align='center' valign='middle' class='borderright'>项目法人码</th>'+
+						    	    	        ' <th align='center' valign='middle' class='borderright'>部门代码</th>'+
+						    	    	        ' <th align='center' valign='middle' class='borderright'>项目单位名称</th>'+
+						    	    	        ' <th align='center' valign='middle' class='borderright'>项目名称</th>'+
+						    	    	         '<th align='center' valign='middle' class='borderright'>法人单位代码</th>'+
+						    	    	        ' <th align='center' valign='middle' class='borderright'>计划总投资</th>'+
+						    	    	      '   <th align='center' valign='middle'>操作</th>'+
+						    	    	      ' </tr>';
+						    	    	      
+					    	    	     // <![CDATA[
 			    	    	                var flg;
 			    	    	                var statu;
 			    	        for(var i=0;i<result.length;i++){
@@ -221,12 +376,531 @@ $(function (){
 			    	    		statu="未审核";
 			    	    	}
 			    	         //处理数据
-			    	           cHtml+="<tr> <td align='center' valign='middle' class='borderright borderbottom' >"+j+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmfrm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].bmdm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmdwmc+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmmc+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmfrm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].jhztz+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+flg+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+statu+"</td> <td align='center' valign='middle' class='borderright borderbottom' ><a href='deptInfo?id="+result[i].id+"&type=0'>编辑</a> &nbsp;&nbsp;<a onclick='dele("+result[i].id+")'>删除</a> </td></tr>";
+			    	     
+			    	           cHtml+="<tr> <td align='center' valign='middle' class='borderright borderbottom' >"+j+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmfrm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].bmdm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmdwmc+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmmc+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].jhztz+"</td> <td align='center' valign='middle' class='borderright borderbottom' ><a href='#' onclick='xmrl("+result[i].id+")'>项目认领</a> &nbsp;&nbsp; </td></tr>";
 			    	
 			    	           
 			    	           
 			    	        }
 			    	        //   ]]>
+				    	     		}
+				    	   
+				    	    	}else if($("#status").val()=='2'){
+				    	    		if($("#typeid").val()=='2'){
+				    	    			debugger;
+				    	 	    	     var cHtml='  <tr>'+
+					    	    	       '  <th align='center' valign='middle' class='borderright'>序号1</th>'+
+					    	    	        ' <th align='center' valign='middle' class='borderright'>项目法人码</th>'+
+					    	    	        ' <th align='center' valign='middle' class='borderright'>部门代码</th>'+
+					    	    	        ' <th align='center' valign='middle' class='borderright'>项目单位名称</th>'+
+					    	    	        ' <th align='center' valign='middle' class='borderright'>项目名称</th>'+
+					    	    	         '<th align='center' valign='middle' class='borderright'>法人单位代码</th>'+
+					    	    	        ' <th align='center' valign='middle' class='borderright'>计划总投资</th>'+
+					    	    	      '   <th align='center' valign='middle'>操作</th>'+
+					    	    	      ' </tr>';
+					    	    	      
+				    	    	     // <![CDATA[
+		    	    	                var flg;
+		    	    	                var statu;
+		    	        for(var i=0;i<result.length;i++){
+		    	        		j++;
+		    	        	if(result[i].file1!=null||result[i].file2!=null||result[i].file3!=null||result[i].file4!=null||result[i].file5!=null){
+		    	        		flg="已上传"
+		    	        	}else{
+		    	        		flg="未上传"
+		    	        	}
+		    	       
+		    	    	if(result[i].status=='1'){
+		    	    		statu="审核通过"
+		    	    	}else if(status=='2'){
+		    	    		statu="审核拒绝"
+		    	    	}else{
+		    	    		statu="未审核";
+		    	    	}
+		    	         //处理数据
+		    	     
+		    	           cHtml+="<tr> <td align='center' valign='middle' class='borderright borderbottom' >"+j+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmfrm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].bmdm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmdwmc+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmmc+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].jhztz+"</td> <td align='center' valign='middle' class='borderright borderbottom' ><a href='#' onclick='xmzc("+result[i].id+")'>转出项目 &nbsp;<a href='deptInfo?id="+result[i].id+"&type=10'>项目进度管理</a></a> &nbsp;&nbsp; </td></tr>";
+		    	
+		    	           
+		    	           
+		    	        }
+		    	        //   ]]>
+				    	    		}
+				    	    	
+				    	    	} else if($("#status").val()=='1'){
+				    	    		if($("#typeid").val()=='2'){
+				    	    		     var cHtml='  <tr>'+
+					    	    	       '  <th align='center' valign='middle' class='borderright'>序号1</th>'+
+					    	    	        ' <th align='center' valign='middle' class='borderright'>项目法人码</th>'+
+					    	    	        ' <th align='center' valign='middle' class='borderright'>部门代码</th>'+
+					    	    	        ' <th align='center' valign='middle' class='borderright'>项目单位名称</th>'+
+					    	    	        ' <th align='center' valign='middle' class='borderright'>项目名称</th>'+
+					    	    	         '<th align='center' valign='middle' class='borderright'>法人单位代码</th>'+
+					    	    	        ' <th align='center' valign='middle' class='borderright'>计划总投资</th>'+
+					    	    	      '   <th align='center' valign='middle'>操作</th>'+
+					    	    	      ' </tr>';
+					    	    	      
+				    	    	     // <![CDATA[
+		    	    	                var flg;
+		    	    	                var statu;
+		    	        for(var i=0;i<result.length;i++){
+		    	        		j++;
+		    	        	if(result[i].file1!=null||result[i].file2!=null||result[i].file3!=null||result[i].file4!=null||result[i].file5!=null){
+		    	        		flg="已上传"
+		    	        	}else{
+		    	        		flg="未上传"
+		    	        	}
+		    	       
+		    	    	if(result[i].status=='1'){
+		    	    		statu="审核通过"
+		    	    	}else if(status=='2'){
+		    	    		statu="审核拒绝"
+		    	    	}else{
+		    	    		statu="未审核";
+		    	    	}
+		    	         //处理数据
+		    	     
+		    	           cHtml+="<tr> <td align='center' valign='middle' class='borderright borderbottom' >"+j+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmfrm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].bmdm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmdwmc+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmmc+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].jhztz+"</td> <td align='center' valign='middle' class='borderright borderbottom' ><a href='#' >暂无 </a> &nbsp;&nbsp; </td></tr>";
+		    	
+		    	           
+		    	           
+		    	        }
+		    	        //   ]]>
+				    	    		}
+				    	    		
+				    	    	}else{
+
+				    	    	     var cHtml='  <tr>'+
+					    	    	       '  <th align='center' valign='middle' class='borderright'>序号</th>'+
+					    	    	        ' <th align='center' valign='middle' class='borderright'>项目法人码</th>'+
+					    	    	        ' <th align='center' valign='middle' class='borderright'>部门代码</th>'+
+					    	    	        ' <th align='center' valign='middle' class='borderright'>项目单位名称</th>'+
+					    	    	        ' <th align='center' valign='middle' class='borderright'>项目名称</th>'+
+					    	    	         '<th align='center' valign='middle' class='borderright'>法人单位代码</th>'+
+					    	    	        ' <th align='center' valign='middle' class='borderright'>计划总投资</th>'+
+					    	    	      '   <th align='center' valign='middle'>操作</th>'+
+					    	    	      ' </tr>';
+					    	    	      
+				    	    	     // <![CDATA[
+		    	    	                var flg;
+		    	    	                var statu;
+		    	        for(var i=0;i<result.length;i++){
+		    	        		j++;
+		    	        	if(result[i].file1!=null||result[i].file2!=null||result[i].file3!=null||result[i].file4!=null||result[i].file5!=null){
+		    	        		flg="已上传"
+		    	        	}else{
+		    	        		flg="未上传"
+		    	        	}
+		    	       
+		    	    	if(result[i].status=='1'){
+		    	    		statu="审核通过"
+		    	    	}else if(status=='2'){
+		    	    		statu="审核拒绝"
+		    	    	}else{
+		    	    		statu="未审核";
+		    	    	}
+		    	         //处理数据
+		    	     
+		    	           cHtml+="<tr> <td align='center' valign='middle' class='borderright borderbottom' >"+j+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmfrm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].bmdm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmdwmc+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmmc+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].jhztz+"</td> <td align='center' valign='middle' class='borderright borderbottom' ><a href='#' onclick='xmrl("+result[i].id+")'>项目认领</a> &nbsp;&nbsp; </td></tr>";
+		    	
+		    	           
+		    	           
+		    	        }
+		    	        //   ]]>
+				    	   	  
+				    	    	}
+				    	
+				    	    
+				    	    	 debugger;
+				    	        $("#main-tab").html(cHtml);//将数据增加到页面中
+//				    	        $("#demoContent").html(cHtml);//将数据增加到页面中
+				    	    }
+				    	};
+				    	   page.init(data.length,1,options);
+		    	 // <![CDATA[
+//			    	for(var i=0;i<data.length;i++){
+//			    		$("#sele").append("<option>"+data[i].title+"</option>");
+		    	
+		    		
+//			    	}
+		     //   ]]>
+		    
+			
+			
+		       }
+		 });	
+		
+		
+	})
+	
+})
+
+$(function (){
+
+	$.ajax({
+	    type: "POST",
+	    url: "queryProjectInfo",
+		    data: {"projectStatus":$("#status").val(),"deptid":$("#deptid").val()},
+	    success: function(data){
+	    	console.log(data);
+	    	
+	    	var data;
+	    	var j=0;
+			   options={
+			    		"id":"page",//显示页码的元素
+			    		"data":data,//显示数据
+			    	    "maxshowpageitem":3,//最多显示的页码个数
+			    	    "pagelistcount":10,//每页显示数据个数
+			    	    "callBack":function(result){
+			    	    	data=result;
+			    	debugger;
+			    		if($("#status").val()=='1'){
+			    	   		if( $("#typeid").val()=='10'){
+// 			    	   			alert("修改项目");
+			    	    	     var cHtml='  <tr>'+
+			    	    	       '  <th align='center' valign='middle' class='borderright'>序号</th>'+
+			    	    	        ' <th align='center' valign='middle' class='borderright'>项目法人码</th>'+
+			    	    	        ' <th align='center' valign='middle' class='borderright'>部门代码</th>'+
+			    	    	        ' <th align='center' valign='middle' class='borderright'>项目单位名称</th>'+
+			    	    	        ' <th align='center' valign='middle' class='borderright'>项目名称</th>'+
+			    	    	         '<th align='center' valign='middle' class='borderright'>法人单位代码</th>'+
+			    	    	        ' <th align='center' valign='middle' class='borderright'>计划总投资</th>'+
+			    	    	      '   <th align='center' valign='middle'>操作</th>'+
+			    	    	      ' </tr>';
+			    	    	      
+		    	    	     // <![CDATA[
+  	    	                var flg;
+  	    	                var statu;
+  	        for(var i=0;i<result.length;i++){
+  	        		j++;
+  	        	if(result[i].file1!=null||result[i].file2!=null||result[i].file3!=null||result[i].file4!=null||result[i].file5!=null){
+  	        		flg="已上传"
+  	        	}else{
+  	        		flg="未上传"
+  	        	}
+  	       
+  	    	if(result[i].status=='1'){
+  	    		statu="审核通过"
+  	    	}else if(status=='2'){
+  	    		statu="审核拒绝"
+  	    	}else{
+  	    		statu="未审核";
+  	    	}
+  	         //处理数据
+  	     
+  	           cHtml+="<tr> <td align='center' valign='middle' class='borderright borderbottom' >"+j+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmfrm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].bmdm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmdwmc+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmmc+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmfrm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].jhztz+"</td> <td align='center' valign='middle' class='borderright borderbottom' ><a href='deptInfo?id="+result[i].id+"&type=10' >修改项目信息</a> &nbsp;&nbsp; </td></tr>";
+  	
+  	           
+  	           
+  	        }
+  	        //   ]]>
+			    	   			
+			    	   		}
+			    		}
+			    		if($("#status").val()=='2'){
+			    	   		if( $("#typeid").val()=='10'){
+			    	   		
+			    	   			
+			    	   			alert("带入库项目");
+			    	    	     var cHtml='  <tr>'+
+			    	    	       '  <th align='center' valign='middle' class='borderright'>序号</th>'+
+			    	    	        ' <th align='center' valign='middle' class='borderright'>项目法人码</th>'+
+			    	    	        ' <th align='center' valign='middle' class='borderright'>部门代码</th>'+
+			    	    	        ' <th align='center' valign='middle' class='borderright'>项目单位名称</th>'+
+			    	    	        ' <th align='center' valign='middle' class='borderright'>项目名称</th>'+
+			    	    	         '<th align='center' valign='middle' class='borderright'>法人单位代码</th>'+
+			    	    	        ' <th align='center' valign='middle' class='borderright'>计划总投资</th>'+
+			    	    	        ' <th align='center' valign='middle' class='borderright'>是否上传</th>'+
+			    	    	        ' <th align='center' valign='middle' class='borderright'>审核状态</th>'+
+			    	    	      '   <th align='center' valign='middle'>操作</th>'+
+			    	    	      ' </tr>';
+			    	    	      
+		    	    	     // <![CDATA[
+ 	    	                var flg;
+ 	    	                var statu;
+ 	        for(var i=0;i<result.length;i++){
+ 	        		j++;
+ 	        	if(result[i].file1!=null||result[i].file2!=null||result[i].file3!=null||result[i].file4!=null||result[i].file5!=null){
+ 	        		flg="已上传"
+ 	        	}else{
+ 	        		flg="未上传"
+ 	        	}
+ 	       
+ 	    	if(result[i].status=='1'){
+ 	    		statu="审核通过"
+ 	    	}else if(status=='2'){
+ 	    		statu="审核拒绝"
+ 	    	}else{
+ 	    		statu="未审核";
+ 	    	}
+ 	         //处理数据
+ 	     
+ 	           cHtml+="<tr> <td align='center' valign='middle' class='borderright borderbottom' >"+j+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmfrm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].bmdm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmdwmc+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmmc+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmfrm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].jhztz+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+flg+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+statu+"</td> <td align='center' valign='middle' class='borderright borderbottom' ><a href='deptInfo?id="+result[i].id+"&type=10'>修改项目信息</a> &nbsp;&nbsp; </td></tr>";
+ 	
+ 	           
+ 	           
+ 	        }
+ 	        //   ]]>
+			    	   		}
+			    		}
+			    		if($("#status").val()=='3'){
+			    	   		if( $("#typeid").val()=='10'){
+			    	   			
+			    	   			
+			    	   			alert("未入库项目");
+			    	    	     var cHtml='  <tr>'+
+			    	    	       '  <th align='center' valign='middle' class='borderright'>序号</th>'+
+			    	    	        ' <th align='center' valign='middle' class='borderright'>项目法人码</th>'+
+			    	    	        ' <th align='center' valign='middle' class='borderright'>部门代码</th>'+
+			    	    	        ' <th align='center' valign='middle' class='borderright'>项目单位名称</th>'+
+			    	    	        ' <th align='center' valign='middle' class='borderright'>项目名称</th>'+
+			    	    	         '<th align='center' valign='middle' class='borderright'>法人单位代码</th>'+
+			    	    	        ' <th align='center' valign='middle' class='borderright'>计划总投资</th>'+
+			    	    	      '   <th align='center' valign='middle'>操作</th>'+
+			    	    	      ' </tr>';
+			    	    	      
+		    	    	     // <![CDATA[
+ 	    	                var flg;
+ 	    	                var statu;
+ 	        for(var i=0;i<result.length;i++){
+ 	        		j++;
+ 	        	if(result[i].file1!=null||result[i].file2!=null||result[i].file3!=null||result[i].file4!=null||result[i].file5!=null){
+ 	        		flg="已上传"
+ 	        	}else{
+ 	        		flg="未上传"
+ 	        	}
+ 	       
+ 	    	if(result[i].status=='1'){
+ 	    		statu="审核通过"
+ 	    	}else if(status=='2'){
+ 	    		statu="审核拒绝"
+ 	    	}else{
+ 	    		statu="未审核";
+ 	    	}
+ 	         //处理数据
+ 	     
+ 	           cHtml+="<tr> <td align='center' valign='middle' class='borderright borderbottom' >"+j+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmfrm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].bmdm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmdwmc+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmmc+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmfrm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].jhztz+"</td> <td align='center' valign='middle' class='borderright borderbottom' ><a href='deptInfo?id="+result[i].id+"&type=10'>修改项目信息</a> &nbsp;&nbsp; </td></tr>";
+ 	
+ 	           
+ 	           
+ 	        }
+ 	        //   ]]>
+			    	   			
+			    	   		}
+			    		}
+			    		if($("#status").val()=='4'){
+			    	   		if( $("#typeid").val()=='10'){
+			    	   			alert("已完成项目");
+			    	    	     var cHtml='  <tr>'+
+			    	    	       '  <th align='center' valign='middle' class='borderright'>序号</th>'+
+			    	    	        ' <th align='center' valign='middle' class='borderright'>项目法人码</th>'+
+			    	    	        ' <th align='center' valign='middle' class='borderright'>部门代码</th>'+
+			    	    	        ' <th align='center' valign='middle' class='borderright'>项目单位名称</th>'+
+			    	    	        ' <th align='center' valign='middle' class='borderright'>项目名称</th>'+
+			    	    	         '<th align='center' valign='middle' class='borderright'>法人单位代码</th>'+
+			    	    	        ' <th align='center' valign='middle' class='borderright'>计划总投资</th>'+
+			    	    	      '   <th align='center' valign='middle'>操作</th>'+
+			    	    	      ' </tr>';
+			    	    	      
+		    	    	     // <![CDATA[
+ 	    	                var flg;
+ 	    	                var statu;
+ 	        for(var i=0;i<result.length;i++){
+ 	        		j++;
+ 	        	if(result[i].file1!=null||result[i].file2!=null||result[i].file3!=null||result[i].file4!=null||result[i].file5!=null){
+ 	        		flg="已上传"
+ 	        	}else{
+ 	        		flg="未上传"
+ 	        	}
+ 	       
+ 	    	if(result[i].status=='1'){
+ 	    		statu="审核通过"
+ 	    	}else if(status=='2'){
+ 	    		statu="审核拒绝"
+ 	    	}else{
+ 	    		statu="未审核";
+ 	    	}
+ 	         //处理数据
+ 	     
+ 	           cHtml+="<tr> <td align='center' valign='middle' class='borderright borderbottom' >"+j+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmfrm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].bmdm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmdwmc+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmmc+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmfrm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].jhztz+"</td> <td align='center' valign='middle' class='borderright borderbottom' ><a href='deptInfo?id="+result[i].id+"&type=10'>修改项目信息</a> &nbsp;&nbsp; </td></tr>";
+ 	
+ 	           
+ 	           
+ 	        }
+ 	        //   ]]>
+			    	   			
+			    	   		}
+			    		}
+			    		
+			    	     	if($("#status").val()=='3' ){
+			    	     		if( $("#typeid").val()=='2'){
+
+				    	    	     var cHtml='  <tr>'+
+					    	    	       '  <th align='center' valign='middle' class='borderright'>序号</th>'+
+					    	    	        ' <th align='center' valign='middle' class='borderright'>项目法人码</th>'+
+					    	    	        ' <th align='center' valign='middle' class='borderright'>部门代码</th>'+
+					    	    	        ' <th align='center' valign='middle' class='borderright'>项目单位名称</th>'+
+					    	    	        ' <th align='center' valign='middle' class='borderright'>项目名称</th>'+
+					    	    	         '<th align='center' valign='middle' class='borderright'>法人单位代码</th>'+
+					    	    	        ' <th align='center' valign='middle' class='borderright'>计划总投资</th>'+
+					    	    	      '   <th align='center' valign='middle'>操作</th>'+
+					    	    	      ' </tr>';
+					    	    	      
+				    	    	     // <![CDATA[
+		    	    	                var flg;
+		    	    	                var statu;
+		    	        for(var i=0;i<result.length;i++){
+		    	        		j++;
+		    	        	if(result[i].file1!=null||result[i].file2!=null||result[i].file3!=null||result[i].file4!=null||result[i].file5!=null){
+		    	        		flg="已上传"
+		    	        	}else{
+		    	        		flg="未上传"
+		    	        	}
+		    	       
+		    	    	if(result[i].status=='1'){
+		    	    		statu="审核通过"
+		    	    	}else if(status=='2'){
+		    	    		statu="审核拒绝"
+		    	    	}else{
+		    	    		statu="未审核";
+		    	    	}
+		    	         //处理数据
+		    	     
+		    	           cHtml+="<tr> <td align='center' valign='middle' class='borderright borderbottom' >"+j+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmfrm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].bmdm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmdwmc+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmmc+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].jhztz+"</td> <td align='center' valign='middle' class='borderright borderbottom' ><a href='#' onclick='xmrl("+result[i].id+")'>项目认领</a> &nbsp;&nbsp; </td></tr>";
+		    	
+		    	           
+		    	           
+		    	        }
+		    	        //   ]]>
+			    	     		}
+			    	   
+			    	    	}else if($("#status").val()=='2'){
+			    	    		if($("#typeid").val()=='2'){
+			    	    			debugger;
+			    	 	    	     var cHtml='  <tr>'+
+				    	    	       '  <th align='center' valign='middle' class='borderright'>序号1</th>'+
+				    	    	        ' <th align='center' valign='middle' class='borderright'>项目法人码</th>'+
+				    	    	        ' <th align='center' valign='middle' class='borderright'>部门代码</th>'+
+				    	    	        ' <th align='center' valign='middle' class='borderright'>项目单位名称</th>'+
+				    	    	        ' <th align='center' valign='middle' class='borderright'>项目名称</th>'+
+				    	    	         '<th align='center' valign='middle' class='borderright'>法人单位代码</th>'+
+				    	    	        ' <th align='center' valign='middle' class='borderright'>计划总投资</th>'+
+				    	    	      '   <th align='center' valign='middle'>操作</th>'+
+				    	    	      ' </tr>';
+				    	    	      
+			    	    	     // <![CDATA[
+	    	    	                var flg;
+	    	    	                var statu;
+	    	        for(var i=0;i<result.length;i++){
+	    	        		j++;
+	    	        	if(result[i].file1!=null||result[i].file2!=null||result[i].file3!=null||result[i].file4!=null||result[i].file5!=null){
+	    	        		flg="已上传"
+	    	        	}else{
+	    	        		flg="未上传"
+	    	        	}
+	    	       
+	    	    	if(result[i].status=='1'){
+	    	    		statu="审核通过"
+	    	    	}else if(status=='2'){
+	    	    		statu="审核拒绝"
+	    	    	}else{
+	    	    		statu="未审核";
+	    	    	}
+	    	         //处理数据
+	    	     
+	    	           cHtml+="<tr> <td align='center' valign='middle' class='borderright borderbottom' >"+j+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmfrm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].bmdm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmdwmc+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmmc+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].jhztz+"</td> <td align='center' valign='middle' class='borderright borderbottom' ><a href='#' onclick='xmzc("+result[i].id+")'>转出项目 &nbsp;<a href='deptInfo?id="+result[i].id+"&type=2'>项目进度管理</a></a> &nbsp;&nbsp; </td></tr>";
+	    	
+	    	           
+	    	           
+	    	        }
+	    	        //   ]]>
+			    	    		}
+			    	    	
+			    	    	} else if($("#status").val()=='1'){
+			    	    		if($("#typeid").val()=='2'){
+			    	    		     var cHtml='  <tr>'+
+				    	    	       '  <th align='center' valign='middle' class='borderright'>序号1</th>'+
+				    	    	        ' <th align='center' valign='middle' class='borderright'>项目法人码</th>'+
+				    	    	        ' <th align='center' valign='middle' class='borderright'>部门代码</th>'+
+				    	    	        ' <th align='center' valign='middle' class='borderright'>项目单位名称</th>'+
+				    	    	        ' <th align='center' valign='middle' class='borderright'>项目名称</th>'+
+				    	    	         '<th align='center' valign='middle' class='borderright'>法人单位代码</th>'+
+				    	    	        ' <th align='center' valign='middle' class='borderright'>计划总投资</th>'+
+				    	    	      '   <th align='center' valign='middle'>操作</th>'+
+				    	    	      ' </tr>';
+				    	    	      
+			    	    	     // <![CDATA[
+	    	    	                var flg;
+	    	    	                var statu;
+	    	        for(var i=0;i<result.length;i++){
+	    	        		j++;
+	    	        	if(result[i].file1!=null||result[i].file2!=null||result[i].file3!=null||result[i].file4!=null||result[i].file5!=null){
+	    	        		flg="已上传"
+	    	        	}else{
+	    	        		flg="未上传"
+	    	        	}
+	    	       
+	    	    	if(result[i].status=='1'){
+	    	    		statu="审核通过"
+	    	    	}else if(status=='2'){
+	    	    		statu="审核拒绝"
+	    	    	}else{
+	    	    		statu="未审核";
+	    	    	}
+	    	         //处理数据
+	    	     
+	    	           cHtml+="<tr> <td align='center' valign='middle' class='borderright borderbottom' >"+j+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmfrm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].bmdm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmdwmc+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmmc+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].jhztz+"</td> <td align='center' valign='middle' class='borderright borderbottom' ><a href='#' >暂无 </a> &nbsp;&nbsp; </td></tr>";
+	    	
+	    	           
+	    	           
+	    	        }
+	    	        //   ]]>
+			    	    		}
+			    	    		
+			    	    	}else{
+
+			    	    	     var cHtml='  <tr>'+
+				    	    	       '  <th align='center' valign='middle' class='borderright'>序号</th>'+
+				    	    	        ' <th align='center' valign='middle' class='borderright'>项目法人码</th>'+
+				    	    	        ' <th align='center' valign='middle' class='borderright'>部门代码</th>'+
+				    	    	        ' <th align='center' valign='middle' class='borderright'>项目单位名称</th>'+
+				    	    	        ' <th align='center' valign='middle' class='borderright'>项目名称</th>'+
+				    	    	         '<th align='center' valign='middle' class='borderright'>法人单位代码</th>'+
+				    	    	        ' <th align='center' valign='middle' class='borderright'>计划总投资</th>'+
+				    	    	      '   <th align='center' valign='middle'>操作</th>'+
+				    	    	      ' </tr>';
+				    	    	      
+			    	    	     // <![CDATA[
+	    	    	                var flg;
+	    	    	                var statu;
+	    	        for(var i=0;i<result.length;i++){
+	    	        		j++;
+	    	        	if(result[i].file1!=null||result[i].file2!=null||result[i].file3!=null||result[i].file4!=null||result[i].file5!=null){
+	    	        		flg="已上传"
+	    	        	}else{
+	    	        		flg="未上传"
+	    	        	}
+	    	       
+	    	    	if(result[i].status=='1'){
+	    	    		statu="审核通过"
+	    	    	}else if(status=='2'){
+	    	    		statu="审核拒绝"
+	    	    	}else{
+	    	    		statu="未审核";
+	    	    	}
+	    	         //处理数据
+	    	     
+	    	           cHtml+="<tr> <td align='center' valign='middle' class='borderright borderbottom' >"+j+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmfrm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].bmdm+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmdwmc+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmmc+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].jhztz+"</td> <td align='center' valign='middle' class='borderright borderbottom' ><a href='#' onclick='xmrl("+result[i].id+")'>项目认领</a> &nbsp;&nbsp; </td></tr>";
+	    	
+	    	           
+	    	           
+	    	        }
+	    	        //   ]]>
+			    	   	  
+			    	    	}
+			    	
+			    	    
+			    	    	 debugger;
 			    	        $("#main-tab").html(cHtml);//将数据增加到页面中
 //			    	        $("#demoContent").html(cHtml);//将数据增加到页面中
 			    	    }

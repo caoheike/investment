@@ -46,6 +46,10 @@ public interface ProjectInfoDao {
 
     Map quertdept(int deptid); 
     int xmfrCount(String xmfr);
+    int updateBmdm(Map map);
+    int updateXmxx (Map map);
+    
+    
 
 
 }

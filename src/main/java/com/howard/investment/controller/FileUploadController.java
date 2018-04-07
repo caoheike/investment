@@ -92,6 +92,7 @@ public class FileUploadController {
      * @author 单红宇(CSDN CATOOP)
      * @create 2017年3月11日
      */
+ 
     @RequestMapping(value = "/upload/batch", method = RequestMethod.POST)
     public @ResponseBody String batchUpload(HttpServletRequest request,@RequestParam("id") String id,@RequestParam("msgtype") String msgtype) {
     	 String basePath=request.getServletContext().getRealPath("/upload");
@@ -104,7 +105,7 @@ public class FileUploadController {
          }
         Map<String, Object> map=new HashMap<String,Object>();
         String msg="";
-    	if(msgtype.equals("0")){
+    
     		//用户具有上传权限
     		 List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("file");
     	        MultipartFile file = null;
@@ -164,19 +165,56 @@ public class FileUploadController {
     	        map.put("file3",file3);
     	        map.put("file4",file4);
     	        map.put("file5",file5);
+    	 if(msgtype.equals("0")){
     	        projectinfoserviceimpl.updateInfo(map);
     	        msg="保存成功";
     	}else{
+    		//据用户开始操作了
+    		String xmfrm=request.getParameter("xmfrm");
+    		String bmdm=request.getParameter("bmdm");
+    		String dwmc=request.getParameter("dwmc");
+    		String xmfl =request.getParameter("xmfl");
+    		String xmmc=request.getParameter("xmmc");
+    		String jhztz=request.getParameter("jhztz");
+    		String frdwm=request.getParameter("xmfrm");
+    		String xmdwmc=request.getParameter("dwmc");
+      		if(xmfl.equals("在库项目")){
+      	      map.put("xmfl","1");
+      		}
+      		if(xmfl.equals("待入库项目")){
+        	      map.put("xmfl","2");
+        		}
+      		if(xmfl.equals("未入库项目")){
+        	      map.put("xmfl","3");
+        		}
+      		if(xmfl.equals("已完成项目")){
+        	      map.put("xmfl","4");
+        		}
+    		
     		//具有审批权限
        		String radio = request.getParameter("selectRadio");
-       		String xxid=request.getParameter("xxid");
-    			System.out.println(radio);
-    			map.put("status",Integer.parseInt(radio));
-    			map.put("id",id);
-    		    projectinfoserviceimpl.updateInfos(map); //修改审批
-    		    map.put("xxid",xxid);
-    		    projectinfoserviceimpl.updatexiaoxi(map);//修改处理状态
-    		    msg="审批成功";
+       		map.put("xmfrm",xmfrm);
+       		map.put("bmdm",bmdm);
+       		map.put("dwmc",dwmc);
+       	
+       		map.put("xmmc",xmmc);
+       		map.put("jhztz",jhztz);
+       		map.put("frdwm",frdwm);
+       		map.put("status",radio);
+       		//开始修改
+       		int row = projectinfoserviceimpl.updateXmxx(map);
+       		System.out.println(row);
+//       	 projectinfoserviceimpl.updateXmxx(map);
+       		
+     		String xxid=request.getParameter("xxid");
+//    			System.out.println(radio);
+//    			map.put("status",Integer.parseInt(radio));
+//    			map.put("id",id);
+//    		    projectinfoserviceimpl.updateInfos(map); //修改审批
+   		    map.put("xxid",xxid);
+   		   int rows= projectinfoserviceimpl.updatexiaoxi(map);//修改处理状态
+   		   System.out.println(rows);
+		    msg="审批成功";
     	}
        
         

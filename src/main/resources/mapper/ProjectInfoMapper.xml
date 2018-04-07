@@ -3,7 +3,8 @@
 <mapper namespace="com.howard.investment.dao.ProjectInfoDao">
 	<!-- 按照状态查询项目信息 -->
     <select id="queryProjectInfo" resultType="map" parameterType="map">
-  	 select * from xmxx where xmfl=#{projectStatus} and 1=1
+<!--   	 select * from xmxx where xmfl=#{projectStatus} and 1=1 -->
+select * from xmxx where xmfl=#{projectStatus} and 1=1
   	 <if test='ifadmin == "yes"'>
   	 and  deptid=#{deptid}
   	 </if>
@@ -99,4 +100,20 @@
     	
     	
     	</select>
+    	
+    	<!-- 修改项目状态 -->
+    	<update id="updateBmdm"  parameterType="String" >
+    	  update xmxx set bmdm=#{bmdm},xmfl=#{xmfl} where id=#{id}
+    	
+    	</update>
+    	 
+    	<!-- 完全修改项目信息了 updateXmxx -->
+  		<update id="updateXmxx"  parameterType="Map" > 
+   	  update xmxx set xmfrm=#{xmfrm},bmdm=#{bmdm},xmdwmc=#{dwmc},xmmc=#{xmmc},frdm=#{frdm},jhztz=#{jhztz},xmfl=#{xmfl},
+			file1=#{file1},file2=#{file2},file3=#{file3},file4=#{file4},file5=#{file5},status=#{status} where id=#{id}
+    	
+    	</update> 
+    	
+    	
+    	
 </mapper>

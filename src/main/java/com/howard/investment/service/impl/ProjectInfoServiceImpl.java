@@ -126,4 +126,12 @@ public  class ProjectInfoServiceImpl implements ProjectInfoService {
 		public int xmfrCount(String xmfr){
 			return projectinfodao.xmfrCount(xmfr);
 		}
+		public int updateBmdm(Map map){
+			return projectinfodao.updateBmdm(map);
+		}
+		public int updateXmxx(Map map){
+			return projectinfodao.updateXmxx(map);
+		}
+		
+		
 }
