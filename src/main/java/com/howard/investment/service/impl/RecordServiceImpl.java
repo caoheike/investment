@@ -19,13 +19,13 @@ public class RecordServiceImpl implements RecordService {
     private RecordDao recordDao;
 
 	@Override
-	public List<Map> getRecordByKey(Integer pageNum, String type) {
-		return recordDao.getRecordByKey(pageNum, type);
+	public List<Map> getRecordByKey(Integer pageNum, String type,String typeid,String bmdm) {
+		return recordDao.getRecordByKey(pageNum, type,typeid,bmdm);
 	}
 
 	@Override
-	public int getRecordByKeyCount(String type) {
-		return recordDao.getRecordByKeyCount(type);
+	public int getRecordByKeyCount(String type,String typeid,String bmdm) {
+		return recordDao.getRecordByKeyCount(type,typeid,bmdm);
 	}
 	
 	@Override
@@ -80,6 +80,26 @@ public class RecordServiceImpl implements RecordService {
 	@Override
 	public int deleteXmByJhztz() {
 		return recordDao.deleteXmByJhztz();
+	}
+
+	@Override
+	public List<Map> getXmdwxxByKey(Integer pageNum, String bmdm, String dwmc) {
+		return recordDao.getXmdwxxByKey(pageNum, bmdm, dwmc);
+	}
+
+	@Override
+	public int getXmdwxxByKeyCount(String bmdm, String dwmc) {
+		return recordDao.getXmdwxxByKeyCount(bmdm, dwmc);
+	}
+
+	@Override
+	public int updateInfo(String id) {
+		return recordDao.updateInfo(id);
+	}
+
+	@Override
+	public Map getDeptById(String id) {
+		return recordDao.getDeptById(id);
 	}
 
 }

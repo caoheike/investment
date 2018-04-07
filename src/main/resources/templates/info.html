@@ -117,10 +117,10 @@ $(function (){
 			    	        	j++;
 			    	    
 			    	    if(result[i].infostate==0){//1同意 2不同意 
-			    	    	if(ttype==2){//编辑2用户的信息 通知他 
-			    	    		flg='<span style=color:red>您有新消息待处理</span><a href=deptInfo?id='+result[i].xmid+'&&type=10&xxid='+result[i].xminfo_id+'>点我处理<a/>';
-			    	    	}else if(ttype==10){//查询据用户的消息
-			    	    		flg=result[i].title;
+			    	    	if(ttype==2 || ttype==3){//编辑2用户的信息 通知他 
+			    	    		flg='<span style=color:red>您有新消息待处理</span><a href=deptxmbaInfo?id='+result[i].xmid+'&&type=10&xxid='+result[i].xminfo_id+'>点我处理<a/>';
+			    	    	}else if(ttype==10 || ttype==11){//查询据用户的消息
+			    	    		flg=result[i].title+"  "+"<a href=updateInfo?xxid="+result[i].xminfo_id+">点我处理<a/>";
 			    	    	
 			    	    	}
 			    	    	 cHtml+="<tr> <td align='center' valign='middle' class='borderright borderbottom' >"+j+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+result[i].xmmc+"</td> <td align='center' valign='middle' class='borderright borderbottom' >"+((typeof flg)=="undefined"?"":flg)+"</td>  </tr>";

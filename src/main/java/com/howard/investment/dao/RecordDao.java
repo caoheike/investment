@@ -13,9 +13,11 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface RecordDao {
 
-	List<Map> getRecordByKey(@Param("pageNum") Integer pageNum,@Param("type") String type);
+	List<Map> getRecordByKey(@Param("pageNum") Integer pageNum,@Param("type") String type,@Param("typeid") String typeid,@Param("bmdm") String bmdm);
 	
 	int deleteXmById(@Param("id") String id);
+	
+	Map getDeptById(@Param("id") String id);
 	
 	List<Map> getDept();
 	
@@ -27,11 +29,17 @@ public interface RecordDao {
 	
 	List<Map> getXmbaxxByDeptBmdm(@Param("bmdm") String  bmdm);
 	
+	List<Map> getXmdwxxByKey(@Param("pageNum") Integer pageNum,@Param("bmdm") String bmdm,@Param("dwmc") String  dwmc);
+	
+	int getXmdwxxByKeyCount(@Param("bmdm") String bmdm,@Param("dwmc") String  dwmc);
+	
 	int updateXmByKey(@Param("obj") Map map);
+	
+	int updateInfo(@Param("id") String id);
 	
 	int deleteXmByJhztz();
 	
-	int getRecordByKeyCount(@Param("type") String type);
+	int getRecordByKeyCount(@Param("type") String type,@Param("typeid") String typeid,@Param("bmdm") String bmdm);
 	
 	List<Map> getXmfrdwAll();
 	

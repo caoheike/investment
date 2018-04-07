@@ -40,10 +40,10 @@ td.fenye{ padding:10px 0 0 0; text-align:right;}
     <td align="left" valign="top">
     <table width="100%" border="0" cellspacing="0" cellpadding="0" id="search">
   		<tr>
-  		  <td width="10%" align="center" valign="middle" style="text-align:right; width:150px;"><a href="record.html?type=bmdm0" target="mainFrame" onFocus="this.blur()" class="add">部门未匹配</a></td>
-  		  <td width="10%" align="center" valign="middle" style="text-align:right; width:150px;"><a href="record.html?type=bmdm1" target="mainFrame" onFocus="this.blur()" class="add">部门已匹配</a></td>
+  		  <td width="10%" align="center" valign="middle" style="text-align:right; width:150px;"><a href="record.html?type=bmdm0" target="mainFrame" onFocus="this.blur()" class="add" id="bmwpp">部门未匹配</a></td>
+  		  <td width="10%" align="center" valign="middle" style="text-align:right; width:150px;"><a href="record.html?type=bmdm1" target="mainFrame" onFocus="this.blur()" class="add" id="bmypp">部门已匹配</a></td>
   		  <td width="10%" align="center" valign="middle" style="text-align:right; width:150px;"><a href="javascript:;" target="mainFrame" onFocus="this.blur()" class="add" id="pipei">匹配部门</a></td>
-  		  <td width="10%" align="center" valign="middle" style="text-align:right; width:150px;"><a href="javascript:;" target="mainFrame" onFocus="this.blur()" class="add">备案抓取</a></td>
+  		  <td width="10%" align="center" valign="middle" style="text-align:right; width:150px;"><a href="http://hyxwqy.com:9090/" target="mainFrame" onFocus="this.blur()" class="add" id="bazq">备案抓取</a></td>
   		  <td width="10%" align="center" valign="middle" style="text-align:right; width:150px;"><a href="javascript:;" target="mainFrame" onFocus="this.blur()" class="add" id="SendMessage">消息发送</a></td>
   		  <td width="10%" align="center" valign="middle" style="text-align:right; width:150px;"><a href="javascript:;" target="mainFrame" onFocus="this.blur()" class="add" id="bazxm">备案转项目</a></td>
   		</tr>
@@ -71,7 +71,7 @@ td.fenye{ padding:10px 0 0 0; text-align:right;}
       	<td style="display:none" align="center" valign="middle" class="borderright borderbottom" th:text="${obj.id}"></td>
       	<td style="display:none" align="center" valign="middle" class="borderright borderbottom" th:text="${obj.xmbadm}"></td>
       	<td style="display:none" align="center" valign="middle" class="borderright borderbottom" th:text="${obj.bmdm}"></td>
-        <td align="center" valign="middle" class="borderright borderbottom" th:text="${obj.xmmc}"></td>
+        <td align="center" valign="middle" class="borderright borderbottom get" th:text="${obj.xmmc}"></td>
         <td align="center" valign="middle" class="borderright borderbottom" th:text="${obj.xmfrdw}"></td>
         <td align="center" valign="middle" class="borderright borderbottom" th:text="${obj.spsx}"></td>
         <td align="center" valign="middle" class="borderright borderbottom" th:text="${obj.glbm}"></td>
@@ -201,7 +201,7 @@ td.fenye{ padding:10px 0 0 0; text-align:right;}
 
             <form id="infoForm" method="post" class="form-horizontal">
 				<p style="display:none" id="xms"></p>
-              <div class="form-group">
+              <div class="form-group" id="bmdiv">
                 <label class="col-sm-2 control-label">部门</label>
                 <div class="col-sm-3">
                   <select class="form-control m-b" id="bmdms">
@@ -250,7 +250,32 @@ td.fenye{ padding:10px 0 0 0; text-align:right;}
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript">
 var xms=null;
+var typeId=null;
+var record=null;
 $(function(){
+	
+	$.ajax({
+		url:"userinfo",
+		type:"get",
+		dataType:"json",
+		data:{},
+		success:function(data){
+			if(data.flag){
+				typeId==data.typeId;
+				if(data.typeId=='2' || data.typeId==2){
+					$("#bmwpp").hide();
+					$("#bmypp").hide();
+					$("#bazq").hide();
+					$("#bazxm").hide();
+					$("#pipei").hide();
+					$("#SendMessage").hide();
+				}
+			}
+		},
+		error:function(data){
+			console.log(data);
+		}
+	});
 	
 	$("#pipei").on("click",function(){
 		$.ajax({
@@ -292,6 +317,7 @@ $(function(){
 		});
 	});
 	$(".edit").on("click",function(){
+		record=$(this).parent().parent();
 		$("#xmId").val($(this).parent().parent().find("td").eq(0).text());
 		$("#xmbadm").val($(this).parent().parent().find("td").eq(1).text());
 		$("#bmdm").val($(this).parent().parent().find("td").eq(2).text());
@@ -302,6 +328,19 @@ $(function(){
 		$("#blzd").val($(this).parent().parent().find("td").eq(7).text());
 		$("#blrq").val($(this).parent().parent().find("td").eq(8).text());
 		$("#zqrq").val($(this).parent().parent().find("td").eq(9).text());
+		$("#myModal").modal();
+	});
+	$(".get").on("click",function(){
+		$("#xmId").val($(this).parent().find("td").eq(0).text());
+		$("#xmbadm").val($(this).parent().find("td").eq(1).text());
+		$("#bmdm").val($(this).parent().find("td").eq(2).text());
+		$("#xmmc").val($(this).parent().find("td").eq(3).text());
+		$("#xmfrdw").val($(this).parent().find("td").eq(4).text());
+		$("#spsx").val($(this).parent().find("td").eq(5).text());
+		$("#glbm").val($(this).parent().find("td").eq(6).text());
+		$("#blzd").val($(this).parent().find("td").eq(7).text());
+		$("#blrq").val($(this).parent().find("td").eq(8).text());
+		$("#zqrq").val($(this).parent().find("td").eq(9).text());
 		$("#myModal").modal();
 	});
 	$("#SendMessage").on("click",function(){
@@ -386,7 +425,6 @@ $(function(){
 			}
 		});
 	});
-	
 	$("#editSub").on("click",function(){
 		$.ajax({
 			url:"editXmByKey",
@@ -395,8 +433,17 @@ $(function(){
 			data:$("#form1").serialize(),
 			success:function(data){
 				if(data.flag){
-					alert("保存成功");
-					window.location.reload();
+					if(confirm("是否发送消息")){
+						$("#myModal").modal('hide');
+						$("#infoModal").modal('show');
+						$("#bmdiv").hide();
+						$("#xmmcs").text($(record).find("td").eq(3).text());
+						$("#xmfrdws").text($(record).find("td").eq(4).text());
+						$("#xms").text($(record).find("td").eq(0).text());
+					}else{
+						alert("保存成功");
+						window.location.reload();
+					}
 				}else{
 					alert(data.msg);
 				}

@@ -110,7 +110,7 @@ public class HomeController {
 
 	@RequestMapping("record.html")
 	public String recordView(@RequestParam(required = false) Integer pageNum,
-			@RequestParam(required = false) String type, Model model) {
+			@RequestParam(required = false) String type, Model model,HttpSession session) {
 		if (pageNum == null || pageNum < 1) {
 			model.addAttribute("pageNum", 1);
 			pageNum = 15;
@@ -118,8 +118,18 @@ public class HomeController {
 			model.addAttribute("pageNum", pageNum);
 			pageNum *= 15;
 		}
-		List<Map> list = recordService.getRecordByKey(pageNum, type);
-		int totalCount = recordService.getRecordByKeyCount(type);
+		Object sessionUser = session.getAttribute("sessionUser");
+		if (sessionUser == null) {
+			return "login";
+		}
+		Map map=(Map)sessionUser;
+		Map dept=recordService.getDeptById(map.get("deptid").toString());
+		String code=null;
+		if(dept!=null && dept.containsKey("code")){
+			code=dept.get("code").toString();
+		}
+		List<Map> list = recordService.getRecordByKey(pageNum, type,map.get("typeid").toString(),code);
+		int totalCount = recordService.getRecordByKeyCount(type,map.get("typeid").toString(),code);
 		for (int i = 0, j = list.size(); i < j; i++) {
 			if (!list.get(i).containsKey("bmdm")) {
 				list.get(i).put("bmdm", "");
@@ -131,6 +141,29 @@ public class HomeController {
 		model.addAttribute("pageSize", "15");
 		model.addAttribute("key", "?type=" + type + "&pageNum=");
 		return "record";
+	}
+
+	@RequestMapping("dwxx.html")
+	public String dwxxView(@RequestParam(required = false) Integer pageNum, @RequestParam(required = false) String bmdm,
+			@RequestParam(required = false) String dwmc, Model model) {
+		if (pageNum == null || pageNum < 1) {
+			model.addAttribute("pageNum", 1);
+			pageNum = 15;
+		} else {
+			model.addAttribute("pageNum", pageNum);
+			pageNum *= 15;
+		}
+		if (dwmc != null && !"".equals(dwmc) && !"null".equals(dwmc)) {
+			dwmc = "'%%" + dwmc + "%%'";
+		}
+		List<Map> list = recordService.getXmdwxxByKey(pageNum, bmdm, dwmc);
+		int totalCount = recordService.getXmdwxxByKeyCount(bmdm, dwmc);
+		model.addAttribute("list", list);
+		model.addAttribute("totalCount", totalCount);
+		model.addAttribute("pageCount", totalCount % 15 == 0 ? totalCount / 15 : totalCount / 15 + 1);
+		model.addAttribute("pageSize", "15");
+		model.addAttribute("key", "?bmdm=" + bmdm + "&dwmc=" + dwmc + "&pageNum=");
+		return "dwxx";
 	}
 
 	@RequestMapping("index.html")
@@ -197,6 +230,24 @@ public class HomeController {
 		return data;
 	}
 
+	@RequestMapping(value = "deptxmbaInfo", method = RequestMethod.GET)
+	public String deptInfo(HttpServletRequest request, @RequestParam("id") String id, Model model,
+			@RequestParam("type") String type) throws Exception {
+		System.out.println();
+		List<Map> queryProjectInfo = recordService.getXmByIds(id);
+		queryProjectInfo.get(0).put("type", type);
+		String xxid = request.getParameter("xxid");
+		queryProjectInfo.get(0).put("xxid", xxid);
+		if(queryProjectInfo.get(0).get("jhztz")==null || "".equals(queryProjectInfo.get(0).get("jhztz").toString())){
+			queryProjectInfo.get(0).put("jhztz","");
+		}
+		model.addAttribute("info", queryProjectInfo.get(0));
+
+		// 根据taype走不同页面
+
+		return "deptxmbaInfo";
+	}
+
 	@ResponseBody
 	@RequestMapping("getXmbaxxByDeptBmdm")
 	public Map<String, Object> getXmbaxxByDeptId(@RequestParam String bmdm) {
@@ -218,7 +269,13 @@ public class HomeController {
 			@RequestParam("title") String title, @RequestParam("xms") String xms) throws Exception {
 		HttpSession session = request.getSession();
 		Map maps = (Map) session.getAttribute("sessionUser");
-		List<Map> listXm = recordService.getXmByIds(xms.substring(0, xms.length() - 1));
+		if(xms.indexOf(",")!=-1){
+			xms=xms.substring(0, xms.length() - 1);
+		}
+		List<Map> listXm = recordService.getXmByIds(xms);
+		if("请选择".equals(bmdm)){
+			bmdm="0";
+		}
 		String fsz = "统计局";
 		Date day = new Date();
 		SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd");
@@ -269,7 +326,13 @@ public class HomeController {
 		}
 		return data;
 	}
-
+	
+	@RequestMapping("updateInfo")
+	public String updateInfo(@RequestParam String xxid) {
+		Map<String, Object> data = new HashMap<>();
+		recordService.updateInfo(xxid);
+		return "redirect:infoView";
+	}
 	@RequestMapping(value = "infoView", method = RequestMethod.GET)
 	public String infoView(HttpServletRequest request, Model model) throws Exception {
 
@@ -319,10 +382,10 @@ public class HomeController {
 			return data;
 		}
 		Map map = (Map) sessionUser;
-		List<Map> row2 = recordService.getXminfoByKey(map.get("deptid").toString(),2);
-		List<Map> row3 = recordService.getXminfoByKey(map.get("deptid").toString(),3);
-		List<Map> row10 = recordService.getXminfoByKey(map.get("deptid").toString(),10);
-		List<Map> row11 = recordService.getXminfoByKey(map.get("deptid").toString(),11);
+		List<Map> row2 = recordService.getXminfoByKey(map.get("deptid").toString(), 2);
+		List<Map> row3 = recordService.getXminfoByKey(map.get("deptid").toString(), 3);
+		List<Map> row10 = recordService.getXminfoByKey(map.get("deptid").toString(), 10);
+		List<Map> row11 = recordService.getXminfoByKey(map.get("deptid").toString(), 11);
 		data.put("row2", !row2.isEmpty());
 		data.put("row3", !row3.isEmpty());
 		data.put("row10", !row10.isEmpty());
