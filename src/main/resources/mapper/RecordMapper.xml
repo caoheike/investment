@@ -3,38 +3,133 @@
 <mapper namespace="com.howard.investment.dao.RecordDao">
 
     <select id="getRecordByKey" resultType="map">
-        select top 15 * from (select top ${pageNum} * from xmbaxx order by id desc) 
+        select top 15 * from (select top ${pageNum} * from xmbaxx where 1=1 
         <if test="type == 'bmdm0'">
-         where bmdm='' order by id desc,bmdm desc
+         and bmdm is null 
         </if>
         <if test="type == 'bmdm1'">
-         where bmdm!='' order by id desc
+         and bmdm is not null 
         </if>
-        <if test="type == null or type == ''">
-         order by id asc
+        <if test="typeid == '2' or typeid == 2">
+         and bmdm=#{bmdm} 
         </if>
+        order by id desc) 
+        order by id asc
     </select>
     
     <select id="getRecordByKeyCount" resultType="int">
-        select count(*) from xmbaxx 
+        select count(*) from xmbaxx where 1=1
         <if test="type == 'bmdm0'">
-         where bmdm='' 
+         and bmdm is null 
         </if>
         <if test="type == 'bmdm1'">
-         where bmdm!=''
+         and bmdm is not null 
+        </if>
+        <if test="typeid == '2' or typeid == 2">
+         and bmdm=#{bmdm} 
         </if>
     </select>
     
+    <select id="getXmdwxxByKey" resultType="map">
+        select top 15 * from (select top ${pageNum} * from xmdwxx  where 1=1  
+        <if test="bmdm != null and bmdm != '' and bmdm != 'null'">
+         and bmdm=#{bmdm} 
+        </if>
+        <if test="dwmc != null and dwmc != '' and dwmc != 'null'">
+         and dwmc like ${dwmc} 
+        </if>
+        order by xmdw_id desc  ) 
+        order by xmdw_id asc
+    </select>
+    
+    <select id="getXmdwxxByKeyCount" resultType="int">
+        select count(*) from xmdwxx where 1=1 
+        <if test="bmdm != null and bmdm != '' and bmdm != 'null'">
+         and bmdm=#{bmdm} 
+        </if>
+        <if test="dwmc != null and dwmc != '' and dwmc != 'null'">
+         and dwmc like ${dwmc} 
+        </if>
+    </select>
+    
+    <select id="getXmfrdwAll" resultType="map">
+        select * from xmdwxx
+    </select>
+    
+    <select id="getDept" resultType="map">
+        select * from dept 
+    </select>
+    
+    <select id="getDeptById" resultType="map">
+        select * from dept where id=#{id}
+    </select>
+    
+    <select id="getXmByIds" resultType="map">
+        select * from xmbaxx where id in(${ids}) 
+    </select>
+    
+    <select id="getXmbaxxByDeptBmdm" resultType="map">
+        select * from xmbaxx where bmdm=#{bmdm} 
+    </select>
+    
+    <select id="getXmbaxxByJhztz" resultType="map">
+        select a.*,b.id as deptid,a.id as xmid from xmbaxx a left join dept b on(a.bmdm=b.code) where a.jhztz>500
+    </select>
+    
+    <insert id="insertXmxx" parameterType="map" > 
+   		  insert into xmxx 
+   		  ([deptid],[xmfrm],[bmdm],[xmdwmc],[xmmc],[frdm],[jhztz],[xmfl],[status]) 
+   		  values(#{obj.deptid},#{obj.xmbadm},${obj.bmdm},#{obj.xmfrdw},#{obj.xmmc},#{obj.xmbadm},${obj.jhztz},1,0)
+    </insert> 
+    
+    <update id="updateByKey">
+        update xmbaxx set bmdm=#{bmdm} where xmfrdw=#{xmfrdw}
+    </update>
+    
+    <delete id="deleteXmByJhztz">
+        delete from xmbaxx where jhztz>500
+    </delete>
+    
+    <update id="updateInfo">
+        update xminfo set infostate=1 where xminfo_id=#{id}
+    </update>
+    
+    <update id="updateXmByKey">
+        update xmbaxx set 
+        <if test="obj.xmbadm!=null">xmbadm=#{obj.xmbadm},</if>
+        <if test="obj.bmdm!=null and obj.bmdm!=''">bmdm=#{obj.bmdm},</if>
+        <if test="obj.xmmc!=null">xmmc=#{obj.xmmc},</if>
+        <if test="obj.xmfrdw!=null">xmfrdw=#{obj.xmfrdw},</if>
+        <if test="obj.spsx!=null">spsx=#{obj.spsx},</if>
+        <if test="obj.glbm!=null">glbm=#{obj.glbm},</if>
+        <if test="obj.blzd!=null">blzd=#{obj.blzd},</if>
+        <if test="obj.blrq!=null">blrq=#{obj.blrq},</if>
+        <if test="obj.zqrq!=null">zcrq=#{obj.zqrq},</if>
+        <if test="obj.jhztz!=null">jhztz=#{obj.jhztz}</if>
+        where id=#{obj.xmId}
+    </update>
+    
+    <delete id="deleteXmById">
+        delete from xmbaxx where id=#{id}
+    </delete>
     
     <select id="getXminfoByKey" resultType="map">
         select a.* from xminfo a 
+        <if test="typeId==10">
+        where a.infostate=0 and a.infotype=2 
+        </if>
+        <if test="typeId==2">
         left join dept b on(a.bmdm=b.code) 
         where a.infostate=0 
-        <if test="typeId=='10'">
-        and a.infotype=2 
+        and a.infotype=10 and b.id=#{deptId} 
         </if>
-        <if test="typeId=='2'">
-        and a.infotype=10 b.id=#{deptId} 
+        <if test="typeId==3">
+        left join dept b on(a.bmdm=b.code) 
+        where a.infostate=0 
+        and a.infotype=11 and b.id=#{deptId} 
+        </if>
+        <if test="typeId==11">
+        where a.infostate=0 and a.infotype=3 
         </if>
     </select>
     

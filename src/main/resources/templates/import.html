@@ -1,0 +1,239 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>主要内容区main</title>
+<link href="css/css.css" type="text/css" rel="stylesheet" />
+<link href="css/main.css" type="text/css" rel="stylesheet" />
+<link rel="shortcut icon" href="images/main/favicon.ico" />
+<style>
+body{overflow-x:hidden; background:#f2f0f5; padding:15px 0px 10px 5px;}
+#searchmain{ font-size:12px;}
+#search{ font-size:12px; background:#548fc9; margin:10px 10px 0 0; display:inline; width:100%; color:#FFF}
+#search form span{height:40px; line-height:40px; padding:0 0px 0 10px; float:left;}
+#search form input.text-word{height:24px; line-height:24px; width:180px; margin:8px 0 6px 0; padding:0 0px 0 10px; float:left; border:1px solid #FFF;}
+#search form input.text-but{height:24px; line-height:24px; width:55px; background:url(images/main/list_input.jpg) no-repeat left top; border:none; cursor:pointer; font-family:"Microsoft YaHei","Tahoma","Arial",'宋体'; color:#666; float:left; margin:8px 0 0 6px; display:inline;}
+#search a.add{ background:url(images/main/add.jpg) no-repeat 0px 6px; padding:0 10px 0 26px; height:40px; line-height:40px; font-size:14px; font-weight:bold; color:#FFF}
+#search a:hover.add{ text-decoration:underline; color:#d2e9ff;}
+#main-tab{ border:1px solid #eaeaea; background:#FFF; font-size:12px;}
+#main-tab th{ font-size:12px; background:url(images/main/list_bg.jpg) repeat-x; height:32px; line-height:32px;}
+#main-tab td{ font-size:12px; line-height:40px;}
+#main-tab td a{ font-size:12px; color:#548fc9;}
+#main-tab td a:hover{color:#565656; text-decoration:underline;}
+.bordertop{ border-top:1px solid #ebebeb}
+.borderright{ border-right:1px solid #ebebeb}
+.borderbottom{ border-bottom:1px solid #ebebeb}
+.borderleft{ border-left:1px solid #ebebeb}
+.gray{ color:#dbdbdb;}
+td.fenye{ padding:10px 0 0 0; text-align:right;}
+.bggray{ background:#f9f9f9; font-size:14px; font-weight:bold; padding:10px 10px 10px 0; width:120px;}
+.main-for{ padding:10px;}
+.main-for input.text-word{ width:310px; height:36px; line-height:36px; border:#ebebeb 1px solid; background:#FFF; font-family:"Microsoft YaHei","Tahoma","Arial",'宋体'; padding:0 10px;}
+.main-for select{ width:310px; height:36px; line-height:36px; border:#ebebeb 1px solid; background:#FFF; font-family:"Microsoft YaHei","Tahoma","Arial",'宋体'; color:#666;}
+.main-for input.text-but{ width:100px; height:40px; line-height:30px; border: 1px solid #cdcdcd; background:#e6e6e6; font-family:"Microsoft YaHei","Tahoma","Arial",'宋体'; color:#969696; float:left; margin:0 10px 0 0; display:inline; cursor:pointer; font-size:14px; font-weight:bold;}
+#addinfo a{ font-size:14px; font-weight:bold; background:url(images/main/addinfoblack.jpg) no-repeat 0 1px; padding:0px 0 0px 20px; line-height:45px;}
+#addinfo a:hover{ background:url(images/main/addinfoblue.jpg) no-repeat 0 1px;}
+</style>
+	<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css"/>
+	<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+	
+	<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+var flg='0';
+$(function (){
+$("#xiaoxi").click(function (){
+	if(flg=='1'){
+		$("#sub").submit();
+	}else{
+		$("#tanchuang").click();
+	}
+
+	
+})	
+	
+	
+})
+
+$(function (){
+$("#send").click(function (){
+	
+	
+})	
+	
+})
+
+<!--提交消息-->
+$(function (){
+
+
+$("#send").click(function (){
+	var bmdm=$("#bmdm").val();
+	var xmmc=$("#xmmc").val();
+	var xmdwmc= $("#xmdwmc").val();
+	var title=$("#title").val();
+	var ids=$("#ids").val();
+
+// 	$("#title").title();
+	$("#title").val();<!--+xmmc-->
+
+		
+		$.ajax({
+		    type: "POST",
+		    url: "sendMassage",
+		    data: {"bmdm":bmdm,"xmmc":xmmc,"xmdwmc":xmdwmc,"title":title,"xmid":ids,"msgtype":$("#msgtype").val()},
+		    success: function(data){
+		 		if(data.restInfo=="success"){
+		 			alert("发送成功");
+		 			$("#sub").submit();
+//	 	 			location.reload();
+		 			
+		 		}else{
+		 			alert("发送失败");
+		 		}
+		       }
+		 });	
+	
+	
+	
+	
+})	
+	
+	
+})
+$(function (){
+$("#bfs").click(function (){
+
+flg='1';	
+	
+	
+})	
+	
+})
+
+</script>
+</head>
+<body>
+<!--main_top-->
+
+<form th:action="@{infoimport}" enctype="multipart/form-data" method="post">
+
+<table width="99%" border="0" cellspacing="0" cellpadding="0" id="searchmain">
+   
+                          <tr   onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
+        <td align="right" valign="middle" class="borderright borderbottom bggray">项目数据导入：</td>
+        <td align="left" valign="middle" class="borderright borderbottom main-for">
+         <input name="file" type="file"/> <br/> <span th:if="${status=='no'}" > &nbsp;&nbsp;&nbsp;<a th:href="项目数据导入格式.xls">点我下载数据模版</a></span>
+       
+        </td>
+  
+      </tr>
+      <!-- 显示结束 -->
+      <tr onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
+
+          <td align="right" valign="middle" class="borderright borderbottom bggray">&nbsp;</td>
+        <td align="left" valign="middle" class="borderright borderbottom main-for">
+
+            <input name="xiaoxi" id="xiaoxi" type="submit" value="提交" class="text-but"/>
+        <input name="" type="reset" value="重置" class="text-but"/></td>
+        </tr>
+    </table>
+    <div th:if="${type=='0'}">
+    <span th:if="${status=='yes'}" > 您有<a th:text="${count}"></a>条数据导入失败了！以下是详情 </span>
+     成功<a th:text="${successCount}"></a> 条！！
+ 
+    <span th:if="${status=='yes'}" >
+
+
+          
+          <table class="table table-bordered">
+
+	<thead>
+		<tr>
+			<th>部门代码</th>
+			<th>项目名称</th>
+			<th>年</th>
+			<th>月</th>
+			
+			
+			
+		
+		
+		</tr>
+	</thead>
+	<tbody>
+		<tr  th:each="user,userStat : ${list}">  
+          			<td  th:text="${user.bmdm}"></td>
+          				<td  th:text="${user.xmmc}"></td>
+          			<td  th:text="${user.y}"></td>
+          			<td  th:text="${user.m}"></td>
+          			
+          		
+          		
+          		</tr>
+	
+	</tbody>
+</table>
+
+         
+         </span> 
+             </div>
+ 
+
+
+
+</form>
+
+
+
+<form th:action="@{infoimports}" enctype="multipart/form-data" method="post">
+
+<table width="99%" border="0" cellspacing="0" cellpadding="0" id="searchmain">
+   
+                          <tr   onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
+        <td align="right" valign="middle" class="borderright borderbottom bggray">项目信息导入：</td>
+        <td align="left" valign="middle" class="borderright borderbottom main-for">
+         <input name="file" type="file"/>    <span th:if="${status=='no'}" ></span> <br/> <span th:if="${status=='no'}" > &nbsp;&nbsp;&nbsp;<a th:href="项目信息导入格式.xls">点我下载信息模版</a></span>
+       
+        </td>
+  
+      </tr>
+ 
+      <tr onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
+
+          <td align="right" valign="middle" class="borderright borderbottom bggray">&nbsp;</td>
+        <td align="left" valign="middle" class="borderright borderbottom main-for">
+
+            <input name="xiaoxi" id="xiaoxi" type="submit" value="提交" class="text-but"/>
+        <input name="" type="reset" value="重置" class="text-but"/></td>
+        </tr>
+    </table>
+    <div th:if="${type=='1'}">
+  <span th:if="${status=='yes'}" > 您有<a th:text="${count}"></a>条数据导入失败了！以下是详情 </span>
+   成功<a th:text="${successCount}"></a> 条！！
+
+    <span th:if="${status=='yes'}" >
+
+          <table>
+          		<tr>
+					<td>部门代码</td>       
+						<td>部门代码</td>          		
+          		</tr>
+          	<tr  th:each="user,userStat : ${list}">  
+          			<td  th:text="${user.bmdm}"></td>
+          			
+          			<td  th:text="${user.xmmc}"></td>
+          		
+          		</tr>
+          		
+          </table>
+         
+         </span> 
+     </div>
+
+
+
+</form>
+
+
+</body>
+</html>

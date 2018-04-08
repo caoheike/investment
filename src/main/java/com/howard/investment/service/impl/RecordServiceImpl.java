@@ -19,18 +19,87 @@ public class RecordServiceImpl implements RecordService {
     private RecordDao recordDao;
 
 	@Override
-	public List<Map> getRecordByKey(Integer pageNum, String type) {
-		return recordDao.getRecordByKey(pageNum, type);
+	public List<Map> getRecordByKey(Integer pageNum, String type,String typeid,String bmdm) {
+		return recordDao.getRecordByKey(pageNum, type,typeid,bmdm);
 	}
 
 	@Override
-	public int getRecordByKeyCount(String type) {
-		return recordDao.getRecordByKeyCount(type);
+	public int getRecordByKeyCount(String type,String typeid,String bmdm) {
+		return recordDao.getRecordByKeyCount(type,typeid,bmdm);
+	}
+	
+	@Override
+	public int updateByKey(String bmdm,String xmfrdw) {
+		return recordDao.updateByKey(bmdm,xmfrdw);
+	}
+	@Override
+	public List<Map> getXmfrdwAll() {
+		return recordDao.getXmfrdwAll();
 	}
 
 	@Override
 	public List<Map> getXminfoByKey(String deptId,int typeId) {
 		return recordDao.getXminfoByKey(deptId,typeId);
+	}
+
+	@Override
+	public int deleteXmById(String id) {
+		return recordDao.deleteXmById(id);
+	}
+
+	@Override
+	public int updateXmByKey(Map map) {
+		return recordDao.updateXmByKey(map);
+	}
+
+	@Override
+	public List<Map> getDept(){
+		return recordDao.getDept();
+	}
+
+	@Override
+	public List<Map> getXmbaxxByDeptBmdm(String bmdm) {
+		return recordDao.getXmbaxxByDeptBmdm(bmdm);
+	}
+
+	@Override
+	public List<Map> getXmByIds(String ids) {
+		return recordDao.getXmByIds(ids);
+	}
+
+	@Override
+	public List<Map> getXmbaxxByJhztz() {
+		return recordDao.getXmbaxxByJhztz();
+	}
+
+	@Override
+	public int insertXmxx(Map map) {
+		return recordDao.insertXmxx(map);
+	}
+
+	@Override
+	public int deleteXmByJhztz() {
+		return recordDao.deleteXmByJhztz();
+	}
+
+	@Override
+	public List<Map> getXmdwxxByKey(Integer pageNum, String bmdm, String dwmc) {
+		return recordDao.getXmdwxxByKey(pageNum, bmdm, dwmc);
+	}
+
+	@Override
+	public int getXmdwxxByKeyCount(String bmdm, String dwmc) {
+		return recordDao.getXmdwxxByKeyCount(bmdm, dwmc);
+	}
+
+	@Override
+	public int updateInfo(String id) {
+		return recordDao.updateInfo(id);
+	}
+
+	@Override
+	public Map getDeptById(String id) {
+		return recordDao.getDeptById(id);
 	}
 
 }

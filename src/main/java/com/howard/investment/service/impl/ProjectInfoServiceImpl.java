@@ -1,5 +1,7 @@
 package com.howard.investment.service.impl;
 
+import com.howard.bean.ProjectInfo;
+import com.howard.bean.xmxx;
 import com.howard.investment.dao.ProjectInfoDao;
 import com.howard.investment.dao.UserDao;
 import com.howard.investment.service.ProjectInfoService;
@@ -99,4 +101,37 @@ public  class ProjectInfoServiceImpl implements ProjectInfoService {
 		return projectinfodao.getbmdm(deptid);
 	}
  
+	/**
+	  * 导入项目数据
+	  */
+		public int inportInfo(ProjectInfo info){
+			return projectinfodao.inportInfo(info);
+		}
+		public int inportInfos(xmxx info){
+			return projectinfodao.inportInfos(info);
+		}
+		
+		
+		/**
+		 * 查询导入到信息是否存在，如果存在再导入，不存在则不导入
+		 * 
+		 */
+		public Map queryCount(String xmfrm){
+			return projectinfodao.queryCount(xmfrm);
+		}
+		public Map querydept(int deptid){
+			return projectinfodao.quertdept(deptid);
+		}
+		
+		public int xmfrCount(String xmfr){
+			return projectinfodao.xmfrCount(xmfr);
+		}
+		public int updateBmdm(Map map){
+			return projectinfodao.updateBmdm(map);
+		}
+		public int updateXmxx(Map map){
+			return projectinfodao.updateXmxx(map);
+		}
+		
+		
 }
