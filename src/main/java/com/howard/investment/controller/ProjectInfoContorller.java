@@ -17,6 +17,8 @@ import java.util.Properties;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.html.*;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -578,7 +580,59 @@ public class ProjectInfoContorller {
 		    
 		    
 		    }
-	  
-	  
-  
+	/**
+	 *  查询数据报表页面
+	 */
+
+	@RequestMapping(value = "getData",method = RequestMethod.GET)
+	public String getData(HttpServletRequest request) throws Exception {
+
+
+		return "getData";
+	}
+	/**
+	 * 根据提交的数据 去网站爬取
+	 */
+	@ResponseBody
+	@RequestMapping(value = "reptileData",method = RequestMethod.POST)
+	public String reptileData(HttpServletRequest request) throws Exception {
+		String  xmzt=request.getParameter("xmzt");
+		String  bm=request.getParameter("bm");
+		String  y=request.getParameter("y");
+		String  m=request.getParameter("m");
+		String  xmxx=request.getParameter("xmxx");
+
+		WebClient WebClients = new WebClient();
+		HtmlPage page = WebClients.getPage("http://www.hyxwqy.com/qytj/login.asp");
+		HtmlTextInput username = page.getElementByName("username");
+		HtmlPasswordInput username2 = page.getElementByName("password");
+		username.setValueAttribute("tjjfl");
+		username2.setValueAttribute("111111");
+		page.executeJavaScript("javascript:chkLoginFrm()");
+		Thread.sleep(3000);
+		HtmlPage pageInfo= WebClients.getPage("http://www.hyxwqy.com/qytj/tzxmsj.asp");//进入查询页面
+		HtmlSelect xmfl = pageInfo.getElementByName("xmfl");
+		xmfl.setDefaultValue(xmzt);
+		HtmlSelect bms = pageInfo.getElementByName("deptid");
+		bms.setDefaultValue(bm);
+		HtmlSelect ys = pageInfo.getElementByName("y");
+		ys.setDefaultValue(y);
+		HtmlSelect ms = pageInfo.getElementByName("m");
+		ms.setDefaultValue(m);
+		HtmlTextInput keywords = pageInfo.getElementByName("keywords");
+		keywords.setValueAttribute(xmxx);
+		HtmlSubmitInput submit = pageInfo.getElementByName("submit");
+		HtmlPage endpage= submit.click();
+		Thread.sleep(3000);
+		HtmlTable table= (HtmlTable) endpage.getByXPath("/html/body/div[1]/div[4]/div/table").get(0);
+//		for(HtmlTableRow row:table.getRows()){ // 遍历所有行
+//			for(HtmlTableCell cell:row.getCells()){  // 遍历所有列
+//				System.out.print(cell.asText()+" ");
+//
+//			}
+//
+//		}
+		return table.asXml().replaceAll("1155","100%");
+	}
+
 }

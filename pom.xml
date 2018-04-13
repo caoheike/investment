@@ -124,26 +124,42 @@
             <artifactId>httpmime</artifactId>
             <version>4.5.3</version>
         </dependency>
+        <dependency>
+            <groupId>htmlunit</groupId>
+            <artifactId>htmlunit</artifactId>
+            <version>1.14</version>
+            <type>pom</type>
+        </dependency>
+        <dependency>
+            <groupId>net.sourceforge.htmlunit</groupId>
+            <artifactId>htmlunit</artifactId>
+            <version>2.25</version>
+        </dependency>
 
- 	 <dependency>
-<groupId>access</groupId>
-<artifactId>access</artifactId>
-<version>2.0.8</version>
-</dependency>
+        <dependency>
+            <groupId>access</groupId>
+            <artifactId>access</artifactId>
+            <version>2.0.8</version>
+        </dependency>
 
+        <dependency>
+            <groupId>net.sourceforge.cssparser</groupId>
+            <artifactId>cssparser</artifactId>
+            <version>0.9.25</version>
+        </dependency>
 
+        <!-- spring热启动 有助于开发 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>3.9</version>
+        </dependency>
 
-		<!-- spring热启动 有助于开发 -->
-		<dependency>  
-            <groupId>org.springframework.boot</groupId>  
-            <artifactId>spring-boot-devtools</artifactId>  
-            <optional>true</optional>  
-  		</dependency>  
-  		<dependency>  
-    <groupId>org.apache.poi</groupId>  
-    <artifactId>poi-ooxml</artifactId>  
-    <version>3.9</version>  
-</dependency>
     </dependencies>
 
     <properties>
@@ -152,26 +168,25 @@
         <java.version>1.8</java.version>
     </properties>
 
-    
-    
-    
+
+
     <build>
-            <finalName>investment</finalName>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>2.3.2</version>
-        <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
-          <encoding>UTF-8</encoding>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-      </plugin>
-    </plugins>
-  </build>
+        <finalName>investment</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>
