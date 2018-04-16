@@ -2,6 +2,7 @@ package com.howard.investment.controller;
 
 
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -17,6 +18,7 @@ import java.util.Properties;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.*;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -609,30 +611,44 @@ public class ProjectInfoContorller {
 		username.setValueAttribute("tjjfl");
 		username2.setValueAttribute("111111");
 		page.executeJavaScript("javascript:chkLoginFrm()");
-		Thread.sleep(3000);
-		HtmlPage pageInfo= WebClients.getPage("http://www.hyxwqy.com/qytj/tzxmsj.asp");//进入查询页面
-		HtmlSelect xmfl = pageInfo.getElementByName("xmfl");
-		xmfl.setDefaultValue(xmzt);
-		HtmlSelect bms = pageInfo.getElementByName("deptid");
-		bms.setDefaultValue(bm);
-		HtmlSelect ys = pageInfo.getElementByName("y");
-		ys.setDefaultValue(y);
-		HtmlSelect ms = pageInfo.getElementByName("m");
-		ms.setDefaultValue(m);
-		HtmlTextInput keywords = pageInfo.getElementByName("keywords");
-		keywords.setValueAttribute(xmxx);
-		HtmlSubmitInput submit = pageInfo.getElementByName("submit");
-		HtmlPage endpage= submit.click();
-		Thread.sleep(3000);
-		HtmlTable table= (HtmlTable) endpage.getByXPath("/html/body/div[1]/div[4]/div/table").get(0);
-//		for(HtmlTableRow row:table.getRows()){ // 遍历所有行
-//			for(HtmlTableCell cell:row.getCells()){  // 遍历所有列
-//				System.out.print(cell.asText()+" ");
+//		Thread.sleep(3000);
+//		HtmlPage pageInfo=
+		WebClients.getPage("http://www.hyxwqy.com/qytj/tzxmsj.asp");//进入查询页面	HtmlSelect xmfl = pageInfo.getElementByName("xmfl");
+
+		StringBuffer sb=new StringBuffer();
+		HtmlPage pages= null;
+		pages = WebClients.getPage("http://www.hyxwqy.com/qytj/tzxmsj.asp?action=search&stype=xmsj&xmfl="+xmzt+"&stypes=2&deptid="+bm+"&y="+y+"&m="+m+"&keywords="+xmxx+"&submit=搜+索&page="+1+"");
+		HtmlTable table= (HtmlTable) pages.getByXPath("/html/body/div[1]/div[4]/div/table").get(0);
+
+//		for (int i = 1; i <20 ; i++) {
 //
+//
+//			try {
+//				pages = WebClients.getPage("http://www.hyxwqy.com/qytj/tzxmsj.asp?action=search&stype=xmsj&xmfl="+xmzt+"&stypes=2&deptid="+bm+"&y="+y+"&m="+m+"&keywords="+xmxx+"&submit=搜+索&page="+i+"");
+//				HtmlTable table= (HtmlTable) pages.getByXPath("/html/body/div[1]/div[4]/div/table").get(0);
+//				if(table.asXml().toString().contains("下一页")){
+//					sb.append(table.asXml());
+//				}else{
+//					break;
+//				}
+//
+//			} catch (Exception e) {
+//				break;
 //			}
 //
 //		}
+		for (int i = 0; i <table.getRowCount() ; i++) {
+			if(table.getRow(i).asText().contains("页")){
+				table.getRow(i).remove();
+			}
+
+		}
+
+
 		return table.asXml().replaceAll("1155","100%");
 	}
+
+
+
 
 }

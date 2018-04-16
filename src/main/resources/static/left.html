@@ -30,6 +30,7 @@ $(function(){
 					$("#spxx").css("display","block");
 					$("#xbaxx").css("display","block");
 				}else{
+					$("#tjhz").css("display","block");
 					$("#xm_bmxx").css("display","block");
 					$("#ba_bmxx").css("display","block");
 					$("#bmyh").css("display","block");
@@ -100,10 +101,10 @@ body{overflow-x:hidden; background:url(images/main/leftbg.jpg) left top repeat-y
         <a href="errorPage" target="mainFrame" onFocus="this.blur()">密码修改</a>
         <a id="bmyh" style="display:none" href="errorPage" target="mainFrame" onFocus="this.blur()">部门用户</a>
       </div>
-      <div>
+      <div id="tjhz" style="display:none">
         <span>统计汇总</span>
-        <a href="errorPage" target="mainFrame" onFocus="this.blur()">基础数据</a>
-        <a href="errorPage" target="mainFrame" onFocus="this.blur()">汇总数据</a>
+        <a href="getData" target="mainFrame" onFocus="this.blur()">数据报表</a>
+        <!--<a href="errorPage" target="mainFrame" onFocus="this.blur()">汇总数据</a>-->
       </div>
       <div style="display:none" id="dwxx" >
         <span>单位信息</span>
