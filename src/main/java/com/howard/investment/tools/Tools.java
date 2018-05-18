@@ -1,6 +1,9 @@
 package com.howard.investment.tools;
 
-import java.security.MessageDigest;  
+import net.sf.json.JSONObject;
+
+import java.io.IOException;
+import java.security.MessageDigest;
 
 /** 
  * @Description:MD5加解密工具 
@@ -30,7 +33,32 @@ public class Tools {
             throw new RuntimeException(e);  
         }  
         return encryptStr;  
-    }  
+    }
+
+    public static String sendWxMsg(String openId,String name,String title) throws IOException {
+        System.out.println(openId+"----"+name+"------"+title);
+        String accessTokenUrl = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+"wx9fc89e5873902f0c"+"&secret="+ "d887bf689e61f5e9b29f27c31bd659ed";
+        String result = HttpUtils.getJson(accessTokenUrl);
+        System.out.println(result);
+        JSONObject json = JSONObject.fromObject(result);
+        JSONObject data = new JSONObject();
+        data.put("touser",openId);
+        data.put("template_id","hPFO7lsd8rAnuQLBQG3WeyQCNAyq-HAYxWOKeuthJEQ");
+        data.put("topcolor","#FF0000");
+        JSONObject msg = new JSONObject();
+        JSONObject xmmc = new JSONObject();
+        xmmc.put("value",name);
+        xmmc.put("color","#e81f32");
+        msg.put("xmmc",xmmc);
+        JSONObject info = new JSONObject();
+        info.put("value",title);
+        info.put("color","#173177");
+        msg.put("info",info);
+        data.put("data",msg);
+        result = HttpUtils.sendInfo("https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+json.getString("access_token"),data.toString());
+        System.out.println(result);
+        return result;
+    }
   
     /** 
      * @Description:加密-16位小写 

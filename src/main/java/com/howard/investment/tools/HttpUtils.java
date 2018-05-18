@@ -37,6 +37,7 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Howard on 2017/11/6
@@ -275,7 +276,8 @@ public class HttpUtils {
         // 请求地址
         HttpPost httpPost = new HttpPost(url);
         // 创建参数队列
-        List<NameValuePair> paramsList = new ArrayList<NameValuePair>();
+        List<NameValuePair> paramsList = new ArrayList<>();
+
         paramsList.add(new BasicNameValuePair("data", data));//数据
         UrlEncodedFormEntity entity;
         entity = new UrlEncodedFormEntity(paramsList, "UTF-8");
@@ -287,6 +289,38 @@ public class HttpUtils {
             return EntityUtils.toString(httpEntity, "UTF-8");
         }
         return null;
+    }
+
+    public static String sendPost(String url, Map<String,String> data){
+        try {
+            // 创建HttpClientBuilder
+            HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
+            // HttpClient
+            CloseableHttpClient closeableHttpClient = httpClientBuilder.build();
+            // 请求地址
+            HttpPost httpPost = new HttpPost(url);
+            httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded");
+            httpPost.setHeader("User-Agent","Mozilla/5.0 (Linux; U; Android 4.3; en-us; SM-N900T Build/JSS15J) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30");
+            // 创建参数队列
+            List<NameValuePair> paramsList = new ArrayList<>();
+            for(Map.Entry<String,String> entry : data.entrySet()){
+                paramsList.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));//数据
+            }
+            UrlEncodedFormEntity entity;
+            entity = new UrlEncodedFormEntity(paramsList, "UTF-8");
+            httpPost.setEntity(entity);
+            CloseableHttpResponse response = closeableHttpClient.execute(httpPost);
+            // getEntity()
+            HttpEntity httpEntity = response.getEntity();
+            int code = response.getStatusLine().getStatusCode();
+            System.out.println("postDataCode:"+code);
+            if (httpEntity != null) {
+                return EntityUtils.toString(httpEntity, "UTF-8");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "{\"errorInfo\": \"推送超时!\",\"errorCode\": \"1111\"}";
     }
 
     public static HttpClient getSSLInsecureClient() throws Exception {

@@ -15,6 +15,12 @@ import java.util.Map;
 public interface UserDao {
 
     Map getUserByKey(@Param("userName") String userName,@Param("password") String password);
+
+    int updateUserByKey(@Param("obj") Map map);
+
+    List<Map> getUserByBmdm(@Param("bmdm") String bmdm);
+
+    List<Map> getUserByJu();
     
 
 

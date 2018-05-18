@@ -1,5 +1,6 @@
 package com.howard.investment.controller;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -9,6 +10,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.howard.investment.tools.HttpUtils;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +24,7 @@ import com.howard.investment.service.impl.ProjectInfoServiceImpl;
 import com.howard.investment.service.impl.RecordServiceImpl;
 import com.howard.investment.service.impl.UserServiceImpl;
 import com.howard.investment.tools.Tools;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * Created by WangHua on 18/3/28.
@@ -295,6 +299,16 @@ public class HomeController {
 			map.put("inputdate", df.format(day));
 			map.put("xmid", Integer.parseInt(listXm.get(i).get("id").toString()));
 			row += projectinfoserviceimpl.sendMessage(map);
+			List<Map> users = null;
+			if(bmdm!=null && !"".equals(bmdm)){
+				users = userService.getUserByBmdm(bmdm);
+
+			}else{
+				users = userService.getUserByJu();
+			}
+			for (int j = 0; j < users.size(); j++) {
+				Tools.sendWxMsg(users.get(j).get("openid").toString(),map.get("xmmc").toString(),title);
+			}
 		}
 		if (row != 0) {
 			map.put("flag", true);
@@ -314,6 +328,9 @@ public class HomeController {
 			List<Map> list = recordService.getXmbaxxByJhztz();
 			int rowXmxx = 0;
 			for (int i = 0; i < list.size(); i++) {
+				if(!list.get(i).containsKey("bmdm")){
+					list.get(i).put("bmdm",0);
+				}
 				rowXmxx += recordService.insertXmxx(list.get(i));
 			}
 			int rowXmbaxx = recordService.deleteXmByJhztz();
@@ -321,6 +338,7 @@ public class HomeController {
 			data.put("rowXmxx", rowXmxx);
 			data.put("flag", true);
 		} catch (Exception e) {
+			e.printStackTrace();
 			data.put("flag", false);
 			data.put("msg", "操作失败");
 		}
@@ -393,5 +411,51 @@ public class HomeController {
 		data.put("flag", true);
 		return data;
 	}
+
+	@RequestMapping("getOpenId.html")
+	public String getOpenId(HttpServletRequest request,HttpSession session) {
+		String code = request.getParameter("code");
+		if (code == null || code.equals("")) {
+			//调用微信网页授权
+			String uri = request.getScheme() + "://" + request.getServerName() + request.getRequestURI();
+			String redirectUri = "redirect:https://open.weixin.qq.com/connect/oauth2/authorize?appid=" +
+					"wx9fc89e5873902f0c" +
+					"&redirect_uri=" +
+					uri +
+					"&response_type=code&scope=snsapi_base&state=123#wechat_redirect";
+			return redirectUri;
+		} else {
+			//通过code获取openid
+			String accessTokenUrl = "https://api.weixin.qq.com/sns/oauth2/access_token" + "?appid=" + "wx9fc89e5873902f0c" +
+					"&secret=" + "d887bf689e61f5e9b29f27c31bd659ed" +
+					"&code=" + code +
+					"&grant_type=authorization_code";
+			String result = HttpUtils.getJson(accessTokenUrl);
+			JSONObject json = JSONObject.fromObject(result);
+			if (json.containsKey("openid")) {
+			    session.setAttribute("openId",json.getString("openid"));
+				System.out.println(json.getString("openid"));
+			}
+		}
+		return "loginOpenId";
+	}
+    @RequestMapping("loginOpenId")
+    public String loginOpenId(@RequestParam String userName, @RequestParam String password,Model model, HttpSession session) {
+        password = Tools.encrypt16(password);
+        Map map = userService.getUserByKey(userName, password);
+        if (map != null) {
+            Object openId = session.getAttribute("openId");
+            if(openId!=null && !"".equals(openId.toString())){
+                map.put("openId",openId.toString());
+                userService.updateUserByKey(map);
+            }
+            session.setAttribute("sessionUser", map);
+        } else {
+            model.addAttribute("msg","密码错误");
+            return "fail";
+        }
+        return "success";
+    }
+
 
 }

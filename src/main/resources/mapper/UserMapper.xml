@@ -5,6 +5,20 @@
     <select id="getUserByKey" resultType="map">
         select * from admin where username=#{userName} and password=#{password}
     </select>
+
+    <select id="getUserByBmdm" resultType="map">
+        select a.* from admin a
+        LEFT JOIN dept b on(a.deptid=b.id) where b.code=#{bmdm} and openid is not null
+    </select>
+
+    <select id="getUserByJu" resultType="map">
+        select * from admin  where typeid=10 and openid is not null
+    </select>
+
+    <update id="updateUserByKey">
+        update admin set openid=#{obj.openId} where id=#{obj.id}
+    </update>
+
     
  
 

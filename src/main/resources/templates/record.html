@@ -358,6 +358,9 @@ $(function(){
 				console.log(data);
 			}
 		});
+        $("#xmmcs").html("");
+        $("#xmfrdws").html("");
+        $("#xms").html("");
 		$("#infoModal").modal('show');
 	});
 	
@@ -382,6 +385,9 @@ $(function(){
 	});
 	
 	$("#bmdms").on("change",function(){
+        $("#xmmcs").html("");
+        $("#xmfrdws").html("");
+        $("#xms").html("");
 		$.ajax({
 			url:"getXmbaxxByDeptBmdm",
 			type:"get",
@@ -436,7 +442,10 @@ $(function(){
 					if(confirm("是否发送消息")){
 						$("#myModal").modal('hide');
 						$("#infoModal").modal('show');
-						$("#bmdiv").hide();
+                        $("#bmdiv").hide();
+                        var text = $(record).find("td").eq(2).text();
+                        $("#bmdms").html("<option value="+text+">"+text+"</option>");
+                        $("#bmdms").val($(record).find("td").eq(2).text());
 						$("#xmmcs").text($(record).find("td").eq(3).text());
 						$("#xmfrdws").text($(record).find("td").eq(4).text());
 						$("#xms").text($(record).find("td").eq(0).text());

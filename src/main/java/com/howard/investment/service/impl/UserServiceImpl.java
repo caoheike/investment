@@ -19,8 +19,22 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public Map getUserByKey(String userName, String password) {
-		// TODO Auto-generated method stub
 		return userDao.getUserByKey(userName, password);
+	}
+
+	@Override
+	public int updateUserByKey(Map map) {
+		return userDao.updateUserByKey(map);
+	}
+
+	@Override
+	public List<Map> getUserByBmdm(String bmdm) {
+		return userDao.getUserByBmdm(bmdm);
+	}
+
+	@Override
+	public List<Map> getUserByJu() {
+		return userDao.getUserByJu();
 	}
 
 }

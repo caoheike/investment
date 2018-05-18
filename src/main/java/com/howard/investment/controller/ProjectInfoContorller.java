@@ -21,6 +21,8 @@ import javax.servlet.http.HttpSession;
 import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.*;
+import com.howard.investment.service.impl.UserServiceImpl;
+import com.howard.investment.tools.Tools;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -58,6 +60,8 @@ public class ProjectInfoContorller {
     static ResultSet rs = null;  
     @Autowired
     private ProjectInfoServiceImpl projectinfoserviceimpl;
+	@Autowired
+	private UserServiceImpl userService;
 		@ResponseBody
 	    @RequestMapping(value = "queryProjectInfo",method = RequestMethod.POST)
 	    public List<Map> queryProjectInfo(HttpServletRequest request,@RequestParam("projectStatus") String projectStatus,@RequestParam("deptid") String deptid,Model model) throws Exception {
@@ -246,14 +250,22 @@ public class ProjectInfoContorller {
 	    	}else if(maps.get("typeid").toString().equals("10")){
 	    	  	map.put("xminfotype",10);
 	    	}
-	  
 	    	map.put("bmdm",Integer.parseInt(bmdm));
 	    	map.put("xmmc",xmmc);
 	    	map.put("xmdwmc",xmdwmc);
 	    	map.put("title",title);
 	    	map.put("inputdate",df.format(day));
 	    	map.put("xmid",Integer.parseInt(xmid));
-	    	
+			List<Map> users = null;
+			if(bmdm!=null && !"".equals(bmdm)){
+				users = userService.getUserByBmdm(bmdm);
+
+			}else{
+				users = userService.getUserByJu();
+			}
+			for (int j = 0; j < users.size(); j++) {
+				Tools.sendWxMsg(users.get(j).get("openid").toString(),xmmc,title);
+			}
 	    int row= projectinfoserviceimpl.sendMessage(map);
 		if(row!=0){
     		map.put("restInfo","success");

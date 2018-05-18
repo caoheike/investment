@@ -79,7 +79,7 @@
     <insert id="insertXmxx" parameterType="map" > 
    		  insert into xmxx 
    		  ([deptid],[xmfrm],[bmdm],[xmdwmc],[xmmc],[frdm],[jhztz],[xmfl],[status]) 
-   		  values(#{obj.deptid},#{obj.xmbadm},${obj.bmdm},#{obj.xmfrdw},#{obj.xmmc},#{obj.xmbadm},${obj.jhztz},1,0)
+   		  values(#{obj.deptid},#{obj.xmbadm},${obj.bmdm},#{obj.xmfrdw},#{obj.xmmc},#{obj.xmbadm},${obj.jhztz},2,0)
     </insert> 
     
     <update id="updateByKey">
