@@ -245,9 +245,12 @@ public class ProjectInfoContorller {
 			SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd"); 
 	    	Map<String,Object> map=new HashMap<String,Object>();
 	    	map.put("fsz", "统计局");
+	    	String first=null;
 	    	if(maps.get("typeid").toString().equals("2")){
+				first="审批消息";
 	    	  	map.put("xminfotype",2);
 	    	}else if(maps.get("typeid").toString().equals("10")){
+				first="部门消息";
 	    	  	map.put("xminfotype",10);
 	    	}
 	    	map.put("bmdm",Integer.parseInt(bmdm));
@@ -264,7 +267,7 @@ public class ProjectInfoContorller {
 				users = userService.getUserByJu();
 			}
 			for (int j = 0; j < users.size(); j++) {
-				Tools.sendWxMsg(users.get(j).get("openid").toString(),xmmc,title);
+				Tools.sendWxMsg(users.get(j).get("openid").toString(),first,xmmc,title);
 			}
 	    int row= projectinfoserviceimpl.sendMessage(map);
 		if(row!=0){
@@ -617,7 +620,7 @@ public class ProjectInfoContorller {
 		String  xmxx=request.getParameter("xmxx");
 
 		WebClient WebClients = new WebClient();
-		HtmlPage page = WebClients.getPage("http://www.hyxwqy.com/qytj/login.asp");
+		HtmlPage page = WebClients.getPage("http://www.hyxwqy.com:88/qytj/login.asp");
 		HtmlTextInput username = page.getElementByName("username");
 		HtmlPasswordInput username2 = page.getElementByName("password");
 		username.setValueAttribute("tjjfl");
@@ -625,11 +628,11 @@ public class ProjectInfoContorller {
 		page.executeJavaScript("javascript:chkLoginFrm()");
 //		Thread.sleep(3000);
 //		HtmlPage pageInfo=
-		WebClients.getPage("http://www.hyxwqy.com/qytj/tzxmsj.asp");//进入查询页面	HtmlSelect xmfl = pageInfo.getElementByName("xmfl");
+		WebClients.getPage("http://www.hyxwqy.com:88/qytj/tzxmsj.asp");//进入查询页面	HtmlSelect xmfl = pageInfo.getElementByName("xmfl");
 
 		StringBuffer sb=new StringBuffer();
 		HtmlPage pages= null;
-		pages = WebClients.getPage("http://www.hyxwqy.com/qytj/tzxmsj.asp?action=search&stype=xmsj&xmfl="+xmzt+"&stypes=2&deptid="+bm+"&y="+y+"&m="+m+"&keywords="+xmxx+"&submit=搜+索&page="+1+"");
+		pages = WebClients.getPage("http://www.hyxwqy.com:88/qytj/tzxmsj.asp?action=search&stype=xmsj&xmfl="+xmzt+"&stypes=2&deptid="+bm+"&y="+y+"&m="+m+"&keywords="+xmxx+"&submit=搜+索&page="+1+"");
 		HtmlTable table= (HtmlTable) pages.getByXPath("/html/body/div[1]/div[4]/div/table").get(0);
 
 //		for (int i = 1; i <20 ; i++) {

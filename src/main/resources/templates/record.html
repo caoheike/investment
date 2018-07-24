@@ -43,9 +43,10 @@ td.fenye{ padding:10px 0 0 0; text-align:right;}
   		  <td width="10%" align="center" valign="middle" style="text-align:right; width:150px;"><a href="record.html?type=bmdm0" target="mainFrame" onFocus="this.blur()" class="add" id="bmwpp">部门未匹配</a></td>
   		  <td width="10%" align="center" valign="middle" style="text-align:right; width:150px;"><a href="record.html?type=bmdm1" target="mainFrame" onFocus="this.blur()" class="add" id="bmypp">部门已匹配</a></td>
   		  <td width="10%" align="center" valign="middle" style="text-align:right; width:150px;"><a href="javascript:;" target="mainFrame" onFocus="this.blur()" class="add" id="pipei">匹配部门</a></td>
-  		  <td width="10%" align="center" valign="middle" style="text-align:right; width:150px;"><a href="http://hyxwqy.com:9090/" target="mainFrame" onFocus="this.blur()" class="add" id="bazq">备案抓取</a></td>
+  		  <td width="10%" align="center" valign="middle" style="text-align:right; width:150px;"><a href="http://139.196.32.6:9090/" target="mainFrame" onFocus="this.blur()" class="add" id="bazq">备案抓取</a></td>
   		  <td width="10%" align="center" valign="middle" style="text-align:right; width:150px;"><a href="javascript:;" target="mainFrame" onFocus="this.blur()" class="add" id="SendMessage">消息发送</a></td>
   		  <td width="10%" align="center" valign="middle" style="text-align:right; width:150px;"><a href="javascript:;" target="mainFrame" onFocus="this.blur()" class="add" id="bazxm">备案转项目</a></td>
+  		  <td width="10%" align="center" valign="middle" style="text-align:right; width:150px;"><a href="record.html?bz=1" target="mainFrame" onFocus="this.blur()" class="add" id="ycba">隐藏备案</a></td>
   		</tr>
 	</table>
     </td>
@@ -65,6 +66,8 @@ td.fenye{ padding:10px 0 0 0; text-align:right;}
         <th align="center" valign="middle" class="borderright">办理状态</th>
         <th align="center" valign="middle" class="borderright">办理状态变更时间</th>
         <th align="center" valign="middle" class="borderright">抓取日期</th>
+        <th style="display:none" align="center" valign="middle" class="borderright">计划总投资</th>
+        <th style="display:none" align="center" valign="middle" class="borderright">bz</th>
         <th align="center" valign="middle">操作</th>
       </tr>
       <tr onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'" th:each="obj : ${list}">
@@ -78,10 +81,12 @@ td.fenye{ padding:10px 0 0 0; text-align:right;}
         <td align="center" valign="middle" class="borderright borderbottom" th:text="${obj.blzd}"></td>
         <td align="center" valign="middle" class="borderright borderbottom" th:text="${obj.blrq}"></td>
         <td align="center" valign="middle" class="borderright borderbottom" th:text="${obj.zcrq}"></td>
+        <td style="display:none" align="center" valign="middle" class="borderright borderbottom" th:text="${obj.jhztz}"></td>
+        <td style="display:none" align="center" valign="middle" class="borderright borderbottom" th:text="${obj.bz}"></td>
         <td align="center" valign="middle" class="borderbottom">
         	<a href="javascript:;" target="mainFrame" onFocus="this.blur()" class="add edit">编辑</a>
-        	<span class="gray">&nbsp;|&nbsp;</span>
-        	<a href="javascript:;" target="mainFrame" onFocus="this.blur()" class="add" id="delete">删除</a>
+        	<!--<span class="gray">&nbsp;|&nbsp;</span>
+        	<a href="javascript:;" target="mainFrame" onFocus="this.blur()" class="add" id="delete">删除</a>-->
         </td>
       </tr>
     </table></td>
@@ -165,7 +170,7 @@ td.fenye{ padding:10px 0 0 0; text-align:right;}
                   <input type="text" class="form-control" name="zqrq" id="zqrq"/>
                 </div>
               </div>
-              
+
               <div class="form-group">
                 <label class="col-sm-2 control-label">部门代码</label>
 
@@ -178,6 +183,17 @@ td.fenye{ padding:10px 0 0 0; text-align:right;}
                   <input type="text" class="form-control" name="jhztz" id="jhztz"/>
                 </div>
               </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">状态</label>
+
+                    <div class="col-sm-4">
+                        <select class="form-control m-b" id="bz" name="bz">
+                            <option value="0">正常</option>
+                            <option value="1">隐藏</option>
+                        </select>
+                    </div>
+                </div>
 
             </form>
           </div>
@@ -266,7 +282,8 @@ $(function(){
 					$("#bmwpp").hide();
 					$("#bmypp").hide();
 					$("#bazq").hide();
-					$("#bazxm").hide();
+                    $("#bazxm").hide();
+                    $("#ycba").hide();
 					$("#pipei").hide();
 					$("#SendMessage").hide();
 				}
@@ -327,7 +344,13 @@ $(function(){
 		$("#glbm").val($(this).parent().parent().find("td").eq(6).text());
 		$("#blzd").val($(this).parent().parent().find("td").eq(7).text());
 		$("#blrq").val($(this).parent().parent().find("td").eq(8).text());
-		$("#zqrq").val($(this).parent().parent().find("td").eq(9).text());
+        $("#zqrq").val($(this).parent().parent().find("td").eq(9).text());
+        $("#jhztz").val($(this).parent().parent().find("td").eq(10).text());
+        if($(this).parent().parent().find("td").eq(11).text().trim()==""){
+            $("#bz").val("0");
+        }else{
+            $("#bz").val($(this).parent().parent().find("td").eq(11).text());
+        }
 		$("#myModal").modal();
 	});
 	$(".get").on("click",function(){
@@ -341,6 +364,13 @@ $(function(){
 		$("#blzd").val($(this).parent().find("td").eq(7).text());
 		$("#blrq").val($(this).parent().find("td").eq(8).text());
 		$("#zqrq").val($(this).parent().find("td").eq(9).text());
+        $("#jhztz").val($(this).parent().parent().find("td").eq(10).text());
+        if($(this).parent().parent().find("td").eq(11).text().trim()==""){
+            $("#bz").val("0");
+        }else{
+            $("#bz").val($(this).parent().parent().find("td").eq(11).text());
+        }
+
 		$("#myModal").modal();
 	});
 	$("#SendMessage").on("click",function(){
@@ -419,8 +449,8 @@ $(function(){
 			data:{},
 			success:function(data){
 				if(data.flag){
-					alert("在项目信息中添加"+data.rowXmxx+"条项目");
-					alert("已删除项目备案信息"+data.rowXmbaxx+"条项目");
+					alert("在项目信息中添加"+data.rowXmxx+"条待入库项目");
+					//alert("已删除项目备案信息"+data.rowXmbaxx+"条项目");
 					window.location.reload();
 				}else{
 					alert(data.msg);

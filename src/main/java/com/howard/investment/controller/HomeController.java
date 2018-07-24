@@ -114,7 +114,7 @@ public class HomeController {
 
 	@RequestMapping("record.html")
 	public String recordView(@RequestParam(required = false) Integer pageNum,
-			@RequestParam(required = false) String type, Model model,HttpSession session) {
+			@RequestParam(required = false) String type,@RequestParam(required = false) String bz, Model model,HttpSession session) {
 		if (pageNum == null || pageNum < 1) {
 			model.addAttribute("pageNum", 1);
 			pageNum = 15;
@@ -132,11 +132,17 @@ public class HomeController {
 		if(dept!=null && dept.containsKey("code")){
 			code=dept.get("code").toString();
 		}
-		List<Map> list = recordService.getRecordByKey(pageNum, type,map.get("typeid").toString(),code);
-		int totalCount = recordService.getRecordByKeyCount(type,map.get("typeid").toString(),code);
+		List<Map> list = recordService.getRecordByKey(pageNum, bz,type,map.get("typeid").toString(),code);
+		int totalCount = recordService.getRecordByKeyCount(bz,type,map.get("typeid").toString(),code);
 		for (int i = 0, j = list.size(); i < j; i++) {
 			if (!list.get(i).containsKey("bmdm")) {
 				list.get(i).put("bmdm", "");
+			}
+			if (!list.get(i).containsKey("jhztz")) {
+				list.get(i).put("jhztz", "");
+			}
+			if (!list.get(i).containsKey("bz")) {
+				list.get(i).put("bz", "");
 			}
 		}
 		model.addAttribute("list", list);
@@ -237,7 +243,6 @@ public class HomeController {
 	@RequestMapping(value = "deptxmbaInfo", method = RequestMethod.GET)
 	public String deptInfo(HttpServletRequest request, @RequestParam("id") String id, Model model,
 			@RequestParam("type") String type) throws Exception {
-		System.out.println();
 		List<Map> queryProjectInfo = recordService.getXmByIds(id);
 		queryProjectInfo.get(0).put("type", type);
 		String xxid = request.getParameter("xxid");
@@ -249,7 +254,13 @@ public class HomeController {
 
 		// 根据taype走不同页面
 
-		return "deptxmbaInfo";
+		return "recordInfoVerify";
+	}
+
+	@RequestMapping(value = "recordInfoVerify",method = RequestMethod.POST)
+	public String recordInfoVerify(HttpServletRequest request,@RequestParam Map map) {
+		recordService.updateInfo(map.get("xxid").toString(),map.get("selectRadio").toString());
+		return  "redirect:infoView";
 	}
 
 	@ResponseBody
@@ -284,10 +295,13 @@ public class HomeController {
 		Date day = new Date();
 		SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd");
 		Map<String, Object> map = new HashMap<String, Object>();
+		String first=null;
 		map.put("fsz", "统计局");
 		if (maps.get("typeid").toString().equals("2")) {
+			first="审批消息";
 			map.put("xminfotype", 3);
 		} else if (maps.get("typeid").toString().equals("10")) {
+			first="新备案消息";
 			map.put("xminfotype", 11);
 		}
 		int row = 0;
@@ -300,14 +314,14 @@ public class HomeController {
 			map.put("xmid", Integer.parseInt(listXm.get(i).get("id").toString()));
 			row += projectinfoserviceimpl.sendMessage(map);
 			List<Map> users = null;
-			if(bmdm!=null && !"".equals(bmdm)){
+			if (maps.get("typeid").toString().equals("10")) {
 				users = userService.getUserByBmdm(bmdm);
 
 			}else{
 				users = userService.getUserByJu();
 			}
 			for (int j = 0; j < users.size(); j++) {
-				Tools.sendWxMsg(users.get(j).get("openid").toString(),map.get("xmmc").toString(),title);
+				Tools.sendWxMsg(users.get(j).get("openid").toString(),first,map.get("xmmc").toString(),title);
 			}
 		}
 		if (row != 0) {
@@ -333,7 +347,7 @@ public class HomeController {
 				}
 				rowXmxx += recordService.insertXmxx(list.get(i));
 			}
-			int rowXmbaxx = recordService.deleteXmByJhztz();
+			int rowXmbaxx = recordService.updateXmByJhztz();
 			data.put("rowXmbaxx", rowXmbaxx);
 			data.put("rowXmxx", rowXmxx);
 			data.put("flag", true);
@@ -347,8 +361,7 @@ public class HomeController {
 	
 	@RequestMapping("updateInfo")
 	public String updateInfo(@RequestParam String xxid) {
-		Map<String, Object> data = new HashMap<>();
-		recordService.updateInfo(xxid);
+		recordService.updateInfo(xxid,"1");
 		return "redirect:infoView";
 	}
 	@RequestMapping(value = "infoView", method = RequestMethod.GET)
@@ -419,15 +432,15 @@ public class HomeController {
 			//调用微信网页授权
 			String uri = request.getScheme() + "://" + request.getServerName() + request.getRequestURI();
 			String redirectUri = "redirect:https://open.weixin.qq.com/connect/oauth2/authorize?appid=" +
-					"wx9fc89e5873902f0c" +
+					"wx67a2f39a7fec8548" +
 					"&redirect_uri=" +
 					uri +
 					"&response_type=code&scope=snsapi_base&state=123#wechat_redirect";
 			return redirectUri;
 		} else {
 			//通过code获取openid
-			String accessTokenUrl = "https://api.weixin.qq.com/sns/oauth2/access_token" + "?appid=" + "wx9fc89e5873902f0c" +
-					"&secret=" + "d887bf689e61f5e9b29f27c31bd659ed" +
+			String accessTokenUrl = "https://api.weixin.qq.com/sns/oauth2/access_token" + "?appid=" + "wx67a2f39a7fec8548" +
+					"&secret=" + "91fe35d3a2f94049370ee981bf29595a" +
 					"&code=" + code +
 					"&grant_type=authorization_code";
 			String result = HttpUtils.getJson(accessTokenUrl);

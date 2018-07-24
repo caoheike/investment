@@ -29,6 +29,7 @@ $(function(){
 				if(data.typeId=='2' || data.typeId==2){
 					$("#spxx").css("display","block");
 					$("#xbaxx").css("display","block");
+					$("#dataReport").css("display","block");
 				}else{
 					$("#tjhz").css("display","block");
 					$("#xm_bmxx").css("display","block");
@@ -36,6 +37,8 @@ $(function(){
 					$("#bmyh").css("display","block");
 					$("#dataExport").css("display","block");
 					$("#dwxx").css("display","block");
+                    $("#dataReport").css("display","block");
+                    $("#dataImport").css("display","block");
 				}
 			}
 		},
@@ -96,23 +99,19 @@ body{overflow-x:hidden; background:url(images/main/leftbg.jpg) left top repeat-y
         <a id="ba_bmxx" style="display:none" href="infoView" target="mainFrame" onFocus="this.blur()">部门消息<label style="color:red;display:none" id="xin3">[新]</label></a>
         <a id="xbaxx" style="display:none" href="infoView" target="mainFrame" onFocus="this.blur()">新备案消息<label style="color:red;display:none" id="xin11">[新]</label></a>
       </div>
-      <div>
-        <span>用户管理</span>
-        <a href="errorPage" target="mainFrame" onFocus="this.blur()">密码修改</a>
-        <a id="bmyh" style="display:none" href="errorPage" target="mainFrame" onFocus="this.blur()">部门用户</a>
-      </div>
-      <div id="tjhz" style="display:none">
-        <span>统计汇总</span>
-        <a href="getData" target="mainFrame" onFocus="this.blur()">数据报表</a>
-        <!--<a href="errorPage" target="mainFrame" onFocus="this.blur()">汇总数据</a>-->
-      </div>
       <div style="display:none" id="dwxx" >
         <span>单位信息</span>
         <a href="dwxx.html" target="mainFrame" onFocus="this.blur()">单位信息</a>
       </div>
-      <div id="dataExport" style="display:none">
-        <span>数据导入</span>
-        <a href="imports" target="mainFrame" onFocus="this.blur()">数据导入</a>
+      <div style="display:none">
+        <span>用户管理</span>
+        <a href="errorPage" target="mainFrame" onFocus="this.blur()">密码修改</a>
+        <a id="bmyh" style="display:none" href="errorPage" target="mainFrame" onFocus="this.blur()">部门用户</a>
+      </div>
+      <div>
+        <span>统计汇总</span>
+        <a href="getData" style="display:none" id="dataReport" target="mainFrame" onFocus="this.blur()">数据报表</a>
+        <a href="imports" style="display:none" id="dataImport" target="mainFrame" onFocus="this.blur()">数据导入</a>
       </div>
     </div>
 </body>

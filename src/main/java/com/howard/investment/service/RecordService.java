@@ -13,13 +13,13 @@ import org.apache.ibatis.annotations.Param;
 
 public interface RecordService {
 
-	List<Map> getRecordByKey(Integer pageNum,String type,String typeid,String bmdm);
+	List<Map> getRecordByKey(Integer pageNum,String bz, String type,String typeid,String bmdm);
 	
-	int getRecordByKeyCount(String type,String typeid,String bmdm);
+	int getRecordByKeyCount(String bz, String type,String typeid,String bmdm);
 	
 	int deleteXmById(String id);
 	
-	int updateInfo(String id);
+	int updateInfo(String id,String infostate);
 	
 	Map getDeptById(String id);
 	
@@ -37,7 +37,7 @@ public interface RecordService {
 	
 	int insertXmxx(Map map);
 	
-	int deleteXmByJhztz();
+	int updateXmByJhztz();
 	
 	int updateXmByKey(Map map);
 	

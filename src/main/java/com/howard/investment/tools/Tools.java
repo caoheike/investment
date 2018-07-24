@@ -4,6 +4,8 @@ import net.sf.json.JSONObject;
 
 import java.io.IOException;
 import java.security.MessageDigest;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /** 
  * @Description:MD5加解密工具 
@@ -35,28 +37,43 @@ public class Tools {
         return encryptStr;  
     }
 
-    public static String sendWxMsg(String openId,String name,String title) throws IOException {
-        System.out.println(openId+"----"+name+"------"+title);
-        String accessTokenUrl = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+"wx9fc89e5873902f0c"+"&secret="+ "d887bf689e61f5e9b29f27c31bd659ed";
+    public static String sendWxMsg(String openId,String title,String name,String msg) throws IOException {
+        System.out.println(openId+"----"+name+"------"+msg);
+        String accessTokenUrl = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+"wx67a2f39a7fec8548"+"&secret="+ "91fe35d3a2f94049370ee981bf29595a";
         String result = HttpUtils.getJson(accessTokenUrl);
         System.out.println(result);
         JSONObject json = JSONObject.fromObject(result);
         JSONObject data = new JSONObject();
+        JSONObject message = new JSONObject();
         data.put("touser",openId);
-        data.put("template_id","hPFO7lsd8rAnuQLBQG3WeyQCNAyq-HAYxWOKeuthJEQ");
+        data.put("template_id","bv_s6GY6lR84OYswIPiZIIKh2SmPk_LsywF4XU_V814");
         data.put("topcolor","#FF0000");
-        JSONObject msg = new JSONObject();
-        JSONObject xmmc = new JSONObject();
-        xmmc.put("value",name);
-        xmmc.put("color","#e81f32");
-        msg.put("xmmc",xmmc);
-        JSONObject info = new JSONObject();
-        info.put("value",title);
-        info.put("color","#173177");
-        msg.put("info",info);
-        data.put("data",msg);
-        result = HttpUtils.sendInfo("https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+json.getString("access_token"),data.toString());
-        System.out.println(result);
+        JSONObject first = new JSONObject();
+        first.put("value",title);
+        first.put("color","#e81f32");
+        message.put("first",first);
+        JSONObject keyword1 = new JSONObject();
+        keyword1.put("value",name);
+        keyword1.put("color","#e81f32");
+        message.put("keyword1",keyword1);
+        JSONObject keyword2 = new JSONObject();
+        keyword2.put("value","发送成功");
+        keyword2.put("color","#e81f32");
+        message.put("keyword2",keyword2);
+        JSONObject keyword3 = new JSONObject();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 HH:mm");
+        keyword3.put("value",sdf.format(new Date()));
+        keyword3.put("color","#e81f32");
+        message.put("keyword3",keyword3);
+        JSONObject remark = new JSONObject();
+        remark.put("value",msg);
+        remark.put("color","#173177");
+        message.put("remark",remark);
+        data.put("data",message);
+        if(json.containsKey("access_token")){
+            result = HttpUtils.sendInfo("https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+json.getString("access_token"),data.toString());
+            System.out.println(result);
+        }
         return result;
     }
   
@@ -67,11 +84,6 @@ public class Tools {
      */  
     public static String encrypt16(String encryptStr) {  
         return encrypt32(encryptStr).substring(8, 24);  
-    }  
-  
-//    public static void main(String[] args) {  
-//        String encryptStr = "22222222222,./.,./.,./!@#$%^&*()";  
-//        System.out.println(Tools.encrypt32(encryptStr));  
-//        System.out.println(Tools.encrypt16(encryptStr));  
-//    }  
+    }
+
 } 

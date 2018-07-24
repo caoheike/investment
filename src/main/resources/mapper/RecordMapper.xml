@@ -3,15 +3,21 @@
 <mapper namespace="com.howard.investment.dao.RecordDao">
 
     <select id="getRecordByKey" resultType="map">
-        select top 15 * from (select top ${pageNum} * from xmbaxx where 1=1 
+        select top 15 * from (select top ${pageNum} * from xmbaxx where 1=1
         <if test="type == 'bmdm0'">
-         and bmdm is null 
+            and bmdm is null
         </if>
         <if test="type == 'bmdm1'">
-         and bmdm is not null 
+            and bmdm is not null
         </if>
         <if test="typeid == '2' or typeid == 2">
-         and bmdm=#{bmdm} 
+            and bmdm=#{bmdm}
+        </if>
+        <if test="bz == null or bz == ''">
+            and bz!=1
+        </if>
+        <if test="bz == '1' or bz == 1">
+            and bz='1'
         </if>
         order by id desc) 
         order by id asc
@@ -27,6 +33,12 @@
         </if>
         <if test="typeid == '2' or typeid == 2">
          and bmdm=#{bmdm} 
+        </if>
+        <if test="bz == null or bz == ''">
+            and bz!=1
+        </if>
+        <if test="bz == '1' or bz == 1">
+            and bz='1'
         </if>
     </select>
     
@@ -73,7 +85,7 @@
     </select>
     
     <select id="getXmbaxxByJhztz" resultType="map">
-        select a.*,b.id as deptid,a.id as xmid from xmbaxx a left join dept b on(a.bmdm=b.code) where a.jhztz>500
+        select a.*,b.id as deptid,a.id as xmid from xmbaxx a left join dept b on(a.bmdm=b.code) where a.jhztz>500 and bz!=1
     </select>
     
     <insert id="insertXmxx" parameterType="map" > 
@@ -86,26 +98,27 @@
         update xmbaxx set bmdm=#{bmdm} where xmfrdw=#{xmfrdw}
     </update>
     
-    <delete id="deleteXmByJhztz">
-        delete from xmbaxx where jhztz>500
+    <delete id="updateXmByJhztz">
+      update xmbaxx set bz=1 where jhztz>500 and bz!=1
     </delete>
     
     <update id="updateInfo">
-        update xminfo set infostate=1 where xminfo_id=#{id}
+        update xminfo set infostate=#{infostate} where xminfo_id=#{id}
     </update>
     
     <update id="updateXmByKey">
         update xmbaxx set 
-        <if test="obj.xmbadm!=null">xmbadm=#{obj.xmbadm},</if>
-        <if test="obj.bmdm!=null and obj.bmdm!=''">bmdm=#{obj.bmdm},</if>
-        <if test="obj.xmmc!=null">xmmc=#{obj.xmmc},</if>
-        <if test="obj.xmfrdw!=null">xmfrdw=#{obj.xmfrdw},</if>
-        <if test="obj.spsx!=null">spsx=#{obj.spsx},</if>
-        <if test="obj.glbm!=null">glbm=#{obj.glbm},</if>
-        <if test="obj.blzd!=null">blzd=#{obj.blzd},</if>
-        <if test="obj.blrq!=null">blrq=#{obj.blrq},</if>
-        <if test="obj.zqrq!=null">zcrq=#{obj.zqrq},</if>
-        <if test="obj.jhztz!=null">jhztz=#{obj.jhztz}</if>
+        <if test="obj.xmbadm!=null">xmbadm=#{obj.xmbadm}</if>
+        <if test="obj.bmdm!=null and obj.bmdm!=''">,bmdm=#{obj.bmdm}</if>
+        <if test="obj.xmmc!=null">,xmmc=#{obj.xmmc}</if>
+        <if test="obj.xmfrdw!=null">,xmfrdw=#{obj.xmfrdw}</if>
+        <if test="obj.spsx!=null">,spsx=#{obj.spsx}</if>
+        <if test="obj.glbm!=null">,glbm=#{obj.glbm}</if>
+        <if test="obj.blzd!=null">,blzd=#{obj.blzd}</if>
+        <if test="obj.blrq!=null">,blrq=#{obj.blrq}</if>
+        <if test="obj.zqrq!=null">,zcrq=#{obj.zqrq}</if>
+        <if test="obj.jhztz!=null">,jhztz=#{obj.jhztz}</if>
+        <if test="obj.bz!=null">,bz=#{obj.bz}</if>
         where id=#{obj.xmId}
     </update>
     
