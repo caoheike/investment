@@ -306,6 +306,11 @@ public class HomeController {
 		}
 		int row = 0;
 		for (int i = 0; i < listXm.size(); i++) {
+		    if(listXm.get(i).get("bz")!=null){
+		        if(listXm.get(i).get("bz").toString().equals("0")){
+                    continue;
+                }
+            }
 			map.put("bmdm", Integer.parseInt(bmdm));
 			map.put("xmmc", listXm.get(i).get("xmmc").toString());
 			map.put("xmdwmc", listXm.get(i).get("xmfrdw").toString());
